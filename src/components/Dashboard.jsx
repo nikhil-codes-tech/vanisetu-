@@ -105,9 +105,9 @@ export default function Dashboard({
                   }}
                   className="w-full bg-slate-50 border border-slate-205 rounded p-2 text-[11px] font-extrabold text-slate-755 cursor-pointer h-10 focus:outline-none"
                 >
-                  <option value="ho">हो (Ho)</option>
-                  <option value="santhali">संथाली (Santhali)</option>
-                  <option value="mundari">मुंडारी (Mundari)</option>
+                  <option value="हो">हो (Ho)</option>
+                  <option value="संथाली">संथाली (Santhali)</option>
+                  <option value="मुंडारी">मुंडारी (Mundari)</option>
                 </select>
               </div>
 
