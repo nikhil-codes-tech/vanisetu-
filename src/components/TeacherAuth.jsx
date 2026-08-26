@@ -257,10 +257,10 @@ export default function TeacherAuth({ onLoginSuccess }) {
               Empowering Hindi-medium primary school teachers to conduct interactive FLN lessons in Santhali, Ho, and Mundari without prior language training.
             </p>
 
-            <div className="mt-4 rounded-xl overflow-hidden border border-white/10 shadow-lg bg-[#0F4D2A]/10">
+            <div className="mt-6 rounded-2xl overflow-hidden border border-white/15 shadow-xl bg-white p-4 max-w-[260px] mx-auto">
               <img 
-                src="/login_benefits.png" 
-                alt="VaniSetu Login Benefits" 
+                src="/vanisetu_logo.jpg" 
+                alt="VaniSetu Logo Big" 
                 className="w-full object-contain"
               />
             </div>
