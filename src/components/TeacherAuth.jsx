@@ -238,16 +238,7 @@ export default function TeacherAuth({ onLoginSuccess }) {
         {/* Left Side: Real Classroom Visuals */}
         <div className="md:col-span-5 bg-gradient-to-br from-[#0c3b23] to-[#062013] text-white p-6 md:p-8 flex flex-col justify-between relative overflow-hidden text-left">
           <div className="relative z-10">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-0.5 shadow-md overflow-hidden flex-shrink-0">
-                <img 
-                  src="/vanisetu_logo.jpg" 
-                  alt="VaniSetu Logo" 
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              <span className="text-sm font-black tracking-wider text-emerald-100">VaniSetu OS</span>
-            </div>
+
 
             <div className="inline-block bg-amber-500/20 text-amber-300 text-xs px-2.5 py-1 rounded-md font-medium mb-4 border border-amber-500/30">
               PALASH Mother Tongue Bridge
