@@ -58,6 +58,30 @@ const AVAILABLE_WORKSHEETS_TEMPLATES = {
         { id: 1, type: "multiple-choice", instruction: "पेड़ को हो भाषा में क्या कहते हैं?", options: ["दाः", "दारू", "साकाम"], correct: "दारू", translations: { ho: "पेड़ हो काजी रे चिनाः मेनाः आ?" } }
       ]
     }
+  ],
+  "अंग्रेज़ी": [
+    {
+      id: "ws_eng_1",
+      title: "Alphabets Matching (A–Z)",
+      outcome: "L-G1.4",
+      duration: "15 minutes",
+      learningObjective: "L-G1.4: Recognition of English letters with local script sounds.",
+      questions: [
+        { id: 1, type: "multiple-choice", instruction: "Select the letter representing the sound of 'Olong':", options: ["A", "O", "Z"], correct: "O", translations: { ho: "'ओलोंग' रेयाः एनेते शब्द साल मे:" } }
+      ]
+    }
+  ],
+  "विज्ञान": [
+    {
+      id: "ws_sci_1",
+      title: "सजीव और निर्जीव (Living & Non-Living)",
+      outcome: "E-G2.3",
+      duration: "20 minutes",
+      learningObjective: "E-G2.3: Classifying living plants and non-living objects.",
+      questions: [
+        { id: 1, type: "multiple-choice", instruction: "पेड़ (Daru) क्या है?", options: ["सजीव (Living)", "निर्जीव (Non-Living)", "दोनों (Both)"], correct: "सजीव (Living)", translations: { ho: "दारू चिनाः गे?" } }
+      ]
+    }
   ]
 };
 
@@ -177,6 +201,8 @@ export default function WorksheetGenerator({
                     <option value="गणित">गणित (Mathematics)</option>
                     <option value="हिंदी">हिंदी (Hindi)</option>
                     <option value="पर्यावरण अध्ययन">पर्यावरण अध्ययन (EVS)</option>
+                    <option value="अंग्रेज़ी">अंग्रेज़ी (English)</option>
+                    <option value="विज्ञान">विज्ञान (Science)</option>
                   </select>
                 </div>
 

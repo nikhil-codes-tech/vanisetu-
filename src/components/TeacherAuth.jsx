@@ -443,6 +443,8 @@ export default function TeacherAuth({ onLoginSuccess }) {
                     <option>गणित (Mathematics)</option>
                     <option>भाषा (Hindi FLN)</option>
                     <option>पर्यावरण अध्ययन (EVS)</option>
+                    <option>अंग्रेज़ी (English)</option>
+                    <option>विज्ञान (Science)</option>
                   </select>
                 </div>
                 <div>

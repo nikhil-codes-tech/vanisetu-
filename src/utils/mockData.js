@@ -60,6 +60,22 @@ export const SUBJECTS_DATA = {
       nipun: "L-G2.3", 
       outcomeText: "L-G2.3: Read simple primary alphabet combinations with local sound translation." 
     }
+  ],
+  "अंग्रेज़ी": [
+    {
+      id: "eng_ch1",
+      title: "Alphabets (A–Z)",
+      nipun: "L-G1.4",
+      outcomeText: "L-G1.4: Identify English alphabet characters and letter sounds."
+    }
+  ],
+  "विज्ञान": [
+    {
+      id: "sci_ch1",
+      title: "सजीव और निर्जीव",
+      nipun: "E-G2.3",
+      outcomeText: "E-G2.3: Classify objects in local environment as living or non-living."
+    }
   ]
 };
 
@@ -98,6 +114,12 @@ export const VOCABULARY_DATABASE = {
     { word: "हाथी", translations: { ho: "हाथी (Hathi)", santhali: "हाथी" }, nativeScripts: { ho: "𑢵𑣁", santhali: "ᱦᱟᱛᱷᱤ" }, examples: [{ hindi: "हाथी आ रहा है।", translated: "हाथी हिजुः तन।" }] },
     { word: "बकरी", translations: { ho: "मेरम (Meram)", santhali: "मेरम" }, nativeScripts: { ho: "𑢾𑣁", santhali: "ᱢᱮᱨᱚᱢ" }, examples: [{ hindi: "बकरी घास खा रही है।", translated: "मेरम तास जोम तन।" }] },
     { word: "शेर", translations: { ho: "कुला (Kula)", santhali: "तरुप" }, nativeScripts: { ho: "𑢵𑣁", santhali: "ᱛᱟᱹᱨᱩᱵ" }, examples: [{ hindi: "शेर गरज रहा है।", translated: "कुला गड़ज तन।" }] }
+  ],
+  "अंग्रेज़ी": [
+    { word: "अक्षर", translations: { ho: "ओलोंग (Olong)", santhali: "चिकी" }, nativeScripts: { ho: "𑢵𑣁", santhali: "ᱪᱤᱠᱤ" }, examples: [{ hindi: "अक्षर लिखो।", translated: "ओलोंग ओल मे।" }] }
+  ],
+  "विज्ञान": [
+    { word: "सजीव", translations: { ho: "जीवों (Jiwong)", santhali: "जियवी" }, nativeScripts: { ho: "𑢾𑣁", santhali: "ᱡᱤᱣᱤ" }, examples: [{ hindi: "पेड़ सजीव है।", translated: "दारू जीवों गे।" }] }
   ]
 };
 
