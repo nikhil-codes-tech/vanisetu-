@@ -109,7 +109,10 @@ export default function VocabularyList({
                 className="w-full bg-slate-50 border border-slate-200 rounded py-2 px-3 text-xs text-slate-755 font-bold focus:outline-none cursor-pointer h-11"
               >
                 <option value="गणित">गणित (Mathematics)</option>
+                <option value="हिंदी">हिंदी (Hindi)</option>
                 <option value="पर्यावरण अध्ययन">पर्यावरण अध्ययन (EVS)</option>
+                <option value="अंग्रेज़ी">अंग्रेज़ी (English)</option>
+                <option value="विज्ञान">विज्ञान (Science)</option>
               </select>
             </div>
 

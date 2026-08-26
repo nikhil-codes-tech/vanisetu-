@@ -120,6 +120,9 @@ export const VOCABULARY_DATABASE = {
   ],
   "विज्ञान": [
     { word: "सजीव", translations: { ho: "जीवों (Jiwong)", santhali: "जियवी" }, nativeScripts: { ho: "𑢾𑣁", santhali: "ᱡᱤᱣᱤ" }, examples: [{ hindi: "पेड़ सजीव है।", translated: "दारू जीवों गे।" }] }
+  ],
+  "हिंदी": [
+    { word: "भाषा", translations: { ho: "कजी (Kaji)", santhali: "पारसी" }, nativeScripts: { ho: "𑢹𑣁", santhali: "ᱯᱟᱹᱨᱥᱤ" }, examples: [{ hindi: "भाषा सीखो।", translated: "कजी इतु मे।" }] }
   ]
 };
 
