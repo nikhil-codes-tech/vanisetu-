@@ -2,6 +2,145 @@ import React, { useState, useEffect } from 'react';
 import { LANGUAGES_METADATA } from '../utils/mockData';
 import { Printer } from 'lucide-react';
 
+const generateQuestionsForClassSubject = (grade, subject) => {
+  const gradeNum = grade.includes('1') ? 1 :
+                   grade.includes('2') ? 2 :
+                   grade.includes('3') ? 3 :
+                   grade.includes('4') ? 4 : 5;
+  
+  if (subject === "गणित") {
+    if (gradeNum === 1) {
+      return [
+        { id: 1, type: "multiple-choice", instruction: "कितने सेब हैं? गिनें और चुनें।", visual: "🍎 🍎 🍎", options: ["2", "3", "4"], correct: "3", translations: { ho: "चिमिन सेब मेनाः आ? लेखा मे।" } },
+        { id: 2, type: "multiple-choice", instruction: "इस आकृति का नाम चुनें:", visual: "🔴", options: ["गोल (Circle)", "चौकोर (Square)", "तिकोना (Triangle)"], correct: "गोल (Circle)", translations: { ho: "नेयाः आकृतिको नेल मे।" } },
+        { id: 3, type: "multiple-choice", instruction: "बड़ी वस्तु कौन सी है?", visual: "📦 (Box) vs ✉️ (Envelope)", options: ["बॉक्स (Box)", "लिफाफा (Envelope)"], correct: "बॉक्स (Box)", translations: { ho: "मरांग वस्तु साला मे।" } },
+        { id: 4, type: "multiple-choice", instruction: "कितनी उंगलियां हैं?", visual: "🖐️", options: ["3", "4", "5"], correct: "5", translations: { ho: "चिमिन सुपुन को मेनाः आ?" } },
+        { id: 5, type: "multiple-choice", instruction: "सरल जोड़: 1 + 2 = ", options: ["2", "3", "4"], correct: "3", translations: { ho: "जोड़ मे: १ + २ =" } }
+      ];
+    } else if (gradeNum === 2) {
+      return [
+        { id: 1, type: "multiple-choice", instruction: "जोड़ें: 12 + 5 = ", options: ["15", "17", "19"], correct: "17", translations: { ho: "मेसा मे: १२ + ५ =" } },
+        { id: 2, type: "multiple-choice", instruction: "घटाएं: 10 - 4 = ", options: ["5", "6", "7"], correct: "6", translations: { ho: "रे मे: १० - ४ =" } },
+        { id: 3, type: "multiple-choice", instruction: "संख्या 35 में दहाई (Tens) स्थान का अंक क्या है?", options: ["3", "5", "30"], correct: "3", translations: { ho: "दहाई अंक साल मे:" } },
+        { id: 4, type: "multiple-choice", instruction: "संख्या 42 को हिंदी शब्दों में चुनें:", options: ["बयालीस (42)", "तैंतालीस (43)", "चौंतालीस (44)"], correct: "बयालीस (42)", translations: { ho: "कजी रे साला मे:" } },
+        { id: 5, type: "multiple-choice", instruction: "घड़ी में छोटी सुई 3 पर और बड़ी सुई 12 पर है। समय क्या है?", options: ["2 बजे", "3 बजे", "12 बजे"], correct: "3 बजे", translations: { ho: "चिमिन बाजे तन?" } }
+      ];
+    } else if (gradeNum === 3) {
+      return [
+        { id: 1, type: "multiple-choice", instruction: "गुणा करें: 4 x 3 = ", options: ["10", "12", "15"], correct: "12", translations: { ho: "गुना मे: ४ x ३ =" } },
+        { id: 2, type: "multiple-choice", instruction: "संख्या 145 को विस्तारित रूप में लिखें:", options: ["100 + 40 + 5", "100 + 4 + 5", "10 + 40 + 5"], correct: "100 + 40 + 5", translations: { ho: "विस्तार रे ओल मे:" } },
+        { id: 3, type: "multiple-choice", instruction: "पैटर्न पूरा करें: 2, 4, 6, 8, ...", options: ["9", "10", "12"], correct: "10", translations: { ho: "पैटर्न पूरा मे:" } },
+        { id: 4, type: "multiple-choice", instruction: "जोड़ें: 250 + 120 = ", options: ["350", "370", "390"], correct: "370", translations: { ho: "मेसा मे: २५० + १२० =" } },
+        { id: 5, type: "multiple-choice", instruction: "त्रिभुज (Triangle) में कुल कितने कोने होते हैं?", options: ["3", "4", "5"], correct: "3", translations: { ho: "चिमिन कोने को मेनाः आ?" } }
+      ];
+    } else if (gradeNum === 4) {
+      return [
+        { id: 1, type: "multiple-choice", instruction: "भाग करें: 24 ÷ 4 = ", options: ["5", "6", "7"], correct: "6", translations: { ho: "हाटिंग मे: २४ ÷ ४ =" } },
+        { id: 2, type: "multiple-choice", instruction: "संख्या 4352 में 3 का स्थानीय मान (Place Value) क्या है?", options: ["3", "30", "300"], correct: "300", translations: { ho: "स्थानीय मान साल मे:" } },
+        { id: 3, type: "multiple-choice", instruction: "आधा किलोग्राम (1/2 kg) में कितने ग्राम होते हैं?", options: ["250 ग्राम", "500 ग्राम", "1000 ग्राम"], correct: "500 ग्राम", translations: { ho: "चिमिन ग्राम मेनाः आ?" } },
+        { id: 4, type: "multiple-choice", instruction: "एक आयत (Rectangle) में कितनी भुजाएं होती हैं?", options: ["3", "4", "5"], correct: "4", translations: { ho: "भुजा को साला मे:" } },
+        { id: 5, type: "multiple-choice", instruction: "गुणा करें: 15 x 6 = ", options: ["80", "90", "100"], correct: "90", translations: { ho: "गुना मे: १५ x ६ =" } }
+      ];
+    } else {
+      return [
+        { id: 1, type: "multiple-choice", instruction: "दिए गए चित्र में छायांकित भाग का भिन्न (Fraction) क्या है?", visual: "■ □ □ □ (1 out of 4)", options: ["1/2", "1/4", "3/4"], correct: "1/4", translations: { ho: "भिन्न को साला मे।" } },
+        { id: 2, type: "multiple-choice", instruction: "समकोण (Right Angle) का मान कितने डिग्री होता है?", options: ["45 डिग्री", "90 डिग्री", "180 डिग्री"], correct: "90 डिग्री", translations: { ho: "डिग्री मान साला मे:" } },
+        { id: 3, type: "multiple-choice", instruction: "हल करें: 3/5 + 1/5 = ", options: ["4/5", "4/10", "2/5"], correct: "4/5", translations: { ho: "हल मे: ३/५ + १/५ =" } },
+        { id: 4, type: "multiple-choice", instruction: "औसत ज्ञात करें: 10, 20, 30 का औसत क्या होगा?", options: ["15", "20", "25"], correct: "20", translations: { ho: "औसत निकाल मे:" } },
+        { id: 5, type: "multiple-choice", instruction: "हल करें: 150 का 10% क्या होगा?", options: ["10", "15", "20"], correct: "15", translations: { ho: "प्रतिशत मान साल मे:" } }
+      ];
+    }
+  } else if (subject === "हिंदी") {
+    if (gradeNum === 1) {
+      return [
+        { id: 1, type: "multiple-choice", instruction: "अक्षर 'अ' से शुरू होने वाला शब्द चुनें:", options: ["आम", "अनार", "इमली"], correct: "अनार", translations: { ho: "अक्षर 'अ' रेयाः शब्द साला मे:" } },
+        { id: 2, type: "multiple-choice", instruction: "चित्र पहचान कर पहला वर्ण चुनें:", visual: "🍇 (अंगूर)", options: ["अ", "आ", "अं"], correct: "अं", translations: { ho: "पहला वर्ण साल मे:" } },
+        { id: 3, type: "multiple-choice", instruction: "बिना मात्रा वाला दो अक्षरों का शब्द कौन सा है?", options: ["घर", "आम", "किताब"], correct: "घर", translations: { ho: "सरल शब्द साला मे:" } },
+        { id: 4, type: "multiple-choice", instruction: "वर्णों को जोड़कर शब्द बनाएं: क + ल + म = ", options: ["कमल", "कलम", "नमक"], correct: "कलम", translations: { ho: "शब्द बनाओ मे:" } },
+        { id: 5, type: "multiple-choice", instruction: "'नल' शब्द का अंतिम अक्षर क्या है?", options: ["न", "ल", "त"], correct: "ल", translations: { ho: "अंतिम अक्षर साला मे:" } }
+      ];
+    } else if (gradeNum === 2) {
+      return [
+        { id: 1, type: "multiple-choice", instruction: "'क' में 'आ' की मात्रा जोड़ने पर क्या बनेगा?", options: ["के", "का", "की"], correct: "का", translations: { ho: "मात्रा जोड़ मे:" } },
+        { id: 2, type: "multiple-choice", instruction: "'सूरज' का समान अर्थ वाला (समानार्थी) शब्द चुनें:", options: ["चाँद", "सूर्य", "तारा"], correct: "सूर्य", translations: { ho: "समान अर्थ साल मे:" } },
+        { id: 3, type: "multiple-choice", instruction: "सही वर्तनी (Spelling) वाला शब्द पहचानें:", options: ["किताब", "कतीब", "कताब"], correct: "किताब", translations: { ho: "सही शब्द साला मे:" } },
+        { id: 4, type: "multiple-choice", instruction: "वाक्य पूरा करें: 'राम फल ______ है।'", options: ["खाता", "खाती", "खाते"], correct: "खाता", translations: { ho: "वाक्य पूरा मे:" } },
+        { id: 5, type: "multiple-choice", instruction: "'लड़का' का बहुवचन (Plural) रूप क्या होगा?", options: ["लड़कों", "लड़के", "लड़कियां"], correct: "लड़के", translations: { ho: "बहुवचन साला मे:" } }
+      ];
+    } else {
+      return [
+        { id: 1, type: "multiple-choice", instruction: "'सुंदर' शब्द का विलोम (Opposite) शब्द चुनें:", options: ["बदसूरत", "अच्छा", "साफ"], correct: "बदसूरत", translations: { ho: "उल्टा शब्द साल मे:" } },
+        { id: 2, type: "multiple-choice", instruction: "दिए गए शब्दों में 'संज्ञा' (Noun) शब्द पहचानें:", options: ["खेलना", "सुंदर", "रांची"], correct: "रांची", translations: { ho: "संज्ञा साला मे:" } },
+        { id: 3, type: "multiple-choice", instruction: "मुहावरा पूरा करें: 'नौ दो ______ होना।'", options: ["आठ", "ग्यारह", "बारह"], correct: "ग्यारह", translations: { ho: "मुहावरा पूरा मे:" } },
+        { id: 4, type: "multiple-choice", instruction: "दिए गए वाक्यों में क्रिया (Verb) शब्द पहचानें: 'मोहन रो रहा है।'", options: ["मोहन", "रो रहा", "है"], correct: "रो रहा", translations: { ho: "क्रिया साला मे:" } },
+        { id: 5, type: "multiple-choice", instruction: "'विद्यालय' का सही संधि विच्छेद क्या होगा?", options: ["विद्या + आलय", "विद्य + आलय", "विद्या + लय"], correct: "विद्या + आलय", translations: { ho: "संधि विच्छेद साल मे:" } }
+      ];
+    }
+  } else if (subject === "पर्यावरण अध्ययन") {
+    if (gradeNum === 1) {
+      return [
+        { id: 1, type: "multiple-choice", instruction: "सूंघने के लिए शरीर के किस अंग का उपयोग करते हैं?", options: ["आँख", "नाक", "कान"], correct: "नाक", translations: { ho: "सूंघने को साला मे:" } },
+        { id: 2, type: "multiple-choice", instruction: "पिताजी के भाई को हम क्या कहते हैं?", options: ["मामा", "चाचा", "मौसा"], correct: "चाचा", translations: { ho: "रिश्ता साला मे:" } },
+        { id: 3, type: "multiple-choice", instruction: "हमें रहने के लिए किस चीज की आवश्यकता होती है?", options: ["घर", "गाड़ी", "दुकान"], correct: "घर", translations: { ho: "घर साला मे:" } },
+        { id: 4, type: "multiple-choice", instruction: "दिन में आकाश में क्या चमकता है?", options: ["सूरज", "चाँद", "तारे"], correct: "सूरज", translations: { ho: "सूरज साला मे:" } },
+        { id: 5, type: "multiple-choice", instruction: "हमें प्यास लगने पर क्या पीना चाहिए?", options: ["दूध", "पानी", "चाय"], correct: "पानी", translations: { ho: "दाः साला मे:" } }
+      ];
+    } else if (gradeNum === 2) {
+      return [
+        { id: 1, type: "multiple-choice", instruction: "गाय (Cow) के लिए सही क्षेत्रीय अनुवाद चुनें:", options: ["मेरम", "गाई", "बीर"], correct: "गाई", translations: { ho: "गाई (Cow) रेयाः अनुवाद साला मे:" } },
+        { id: 2, type: "multiple-choice", instruction: "पेड़ को हो भाषा में क्या कहते हैं?", options: ["दाः", "दारू", "साकाम"], correct: "दारू", translations: { ho: "पेड़ हो काजी रे चिनाः मेनाः आ?" } },
+        { id: 3, type: "multiple-choice", instruction: "कौन सा पशु जंगली (Wild) जानवर है?", options: ["शेर", "बकरी", "कुत्ता"], correct: "शेर", translations: { ho: "जंगली जानवर साला मे:" } },
+        { id: 4, type: "multiple-choice", instruction: "गर्मी के मौसम में हम किस प्रकार के कपड़े पहनते हैं?", options: ["ऊनी कपड़े", "सूती कपड़े", "प्लास्टिक कपड़े"], correct: "सूती कपड़े", translations: { ho: "कपड़े साला मे:" } },
+        { id: 5, type: "multiple-choice", instruction: "पेड़ का कौन सा भाग जमीन के अंदर होता है?", options: ["जड़", "पत्ती", "फूल"], correct: "जड़", translations: { ho: "जड़ साला मे:" } }
+      ];
+    } else {
+      return [
+        { id: 1, type: "multiple-choice", instruction: "झारखंड का राजकीय पशु कौन सा है?", options: ["बाघ", "हाथी", "हिरण"], correct: "हाथी", translations: { ho: "राजकीय पशु साला मे:" } },
+        { id: 2, type: "multiple-choice", instruction: "सरहुल त्योहार किस ऋतु में मनाया जाता है?", options: ["वसन्त ऋतु", "शरद ऋतु", "वर्षा ऋतु"], correct: "वसन्त ऋतु", translations: { ho: "ऋतु साला मे:" } },
+        { id: 3, type: "multiple-choice", instruction: "तालाब और कुआं जल संरक्षण के कैसे स्रोत हैं?", options: ["पारंपरिक", "कृत्रिम", "आधुनिक"], correct: "पारंपरिक", translations: { ho: "जल स्रोत साला मे:" } },
+        { id: 4, type: "multiple-choice", instruction: "झारखंड में कोयला मुख्य रूप से कहाँ पाया जाता है?", options: ["जमशेदपुर", "झरिया (धनबाद)", "रांची"], correct: "झरिया (धनबाद)", translations: { ho: "कोयला खदान साला मे:" } },
+        { id: 5, type: "multiple-choice", instruction: "बाढ़ आने पर हमें तुरंत कहाँ जाना चाहिए?", options: ["ऊंचे स्थानों पर", "नदी के किनारे", "घर के बेसमेंट में"], correct: "ऊंचे स्थानों पर", translations: { ho: "बचाव स्थान साला मे:" } }
+      ];
+    }
+  } else if (subject === "अंग्रेज़ी") {
+    if (gradeNum === 1) {
+      return [
+        { id: 1, type: "multiple-choice", instruction: "Select the uppercase letter for 'a':", options: ["A", "B", "C"], correct: "A", translations: { ho: "मरांग वर्ण साला मे:" } },
+        { id: 2, type: "multiple-choice", instruction: "What do we say when we meet someone in the morning?", options: ["Good Night", "Good Morning", "Goodbye"], correct: "Good Morning", translations: { ho: "सुबह रेयाः कजी साल मे:" } },
+        { id: 3, type: "multiple-choice", instruction: "Which word starts with letter 'B'?", options: ["Apple", "Ball", "Cat"], correct: "Ball", translations: { ho: "'B' वर्ण रेयाः शब्द साला मे:" } },
+        { id: 4, type: "multiple-choice", instruction: "Complete the alphabet: A, B, C, __", options: ["E", "D", "F"], correct: "D", translations: { ho: "खाली स्थान पूरा मे:" } },
+        { id: 5, type: "multiple-choice", instruction: "What is the color of an apple?", options: ["Red", "Blue", "Green"], correct: "Red", translations: { ho: "रंग साला मे:" } }
+      ];
+    } else {
+      return [
+        { id: 1, type: "multiple-choice", instruction: "Identify the action word (Verb):", options: ["Book", "Read", "Table"], correct: "Read", translations: { ho: "क्रिया शब्द साला मे:" } },
+        { id: 2, type: "multiple-choice", instruction: "Complete the sentence: 'The book is ______ the table.'", options: ["on", "under", "in"], correct: "on", translations: { ho: "खाली स्थान पूरा मे:" } },
+        { id: 3, type: "multiple-choice", instruction: "Choose the correct spelling:", options: ["Scole", "School", "Skhool"], correct: "School", translations: { ho: "सही शब्द साला मे:" } },
+        { id: 4, type: "multiple-choice", instruction: "Identify the describing word (Adjective): 'She has a red pen.'", options: ["She", "red", "pen"], correct: "red", translations: { ho: "विशेषण साला मे:" } },
+        { id: 5, type: "multiple-choice", instruction: "Select the plural of 'Child':", options: ["Childs", "Children", "Childes"], correct: "Children", translations: { ho: "बहुवचन साला मे:" } }
+      ];
+    }
+  } else {
+    if (gradeNum === 1) {
+      return [
+        { id: 1, type: "multiple-choice", instruction: "कौन सी वस्तु सजीव (Living) है?", options: ["खिलौना कार", "पौधा (Plant)", "पत्थर"], correct: "पौधा (Plant)", translations: { ho: "सजीव साला मे:" } },
+        { id: 2, type: "multiple-choice", instruction: "हवा को हम क्या कर सकते हैं?", options: ["देख सकते हैं", "महसूस कर सकते हैं", "छू सकते हैं"], correct: "महसूस कर सकते हैं", translations: { ho: "हवा साला मे:" } },
+        { id: 3, type: "multiple-choice", instruction: "दिन में रोशनी का मुख्य स्रोत क्या है?", options: ["बल्ब", "सूरज", "मोमबत्ती"], correct: "सूरज", translations: { ho: "सूरज साला मे:" } },
+        { id: 4, type: "multiple-choice", instruction: "कौन सी वस्तु निर्जीव (Non-Living) है?", options: ["चिड़िया", "कुत्ता", "कुर्सी"], correct: "कुर्सी", translations: { ho: "निर्जीव साला मे:" } },
+        { id: 5, type: "multiple-choice", instruction: "तारे कब दिखाई देते हैं?", options: ["दिन में", "रात में", "दोपहर में"], correct: "रात में", translations: { ho: "तारे साला मे:" } }
+      ];
+    } else {
+      return [
+        { id: 1, type: "multiple-choice", instruction: "पौधे का कौन सा भाग प्रकाश संश्लेषण करता है?", options: ["जड़", "पत्ती (Leaf)", "तना"], correct: "पत्ती (Leaf)", translations: { ho: "पत्ती साला मे:" } },
+        { id: 2, type: "multiple-choice", instruction: "पदार्थ की कितनी मुख्य अवस्थाएँ होती हैं?", options: ["दो", "तीन", "चार"], correct: "तीन", translations: { ho: "अवस्था साला मे:" } },
+        { id: 3, type: "multiple-choice", instruction: "श्वसन तंत्र (Respiratory System) का मुख्य अंग क्या है?", options: ["फेफड़े (Lungs)", "आमाशय (Stomach)", "हृदय (Heart)"], correct: "फेफड़े (Lungs)", translations: { ho: "अंग साला मे:" } },
+        { id: 4, type: "multiple-choice", instruction: "सौरमंडल में कुल कितने ग्रह हैं?", options: ["7", "8", "9"], correct: "8", translations: { ho: "ग्रह साला मे:" } },
+        { id: 5, type: "multiple-choice", instruction: "विद्युत परिपथ को चालू या बंद करने के लिए किसका उपयोग करते हैं?", options: ["तार", "बल्ब", "स्विच (Switch)"], correct: "स्विच (Switch)", translations: { ho: "स्विच साला मे:" } }
+      ];
+    }
+  }
+};
+
 const AVAILABLE_WORKSHEETS_TEMPLATES = {
   "गणित": [
     {
@@ -10,9 +149,7 @@ const AVAILABLE_WORKSHEETS_TEMPLATES = {
       outcome: "M-G1.2",
       duration: "20 minutes",
       learningObjective: "M-G1.2: One-to-one correspondence and recognition up to 5.",
-      questions: [
-        { id: 1, type: "multiple-choice", instruction: "कितने सेब हैं? गिनें और चुनें।", visual: "🍎 🍎 🍎", options: ["2", "3", "4"], correct: "3", translations: { ho: "चिमिन सेब मेनाः आ? लेखा मे।" } }
-      ]
+      questions: generateQuestionsForClassSubject("कक्षा 1", "गणित")
     },
     {
       id: "ws_math_2",
@@ -20,9 +157,7 @@ const AVAILABLE_WORKSHEETS_TEMPLATES = {
       outcome: "M-G2.2",
       duration: "25 minutes",
       learningObjective: "M-G2.2: Count and sequence numbers up to 20.",
-      questions: [
-        { id: 1, type: "multiple-choice", instruction: "जोड़ें: 2 + 3 =", options: ["4", "5", "6"], correct: "5", translations: { ho: "मेसा मे: २ + ३ =" } }
-      ]
+      questions: generateQuestionsForClassSubject("कक्षा 2", "गणित")
     }
   ],
   "हिंदी": [
@@ -32,9 +167,7 @@ const AVAILABLE_WORKSHEETS_TEMPLATES = {
       outcome: "L-G2.3",
       duration: "15 minutes",
       learningObjective: "L-G2.3: Read alphabet combinations with local sound translation.",
-      questions: [
-        { id: 1, type: "multiple-choice", instruction: "अक्षर 'अ' से शुरू होने वाला शब्द चुनें:", options: ["आम", "अनार", "इमली"], correct: "अनार", translations: { ho: "अक्षर 'अ' एते एनेते कजी साल मे:" } }
-      ]
+      questions: generateQuestionsForClassSubject("कक्षा 2", "हिंदी")
     }
   ],
   "पर्यावरण अध्ययन": [
@@ -44,9 +177,7 @@ const AVAILABLE_WORKSHEETS_TEMPLATES = {
       outcome: "E-G1.5",
       duration: "15 minutes",
       learningObjective: "जीव-जंतुओं के नाम और स्थानीय परिवेश में उनके आवास की पहचान।",
-      questions: [
-        { id: 1, type: "multiple-choice", instruction: "गाय (Cow) के लिए सही क्षेत्रीय अनुवाद चुनें:", options: ["मेरम", "गाई", "बीर"], correct: "गाई", translations: { ho: "गाई (Cow) रेयाः अनुवाद साला मे:" } }
-      ]
+      questions: generateQuestionsForClassSubject("कक्षा 1", "पर्यावरण अध्ययन")
     },
     {
       id: "ws_evs_2",
@@ -54,9 +185,7 @@ const AVAILABLE_WORKSHEETS_TEMPLATES = {
       outcome: "E-G2.4",
       duration: "20 minutes",
       learningObjective: "पेड़-पौधों के महत्व और जल संरक्षण की बुनियादी समझ।",
-      questions: [
-        { id: 1, type: "multiple-choice", instruction: "पेड़ को हो भाषा में क्या कहते हैं?", options: ["दाः", "दारू", "साकाम"], correct: "दारू", translations: { ho: "पेड़ हो काजी रे चिनाः मेनाः आ?" } }
-      ]
+      questions: generateQuestionsForClassSubject("कक्षा 2", "पर्यावरण अध्ययन")
     }
   ],
   "अंग्रेज़ी": [
@@ -66,9 +195,7 @@ const AVAILABLE_WORKSHEETS_TEMPLATES = {
       outcome: "L-G1.4",
       duration: "15 minutes",
       learningObjective: "L-G1.4: Recognition of English letters with local script sounds.",
-      questions: [
-        { id: 1, type: "multiple-choice", instruction: "Select the letter representing the sound of 'Olong':", options: ["A", "O", "Z"], correct: "O", translations: { ho: "'ओलोंग' रेयाः एनेते शब्द साल मे:" } }
-      ]
+      questions: generateQuestionsForClassSubject("कक्षा 1", "अंग्रेज़ी")
     }
   ],
   "विज्ञान": [
@@ -78,9 +205,7 @@ const AVAILABLE_WORKSHEETS_TEMPLATES = {
       outcome: "E-G2.3",
       duration: "20 minutes",
       learningObjective: "E-G2.3: Classifying living plants and non-living objects.",
-      questions: [
-        { id: 1, type: "multiple-choice", instruction: "पेड़ (Daru) क्या है?", options: ["सजीव (Living)", "निर्जीव (Non-Living)", "दोनों (Both)"], correct: "सजीव (Living)", translations: { ho: "दारू चिनाः गे?" } }
-      ]
+      questions: generateQuestionsForClassSubject("कक्षा 2", "विज्ञान")
     }
   ]
 };
@@ -143,25 +268,14 @@ export default function WorksheetGenerator({
 
   const handleCustomGenerate = (e) => {
     e.preventDefault();
+    const customQuestions = generateQuestionsForClassSubject(newClass, selectedSubject);
     const sheetObj = {
       id: `custom_${Date.now()}`,
-      title: `${newChapterName} (${newDifficulty})`,
-      outcome: "M-G1.2",
+      title: `${newChapterName} (${newClass} - ${newDifficulty})`,
+      outcome: newClass === 'कक्षा 5' ? 'M-G5.1' : (newClass === 'कक्षा 4' ? 'M-G4.1' : (newClass === 'कक्षा 3' ? 'M-G3.1' : 'M-G1.2')),
       duration: "20 minutes",
       learningObjective: `${newClass} के बच्चों के लिए ${newChapterName} आधारित bilingual worksheet.`,
-      questions: [
-        {
-          id: 1,
-          type: "multiple-choice",
-          instruction: "दी गई वस्तुओं को गिनें:",
-          visual: "⭐ ⭐ ⭐ ⭐",
-          options: ["3", "4", "5"],
-          correct: "4",
-          translations: {
-            ho: "नग जोम को लेखा मे।"
-          }
-        }
-      ]
+      questions: customQuestions
     };
     setActiveWorksheet(sheetObj);
     alert("✓ AI Bilingual Worksheet Generated!");

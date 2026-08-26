@@ -157,10 +157,10 @@ export default function Dashboard({
 
           <div className="flex flex-wrap items-center gap-3 pt-1 font-sans">
             <button
-              onClick={() => setActiveTab('live')}
+              onClick={() => setActiveTab('curriculum')}
               className="bg-[#E06D10] hover:bg-[#c25e0c] text-white text-xs font-black px-5 py-2.5 rounded-lg shadow-xs cursor-pointer h-11 flex items-center space-x-1.5 transition-colors uppercase"
             >
-              <span>आज की कक्षा जारी रखें →</span>
+              <span>पाठ्यविवरण देखें (View Curriculum) →</span>
             </button>
             
             <button

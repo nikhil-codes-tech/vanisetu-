@@ -19,94 +19,141 @@ const mockSyllabusData = {
   "कक्षा 1": {
     "गणित": [
       { id: "c1_m1", title: "संख्या पहचान (1-10)", nipun: "M-G1.1", outcomeText: "1 से 10 तक के अंकों की पहचान और गिनती।" },
-      { id: "c1_m2", title: "सरल जोड़ (एक अंक)", nipun: "M-G1.2", outcomeText: "एक अंक के सरल जोड़ का अभ्यास।" }
+      { id: "c1_m2", title: "सरल जोड़ (एक अंक)", nipun: "M-G1.2", outcomeText: "एक अंक के सरल जोड़ का अभ्यास।" },
+      { id: "c1_m3", title: "आकृतियों की पहचान", nipun: "M-G1.3", outcomeText: "बुनियादी आकृतियाँ जैसे गोल, तिकोना और चौकोर पहचानना।" },
+      { id: "c1_m4", title: "बड़ा और छोटा", nipun: "M-G1.4", outcomeText: "वस्तुओं के आकार की तुलना करना और वर्गीकृत करना।" }
     ],
     "हिंदी": [
-      { id: "c1_h1", title: "स्वर और व्यंजन वर्ण", nipun: "L-G1.1", outcomeText: "वर्णमाला के अक्षरों की पहचान और उच्चारण।" }
+      { id: "c1_h1", title: "स्वर और व्यंजन वर्ण", nipun: "L-G1.1", outcomeText: "वर्णमाला के अक्षरों की पहचान और उच्चारण।" },
+      { id: "c1_h2", title: "दो अक्षरों वाले शब्द", nipun: "L-G1.2", outcomeText: "बिना मात्रा वाले दो अक्षरों के सरल शब्दों का पठन।" },
+      { id: "c1_h3", title: "कविता और बालगीत", nipun: "L-G1.3", outcomeText: "सरल कविताओं को लय के साथ दोहराना और समझना।" }
     ],
     "पर्यावरण अध्ययन": [
-      { id: "c1_e1", title: "मेरा शरीर (My Body)", nipun: "E-G1.1", outcomeText: "शरीर के अंगों के नाम और उनके कार्य।" }
+      { id: "c1_e1", title: "मेरा शरीर (My Body)", nipun: "E-G1.1", outcomeText: "शरीर के अंगों के नाम और उनके कार्य।" },
+      { id: "c1_e2", title: "मेरा परिवार (My Family)", nipun: "E-G1.2", outcomeText: "परिवार के सदस्यों के रिश्तों और भूमिकाओं की समझ।" },
+      { id: "c1_e3", title: "हमारा घर (Our Home)", nipun: "E-G1.3", outcomeText: "घर के विभिन्न हिस्सों और उनकी सफाई का महत्व।" }
     ],
     "अंग्रेज़ी": [
-      { id: "c1_a1", title: "Alphabet A to M", nipun: "L-G1.4", outcomeText: "Identify characters A to M." }
+      { id: "c1_a1", title: "Alphabet A to M", nipun: "L-G1.4", outcomeText: "Identify characters A to M and sound association." },
+      { id: "c1_a2", title: "Alphabet N to Z", nipun: "L-G1.5", outcomeText: "Identify characters N to Z and sound association." },
+      { id: "c1_a3", title: "Greetings & Polite Words", nipun: "L-G1.6", outcomeText: "Use basic greeting terms like Hello, Good Morning, Thank You." }
     ],
     "विज्ञान": [
-      { id: "c1_s1", title: "हमारे आसपास की चीजें", nipun: "S-G1.1", outcomeText: "आसपास की सजीव और निर्जीव वस्तुओं की सामान्य पहचान।" }
+      { id: "c1_s1", title: "हमारे आसपास की चीजें", nipun: "S-G1.1", outcomeText: "आसपास की सजीव और निर्जीव वस्तुओं की सामान्य पहचान।" },
+      { id: "c1_s2", title: "हवा और पानी", nipun: "S-G1.2", outcomeText: "जीवन के लिए हवा और पानी की बुनियादी आवश्यकता की समझ।" },
+      { id: "c1_s3", title: "दिन और रात", nipun: "S-G1.3", outcomeText: "सूरज, चाँद, तारों की पहचान और दिन-रात का अंतर।" }
     ]
   },
   "कक्षा 2": {
     "गणित": [
       { id: "c2_m1", title: "संख्या पहचान (11-50)", nipun: "M-G2.1", outcomeText: "11 से 50 तक के अंकों की पहचान और लिखना।" },
-      { id: "c2_m2", title: "दो अंकों का जोड़ व घटाव", nipun: "M-G2.2", outcomeText: "हासिल रहित जोड़ व घटाव की प्रक्रिया।" }
+      { id: "c2_m2", title: "दो अंकों का जोड़ व घटाव", nipun: "M-G2.2", outcomeText: "हासिल रहित जोड़ व घटाव की प्रक्रिया।" },
+      { id: "c2_m3", title: "लंबाई और वजन का मापन", nipun: "M-G2.3", outcomeText: "अमानक इकाइयों (जैसे बित्ता, कदम) से लंबाई मापना।" }
     ],
     "हिंदी": [
-      { id: "c2_h1", title: "मात्राओं का ज्ञान", nipun: "L-G2.1", outcomeText: "मात्रा वाले शब्दों को पढ़ना और लिखना।" }
+      { id: "c2_h1", title: "मात्राओं का ज्ञान", nipun: "L-G2.1", outcomeText: "मात्रा वाले शब्दों को पढ़ना और लिखना।" },
+      { id: "c2_h2", title: "सरल वाक्य पठन", nipun: "L-G2.2", outcomeText: "तीन से चार शब्दों के सरल वाक्यों को प्रवाह के साथ पढ़ना।" },
+      { id: "c2_h3", title: "चित्र कथा वर्णन", nipun: "L-G2.3", outcomeText: "चित्रों को देखकर कहानी बुनना और उसे व्यक्त करना।" }
     ],
     "पर्यावरण अध्ययन": [
-      { id: "c2_e1", title: "पालतू जानवर (Domestic Animals)", nipun: "E-G2.1", outcomeText: "जानवरों के नाम और उनकी उपयोगिता।" }
+      { id: "c2_e1", title: "पालतू जानवर (Domestic Animals)", nipun: "E-G2.1", outcomeText: "जानवरों के नाम और उनकी उपयोगिता।" },
+      { id: "c2_e2", title: "पेड़-पौधे हमारे मित्र", nipun: "E-G2.2", outcomeText: "पौधों के महत्व और उनके विभिन्न उपयोगों की समझ।" },
+      { id: "c2_e3", title: "मौसम और ऋतुएँ", nipun: "E-G2.3", outcomeText: "विभिन्न ऋतुओं (गर्मी, सर्दी, वर्षा) के अनुसार खानपान और पहनावा।" }
     ],
     "अंग्रेज़ी": [
-      { id: "c2_a1", title: "Alphabet N to Z", nipun: "L-G2.4", outcomeText: "Identify characters N to Z." }
+      { id: "c2_a1", title: "Two-Letter Blends", nipun: "L-G2.4", outcomeText: "Read phonics blends like an, at, in, op." },
+      { id: "c2_a2", title: "Action Words", nipun: "L-G2.5", outcomeText: "Understand and execute action verbs like Run, Jump, Sit, Stand." },
+      { id: "c2_a3", title: "Colors and Shapes", nipun: "L-G2.6", outcomeText: "Identify primary colors and shapes in English." }
     ],
     "विज्ञान": [
-      { id: "c2_s1", title: "पौधों के भाग", nipun: "S-G2.1", outcomeText: "पौधों के विभिन्न भागों (जड़, तना, पत्ती) का अध्ययन।" }
+      { id: "c2_s1", title: "पौधों के भाग", nipun: "S-G2.1", outcomeText: "पौधों के विभिन्न भागों (जड़, तना, पत्ती) का अध्ययन।" },
+      { id: "c2_s2", title: "पशुओं के घर", nipun: "S-G2.2", outcomeText: "पशु-पक्षियों के रहने के स्थानों और घोंसलों की पहचान।" },
+      { id: "c2_s3", title: "स्वस्थ शरीर और स्वच्छता", nipun: "S-G2.3", outcomeText: "स्वच्छता की आदतें और स्वास्थ्य के नियम।" }
     ]
   },
   "कक्षा 3": {
     "गणित": [
-      { id: "c3_m1", title: "संख्या पहचान (51-100)", nipun: "M-G3.1", outcomeText: "51 से 100 तक के अंकों की समझ।" },
-      { id: "c3_m2", title: "सरल गुणा", nipun: "M-G3.2", outcomeText: "एक अंकीय संख्याओं का गुणा।" }
+      { id: "c3_m1", title: "संख्या पहचान (51-100)", nipun: "M-G3.1", outcomeText: "51 से 100 तक के अंकों की समझ और उनका मान।" },
+      { id: "c3_m2", title: "सरल गुणा", nipun: "M-G3.2", outcomeText: "एक अंकीय संख्याओं का गुणा करना।" },
+      { id: "c3_m3", title: "पैटर्न और डिज़ाइन", nipun: "M-G3.3", outcomeText: "संख्या और आकृतियों के सरल पैटर्नों को आगे बढ़ाना।" }
     ],
     "हिंदी": [
-      { id: "c3_h1", title: "संयुक्त अक्षर और वाक्य रचना", nipun: "L-G3.1", outcomeText: "छोटे वाक्यों का निर्माण और प्रवाह के साथ पठन।" }
+      { id: "c3_h1", title: "संयुक्त अक्षर और वाक्य रचना", nipun: "L-G3.1", outcomeText: "छोटे वाक्यों का निर्माण और प्रवाह के साथ पठन।" },
+      { id: "c3_h2", title: "कहानी का संक्षेपण", nipun: "L-G3.2", outcomeText: "पढ़ी गई कहानी के मुख्य पात्रों और घटनाओं को बताना।" },
+      { id: "c3_h3", title: "पर्यायवाची शब्द", nipun: "L-G3.3", outcomeText: "समान अर्थ वाले शब्दों की पहचान और प्रयोग।" }
     ],
     "पर्यावरण अध्ययन": [
-      { id: "c3_e1", title: "पेड़ और जल (Water & Trees)", nipun: "E-G3.1", outcomeText: "जल चक्र और हमारे जीवन में पेड़ों का योगदान।" }
+      { id: "c3_e1", title: "पेड़ और जल (Water & Trees)", nipun: "E-G3.1", outcomeText: "जल चक्र और हमारे जीवन में पेड़ों का योगदान।" },
+      { id: "c3_e2", title: "हमारा भोजन", nipun: "E-G3.2", outcomeText: "संतुलित आहार और भोजन के मुख्य स्रोतों की समझ।" },
+      { id: "c3_e3", title: "यातायात के साधन", nipun: "E-G3.3", outcomeText: "विभिन्न वाहनों और सड़क सुरक्षा के नियमों की जानकारी।" }
     ],
     "अंग्रेज़ी": [
-      { id: "c3_a1", title: "Simple Three Letter Words", nipun: "L-G3.4", outcomeText: "Read CVC words like cat, dog, map." }
+      { id: "c3_a1", title: "Simple Three Letter Words", nipun: "L-G3.4", outcomeText: "Read CVC words like cat, dog, map, run." },
+      { id: "c3_a2", title: "Nouns & Pronouns", nipun: "L-G3.5", outcomeText: "Identify naming words (Noun) and replacement words (Pronoun)." },
+      { id: "c3_a3", title: "Short Stories reading", nipun: "L-G3.6", outcomeText: "Read and comprehend simple 2-3 sentence passages." }
     ],
     "विज्ञान": [
-      { id: "c3_s1", title: "प्रकाश और छाया", nipun: "S-G3.1", outcomeText: "प्रकाश के स्रोत और छाया कैसे बनती है।" }
+      { id: "c3_s1", title: "प्रकाश और छाया", nipun: "S-G3.1", outcomeText: "प्रकाश के स्रोत और छाया कैसे बनती है।" },
+      { id: "c3_s2", title: "बल and गति (Force & Motion)", nipun: "S-G3.2", outcomeText: "धक्का देने और खींचने (Push/Pull) की सरल समझ।" },
+      { id: "c3_s3", title: "मिट्टी के प्रकार", nipun: "S-G3.3", outcomeText: "मिट्टी के प्रकार और फसलों में इसकी उपयोगिता।" }
     ]
   },
   "कक्षा 4": {
     "गणित": [
       { id: "c4_m1", title: "स्थानीय मान (Place Value)", nipun: "M-G4.1", outcomeText: "चार अंकों की संख्याओं का स्थानीय मान ज्ञात करना।" },
-      { id: "c4_m2", title: "सरल भाग", nipun: "M-G4.2", outcomeText: "एक अंकीय संख्या से भाग की प्रक्रिया।" }
+      { id: "c4_m2", title: "सरल भाग", nipun: "M-G4.2", outcomeText: "एक अंकीय संख्या से भाग की प्रक्रिया और शेषफल।" },
+      { id: "c4_m3", title: "समय और घड़ी", nipun: "M-G4.3", outcomeText: "घड़ी देखना और घंटे तथा मिनट की समझ विकसित करना।" }
     ],
     "हिंदी": [
-      { id: "c4_h1", title: "कहानी पठन एवं संक्षेपण", nipun: "L-G4.1", outcomeText: "कहानियों को पढ़कर उनका मुख्य विचार समझाना।" }
+      { id: "c4_h1", title: "कहानी पठन एवं संक्षेपण", nipun: "L-G4.1", outcomeText: "कहानियों को पढ़कर उनका मुख्य विचार समझाना।" },
+      { id: "c4_h2", title: "विलोम शब्द और मुहावरे", nipun: "L-G4.2", outcomeText: "विपरीतार्थक शब्द और आम बोलचाल के मुहावरों का प्रयोग।" },
+      { id: "c4_h3", title: "पत्र लेखन", nipun: "L-G4.3", outcomeText: "अनौपचारिक पत्रों का प्रारूप और लेखन अभ्यास।" }
     ],
     "पर्यावरण अध्ययन": [
-      { id: "c4_e1", title: "झारखंड के वन्यजीव", nipun: "E-G4.1", outcomeText: "स्थानीय वन्यजीवों और राष्ट्रीय उद्यानों की समझ।" }
+      { id: "c4_e1", title: "झारखंड के वन्यजीव", nipun: "E-G4.1", outcomeText: "स्थानीय वन्यजीवों और राष्ट्रीय उद्यानों की समझ।" },
+      { id: "c4_e2", title: "हमारे त्योहार और संस्कृति", nipun: "E-G4.2", outcomeText: "झारखंड के लोक त्योहारों (सरहुल, करमा) का महत्व।" },
+      { id: "c4_e3", title: "आश्रय और घर के प्रकार", nipun: "E-G4.3", outcomeText: "विभिन्न भौगोलिक क्षेत्रों के अनुकूल घरों के प्रकार।" }
     ],
     "अंग्रेज़ी": [
-      { id: "c4_a1", title: "Sentence Formation", nipun: "L-G4.4", outcomeText: "Frame simple sentences using verbs." }
+      { id: "c4_a1", title: "Sentence Formation", nipun: "L-G4.4", outcomeText: "Frame simple sentences using correct subject-verb agreement." },
+      { id: "c4_a2", title: "Adjectives (Describing Words)", nipun: "L-G4.5", outcomeText: "Use describing words like Big, Small, Beautiful, Green." },
+      { id: "c4_a3", title: "Prepositions of Place", nipun: "L-G4.6", outcomeText: "Use prepositions like In, On, Under, Behind correctly." }
     ],
     "विज्ञान": [
-      { id: "c4_s1", title: "पदार्थ की अवस्थाएँ", nipun: "S-G4.1", outcomeText: "ठोस, द्रव और गैस की अवधारणा और उदाहरण।" }
+      { id: "c4_s1", title: "पदार्थ की अवस्थाएँ", nipun: "S-G4.1", outcomeText: "ठोस, द्रव और गैस की अवधारणा और उनके उदाहरण।" },
+      { id: "c4_s2", title: "पौधों में भोजन निर्माण", nipun: "S-G4.2", outcomeText: "प्रकाश संश्लेषण (Photosynthesis) की बुनियादी प्रक्रिया।" },
+      { id: "c4_s3", title: "विद्युत के सरल परिपथ", nipun: "S-G4.3", outcomeText: "बैटरी, तार और बल्ब का उपयोग कर परिपथ बनाना।" }
     ]
   },
   "कक्षा 5": {
     "गणित": [
-      { id: "c5_m1", title: "भिन्न की अवधारणा (Fractions)", nipun: "M-G5.1", outcomeText: "भिन्न को समझना और चित्रों के माध्यम से दर्शाना।" },
-      { id: "c5_m2", title: "ज्यामितीय आकृतियाँ", nipun: "M-G5.2", outcomeText: "कोणों और बुनियादी आकृतियों (त्रिभुज, वर्ग) की पहचान।" }
+      { id: "c5_m1", title: "भिन्न की अवधारणा (Fractions)", nipun: "M-G5.1", outcomeText: "भिन्न को समझना और चित्रों के माध्यम से निरूपित करना।" },
+      { id: "c5_m2", title: "ज्यामितीय आकृतियाँ", nipun: "M-G5.2", outcomeText: "कोणों (समकोण, न्यूनकोण) और बुनियादी आकृतियों की पहचान।" },
+      { id: "c5_m3", title: "औसत और प्रतिशत", nipun: "M-G5.3", outcomeText: "दैनिक जीवन के आंकड़ों का औसत और प्रतिशत निकालना।" }
     ],
     "हिंदी": [
-      { id: "c5_h1", title: "व्याकरण: संज्ञा, सर्वनाम, क्रिया", nipun: "L-G5.1", outcomeText: "व्याकरण के बुनियादी तत्वों का सही प्रयोग।" }
+      { id: "c5_h1", title: "व्याकरण: संज्ञा, सर्वनाम, क्रिया", nipun: "L-G5.1", outcomeText: "व्याकरण के बुनियादी तत्वों का वाक्यों में सही प्रयोग।" },
+      { id: "c5_h2", title: "निबंध लेखन", nipun: "L-G5.2", outcomeText: "किसी विषय पर तार्किक और सुसंगठित 8-10 वाक्यों का निबंध।" },
+      { id: "c5_h3", title: "अपठित गद्यांश", nipun: "L-G5.3", outcomeText: "दिए गए गद्यांश को पढ़कर पूछे गए प्रश्नों के उत्तर देना।" }
     ],
     "पर्यावरण अध्ययन": [
-      { id: "c5_e1", title: "जल संरक्षण के पारंपरिक तरीके", nipun: "E-G5.1", outcomeText: "झारखंड में तालाब और जल संचयन की पद्धतियाँ।" }
+      { id: "c5_e1", title: "जल संरक्षण के पारंपरिक तरीके", nipun: "E-G5.1", outcomeText: "झारखंड में तालाब, डोभा और जल संचयन की पद्धतियाँ।" },
+      { id: "c5_e2", title: "प्राकृतिक आपदाएँ और प्रबंधन", nipun: "E-G5.2", outcomeText: "सूखा, बाढ़ और बिजली गिरने (Vajrapāt) से बचाव के उपाय।" },
+      { id: "c5_e3", title: "खनिज संपदा (Jharkhand's Minerals)", nipun: "E-G5.3", outcomeText: "झारखंड में पाए जाने वाले कोयला, लोहा, तांबा खनिजों का परिचय।" }
     ],
     "अंग्रेज़ी": [
-      { id: "c5_a1", title: "Paragraph Writing", nipun: "L-G5.4", outcomeText: "Write a short paragraph about a given topic." }
+      { id: "c5_a1", title: "Paragraph Writing", nipun: "L-G5.4", outcomeText: "Write a short cohesive paragraph about a given topic." },
+      { id: "c5_a2", title: "Tenses (Past, Present, Future)", nipun: "L-G5.5", outcomeText: "Understand and convert verbs into different tenses." },
+      { id: "c5_a3", title: "Conjunctions (And, But, Or)", nipun: "L-G5.6", outcomeText: "Join sentences using and, but, or properly." }
     ],
     "विज्ञान": [
-      { id: "c5_s1", title: "मानव शरीर के तंत्र", nipun: "S-G5.1", outcomeText: "श्वसन तंत्र और पाचन तंत्र के बुनियादी अंगों की जानकारी।" }
+      { id: "c5_s1", title: "मानव शरीर के तंत्र", nipun: "S-G5.1", outcomeText: "श्वसन तंत्र और पाचन तंत्र के बुनियादी अंगों और उनके कार्य की जानकारी।" },
+      { id: "c5_s2", title: "ब्रह्मांड और सौरमंडल", nipun: "S-G5.2", outcomeText: "सूर्य, ग्रहों और चंद्रमा की गतियों की सामान्य समझ।" },
+      { id: "c5_s3", title: "सरल मशीनें (Simple Machines)", nipun: "S-G5.3", outcomeText: "उत्तोलक, घिरनी और ढालू तल (Lever, Pulley) का परिचय।" }
     ]
   }
 };
+
 
 function getSyllabus(grade, subject) {
   const gradeKey = grade.includes('1') ? 'कक्षा 1' :
@@ -352,23 +399,21 @@ function App() {
         { id: 'dashboard', label: '🏠 Dashboard' },
         { id: 'curriculum', label: '📚 Curriculum' },
         { id: 'lessons', label: '📖 Worksheets' },
-        { id: 'flashcards', label: '🎴 Flashcards' },
         { id: 'vocabulary', label: '🔤 Vocabulary' },
-        { id: 'dictionary', label: '📖 Dictionary' }
+        { id: 'dictionary', label: '📖 Dictionary' },
+        { id: 'flashcards', label: '🎴 Flashcards' }
       ]
     },
     {
       title: 'AI TOOLS',
       items: [
         { id: 'voice-bridge', label: '🎙 Voice Bridge' },
-        { id: 'translate', label: '✨ AI Translation' },
-        { id: 'worksheet-generator', label: '📄 Worksheet Generator' }
+        { id: 'translate', label: '✨ AI Translation' }
       ]
     },
     {
       title: 'CLASSROOM',
       items: [
-        { id: 'live', label: '🔴 Live Class' },
         { id: 'progress', label: '📊 Progress' }
       ]
     },
@@ -902,7 +947,7 @@ function App() {
                             <button
                               onClick={() => {
                                 setSelectedNipunOutcome(activeChapterDetail.nipun);
-                                setActiveTab('worksheet-generator');
+                                setActiveTab('lessons');
                               }}
                               className="w-full text-left p-3.5 hover:bg-slate-50 transition-colors flex justify-between items-center cursor-pointer bg-white"
                             >
@@ -1129,8 +1174,10 @@ function App() {
 
               <div className="bg-white border border-slate-200 rounded p-6 shadow-3xs space-y-5">
                 <div>
-                  <h3 className="text-sm font-black text-slate-805">कक्षा 2 — सीखने की प्रगति (Learning Progress)</h3>
-                  <p className="text-[10px] text-slate-455 font-bold">28 students • UPS Murhu Primary School</p>
+                  <h3 className="text-sm font-black text-slate-805">
+                    {teacherData?.assignedClass || 'कक्षा 2'} — सीखने की प्रगति (Learning Progress)
+                  </h3>
+                  <p className="text-[10px] text-slate-455 font-bold">28 students • {teacherData?.schoolName || 'UPS Murhu Primary School'}</p>
                 </div>
 
                 <div className="space-y-4 pt-2 border-t border-slate-105 text-xs font-bold text-slate-705">
@@ -1143,8 +1190,29 @@ function App() {
 
                   <div className="space-y-1 font-mono">
                     <div className="flex justify-between">
-                      <span>गणित (Math)</span>
+                      <span>गणित (Mathematics)</span>
                       <span>███████░░░ 71%</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1 font-mono">
+                    <div className="flex justify-between">
+                      <span>पर्यावरण अध्ययन (EVS)</span>
+                      <span>████████░░ 78%</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1 font-mono">
+                    <div className="flex justify-between">
+                      <span>अंग्रेज़ी (English)</span>
+                      <span>██████░░░░ 64%</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1 font-mono">
+                    <div className="flex justify-between">
+                      <span>विज्ञान (Science)</span>
+                      <span>████████░░ 80%</span>
                     </div>
                   </div>
                 </div>
@@ -1228,14 +1296,7 @@ function App() {
             </div>
           )}
 
-          {activeTab === 'worksheet-generator' && (
-            <WorksheetGenerator 
-              selectedLanguage={targetLanguage} 
-              onSpeak={handleGlobalSpeak}
-              selectedSubject={selectedSubject}
-              setSelectedSubject={setSelectedSubject}
-            />
-          )}
+
 
           {activeTab === 'dictionary' && (
             <Dictionary 
