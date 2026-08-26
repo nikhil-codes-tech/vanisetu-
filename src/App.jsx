@@ -15,6 +15,108 @@ import { translateBetweenLanguages, VOCABULARY_DATABASE, LANGUAGES_METADATA, SUB
 import { MOCK_SCHOOLS } from './data/jharkhandData';
 import canvasConfetti from 'canvas-confetti';
 
+const mockSyllabusData = {
+  "कक्षा 1": {
+    "गणित": [
+      { id: "c1_m1", title: "संख्या पहचान (1-10)", nipun: "M-G1.1", outcomeText: "1 से 10 तक के अंकों की पहचान और गिनती।" },
+      { id: "c1_m2", title: "सरल जोड़ (एक अंक)", nipun: "M-G1.2", outcomeText: "एक अंक के सरल जोड़ का अभ्यास।" }
+    ],
+    "हिंदी": [
+      { id: "c1_h1", title: "स्वर और व्यंजन वर्ण", nipun: "L-G1.1", outcomeText: "वर्णमाला के अक्षरों की पहचान और उच्चारण।" }
+    ],
+    "पर्यावरण अध्ययन": [
+      { id: "c1_e1", title: "मेरा शरीर (My Body)", nipun: "E-G1.1", outcomeText: "शरीर के अंगों के नाम और उनके कार्य।" }
+    ],
+    "अंग्रेज़ी": [
+      { id: "c1_a1", title: "Alphabet A to M", nipun: "L-G1.4", outcomeText: "Identify characters A to M." }
+    ],
+    "विज्ञान": [
+      { id: "c1_s1", title: "हमारे आसपास की चीजें", nipun: "S-G1.1", outcomeText: "आसपास की सजीव और निर्जीव वस्तुओं की सामान्य पहचान।" }
+    ]
+  },
+  "कक्षा 2": {
+    "गणित": [
+      { id: "c2_m1", title: "संख्या पहचान (11-50)", nipun: "M-G2.1", outcomeText: "11 से 50 तक के अंकों की पहचान और लिखना।" },
+      { id: "c2_m2", title: "दो अंकों का जोड़ व घटाव", nipun: "M-G2.2", outcomeText: "हासिल रहित जोड़ व घटाव की प्रक्रिया।" }
+    ],
+    "हिंदी": [
+      { id: "c2_h1", title: "मात्राओं का ज्ञान", nipun: "L-G2.1", outcomeText: "मात्रा वाले शब्दों को पढ़ना और लिखना।" }
+    ],
+    "पर्यावरण अध्ययन": [
+      { id: "c2_e1", title: "पालतू जानवर (Domestic Animals)", nipun: "E-G2.1", outcomeText: "जानवरों के नाम और उनकी उपयोगिता।" }
+    ],
+    "अंग्रेज़ी": [
+      { id: "c2_a1", title: "Alphabet N to Z", nipun: "L-G2.4", outcomeText: "Identify characters N to Z." }
+    ],
+    "विज्ञान": [
+      { id: "c2_s1", title: "पौधों के भाग", nipun: "S-G2.1", outcomeText: "पौधों के विभिन्न भागों (जड़, तना, पत्ती) का अध्ययन।" }
+    ]
+  },
+  "कक्षा 3": {
+    "गणित": [
+      { id: "c3_m1", title: "संख्या पहचान (51-100)", nipun: "M-G3.1", outcomeText: "51 से 100 तक के अंकों की समझ।" },
+      { id: "c3_m2", title: "सरल गुणा", nipun: "M-G3.2", outcomeText: "एक अंकीय संख्याओं का गुणा।" }
+    ],
+    "हिंदी": [
+      { id: "c3_h1", title: "संयुक्त अक्षर और वाक्य रचना", nipun: "L-G3.1", outcomeText: "छोटे वाक्यों का निर्माण और प्रवाह के साथ पठन।" }
+    ],
+    "पर्यावरण अध्ययन": [
+      { id: "c3_e1", title: "पेड़ और जल (Water & Trees)", nipun: "E-G3.1", outcomeText: "जल चक्र और हमारे जीवन में पेड़ों का योगदान।" }
+    ],
+    "अंग्रेज़ी": [
+      { id: "c3_a1", title: "Simple Three Letter Words", nipun: "L-G3.4", outcomeText: "Read CVC words like cat, dog, map." }
+    ],
+    "विज्ञान": [
+      { id: "c3_s1", title: "प्रकाश और छाया", nipun: "S-G3.1", outcomeText: "प्रकाश के स्रोत और छाया कैसे बनती है।" }
+    ]
+  },
+  "कक्षा 4": {
+    "गणित": [
+      { id: "c4_m1", title: "स्थानीय मान (Place Value)", nipun: "M-G4.1", outcomeText: "चार अंकों की संख्याओं का स्थानीय मान ज्ञात करना।" },
+      { id: "c4_m2", title: "सरल भाग", nipun: "M-G4.2", outcomeText: "एक अंकीय संख्या से भाग की प्रक्रिया।" }
+    ],
+    "हिंदी": [
+      { id: "c4_h1", title: "कहानी पठन एवं संक्षेपण", nipun: "L-G4.1", outcomeText: "कहानियों को पढ़कर उनका मुख्य विचार समझाना।" }
+    ],
+    "पर्यावरण अध्ययन": [
+      { id: "c4_e1", title: "झारखंड के वन्यजीव", nipun: "E-G4.1", outcomeText: "स्थानीय वन्यजीवों और राष्ट्रीय उद्यानों की समझ।" }
+    ],
+    "अंग्रेज़ी": [
+      { id: "c4_a1", title: "Sentence Formation", nipun: "L-G4.4", outcomeText: "Frame simple sentences using verbs." }
+    ],
+    "विज्ञान": [
+      { id: "c4_s1", title: "पदार्थ की अवस्थाएँ", nipun: "S-G4.1", outcomeText: "ठोस, द्रव और गैस की अवधारणा और उदाहरण।" }
+    ]
+  },
+  "कक्षा 5": {
+    "गणित": [
+      { id: "c5_m1", title: "भिन्न की अवधारणा (Fractions)", nipun: "M-G5.1", outcomeText: "भिन्न को समझना और चित्रों के माध्यम से दर्शाना।" },
+      { id: "c5_m2", title: "ज्यामितीय आकृतियाँ", nipun: "M-G5.2", outcomeText: "कोणों और बुनियादी आकृतियों (त्रिभुज, वर्ग) की पहचान।" }
+    ],
+    "हिंदी": [
+      { id: "c5_h1", title: "व्याकरण: संज्ञा, सर्वनाम, क्रिया", nipun: "L-G5.1", outcomeText: "व्याकरण के बुनियादी तत्वों का सही प्रयोग।" }
+    ],
+    "पर्यावरण अध्ययन": [
+      { id: "c5_e1", title: "जल संरक्षण के पारंपरिक तरीके", nipun: "E-G5.1", outcomeText: "झारखंड में तालाब और जल संचयन की पद्धतियाँ।" }
+    ],
+    "अंग्रेज़ी": [
+      { id: "c5_a1", title: "Paragraph Writing", nipun: "L-G5.4", outcomeText: "Write a short paragraph about a given topic." }
+    ],
+    "विज्ञान": [
+      { id: "c5_s1", title: "मानव शरीर के तंत्र", nipun: "S-G5.1", outcomeText: "श्वसन तंत्र और पाचन तंत्र के बुनियादी अंगों की जानकारी।" }
+    ]
+  }
+};
+
+function getSyllabus(grade, subject) {
+  const gradeKey = grade.includes('1') ? 'कक्षा 1' :
+                   grade.includes('2') ? 'कक्षा 2' :
+                   grade.includes('3') ? 'कक्षा 3' :
+                   grade.includes('4') ? 'कक्षा 4' : 'कक्षा 5';
+  
+  return mockSyllabusData[gradeKey]?.[subject] || [];
+}
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [teacherData, setTeacherData] = useState(null); // holds teacher profile object
@@ -31,6 +133,8 @@ function App() {
 
   // 1. Core States
   const [selectedSubject, setSelectedSubject] = useState('गणित');
+  const [curriculumClass, setCurriculumClass] = useState('कक्षा 1');
+  const [curriculumSubject, setCurriculumSubject] = useState('गणित');
   
   // Interactive Network status toggle
   const [networkSimulationMode, setNetworkSimulationMode] = useState('cloud'); // cloud vs offline
@@ -446,21 +550,6 @@ function App() {
             <p className="text-slate-455 mt-1">District: {teacherData.district || 'Khunti'} / Block: {teacherData.block || 'Murhu'} · 2026-27</p>
           </div>
 
-          <span className="text-[9.5px] bg-[#E06D10] text-white px-2 py-1 rounded font-black uppercase tracking-wider">
-            NIPUN BHARAT LINKED
-          </span>
-
-          {/* Student View trigger */}
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={() => setIsStudentPreview(true)}
-              className="px-3.5 py-1.5 bg-[#FAF9F5] border border-slate-350 hover:bg-slate-100 text-slate-800 text-xs font-black rounded-lg flex items-center space-x-1.5 cursor-pointer h-11 shadow-3xs"
-            >
-              <Eye className="w-4 h-4 text-[#E06D10]" />
-              <span>👁 छात्र को ऐसे दिखेगा</span>
-            </button>
-          </div>
-
         </header>
 
         {/* Tab Router Workspace */}
@@ -686,118 +775,171 @@ function App() {
             </div>
           )}
 
-          {activeTab === 'curriculum' && (
-            <div className="p-6 max-w-5xl mx-auto space-y-6 text-left animate-fade-in font-sans">
-              <div className="text-[10px] font-bold text-slate-400 uppercase flex space-x-1.5">
-                <span className="hover:underline cursor-pointer" onClick={() => setActiveTab('dashboard')}>Dashboard</span>
-                <span>/</span>
-                <span>Curriculum Outline</span>
-              </div>
+          {activeTab === 'curriculum' && (() => {
+            const currentSyllabusList = getSyllabus(curriculumClass, curriculumSubject);
+            const activeChapterDetail = currentSyllabusList.some(ch => ch.id === selectedChapterObj?.id)
+              ? selectedChapterObj
+              : (currentSyllabusList[0] || null);
 
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                
-                {/* List items (Left span 5) */}
-                <div className="lg:col-span-5 bg-white border border-slate-200 rounded p-5 space-y-4 shadow-3xs">
-                  <h3 className="text-sm font-black text-slate-805">📚 JCERT Outcomes Curriculum</h3>
+            return (
+              <div className="p-6 max-w-5xl mx-auto space-y-6 text-left animate-fade-in font-sans">
+                <div className="text-[10px] font-bold text-slate-400 uppercase flex space-x-1.5 font-sans">
+                  <span className="hover:underline cursor-pointer" onClick={() => setActiveTab('dashboard')}>Dashboard</span>
+                  <span>/</span>
+                  <span>Curriculum Outline</span>
+                </div>
+
+                {/* Class and Subject Selectors Row */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white border border-slate-205 rounded p-5 shadow-3xs text-xs font-bold text-slate-700">
+                  <div>
+                    <label className="block text-[8.5px] font-black text-[#0F4D2A] uppercase mb-1.5">Class Selection (कक्षा चुनें)</label>
+                    <select
+                      value={curriculumClass}
+                      onChange={(e) => {
+                        const newCls = e.target.value;
+                        setCurriculumClass(newCls);
+                        const firstCh = getSyllabus(newCls, curriculumSubject)[0];
+                        setSelectedChapterObj(firstCh || null);
+                      }}
+                      className="w-full bg-slate-50 border border-slate-200 rounded py-2 px-3 text-slate-755 font-bold cursor-pointer h-11 focus:outline-none"
+                    >
+                      <option value="कक्षा 1">कक्षा 1 (Grade 1)</option>
+                      <option value="कक्षा 2">कक्षा 2 (Grade 2)</option>
+                      <option value="कक्षा 3">कक्षा 3 (Grade 3)</option>
+                      <option value="कक्षा 4">कक्षा 4 (Grade 4)</option>
+                      <option value="कक्षा 5">कक्षा 5 (Grade 5)</option>
+                    </select>
+                  </div>
                   
-                  <div className="space-y-3.5">
-                    {SUBJECTS_DATA[selectedSubject]?.map((ch, idx) => (
-                      <div
-                        key={ch.id}
-                        onClick={() => setSelectedChapterObj(ch)}
-                        className={`p-3.5 border rounded cursor-pointer transition-all ${
-                          selectedChapterObj?.id === ch.id 
-                            ? 'border-[#0F4D2A] bg-indigo-50/50' 
-                            : 'border-slate-200 hover:bg-slate-50 bg-[#FAF9F5]'
-                        }`}
-                      >
-                        <span className="text-[8px] bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded font-black uppercase">
-                          NIPUN Competency: {ch.nipun}
-                        </span>
-                        <p className="text-xs font-extrabold text-slate-850 mt-1">{ch.title}</p>
-                      </div>
-                    ))}
+                  <div>
+                    <label className="block text-[8.5px] font-black text-[#0F4D2A] uppercase mb-1.5">Subject Selection (विषय चुनें)</label>
+                    <select
+                      value={curriculumSubject}
+                      onChange={(e) => {
+                        const newSub = e.target.value;
+                        setCurriculumSubject(newSub);
+                        const firstCh = getSyllabus(curriculumClass, newSub)[0];
+                        setSelectedChapterObj(firstCh || null);
+                      }}
+                      className="w-full bg-slate-50 border border-slate-200 rounded py-2 px-3 text-slate-755 font-bold cursor-pointer h-11 focus:outline-none"
+                    >
+                      <option value="गणित">गणित (Mathematics)</option>
+                      <option value="हिंदी">हिंदी (Hindi)</option>
+                      <option value="पर्यावरण अध्ययन">पर्यावरण अध्ययन (EVS)</option>
+                      <option value="अंग्रेज़ी">अंग्रेज़ी (English)</option>
+                      <option value="विज्ञान">विज्ञान (Science)</option>
+                    </select>
                   </div>
                 </div>
 
-                {/* Inspect outcome details (Right span 7) */}
-                <div className="lg:col-span-7 bg-white border border-slate-200 p-6 rounded shadow-3xs">
-                  {selectedChapterObj ? (
-                    <div className="space-y-5 animate-fade-in text-xs font-bold text-slate-700">
-                      
-                      <div className="border-b border-slate-100 pb-3">
-                        <span className="text-[8.5px] bg-[#E06D10] text-white px-2 py-0.5 rounded font-black uppercase inline-block">
-                          Competency Code: {selectedChapterObj.nipun}
-                        </span>
-                        <h4 className="text-sm font-black text-slate-850 mt-2">{selectedChapterObj.title}</h4>
-                      </div>
-
-                      <div className="bg-[#FAF9F5] border border-slate-200 p-3 rounded leading-relaxed">
-                        <span className="text-[8px] text-slate-400 uppercase font-black block">Outcome Objective</span>
-                        <p className="text-slate-800 mt-1 font-extrabold">"{selectedChapterObj.outcomeText}"</p>
-                      </div>
-
-                      {/* Aligned child workspace triggers */}
-                      <div className="space-y-3">
-                        <p className="text-[9px] text-[#0F4D2A] font-black uppercase">Available materials:</p>
-                        
-                        <div className="divide-y divide-slate-100 border border-slate-200 rounded overflow-hidden">
-                          <button
-                            onClick={() => setActiveTab('lessons')}
-                            className="w-full text-left p-3.5 hover:bg-slate-50 transition-colors flex justify-between items-center cursor-pointer bg-white"
-                          >
-                            <span>📖 Lesson (Worksheets)</span>
-                            <span className="text-[10px] text-slate-400 font-semibold">Start exercise →</span>
-                          </button>
-
-                          <button
-                            onClick={() => setActiveTab('voice-bridge')}
-                            className="w-full text-left p-3.5 hover:bg-slate-50 transition-colors flex justify-between items-center cursor-pointer bg-white"
-                          >
-                            <span>🎙 Voice Script (Voice Bridge)</span>
-                            <span className="text-[10px] text-slate-400 font-semibold">Practice translation →</span>
-                          </button>
-
-                          <button
-                            onClick={() => {
-                              setSelectedNipunOutcome(selectedChapterObj.nipun);
-                              setActiveTab('worksheet-generator');
-                            }}
-                            className="w-full text-left p-3.5 hover:bg-slate-50 transition-colors flex justify-between items-center cursor-pointer bg-white"
-                          >
-                            <span>📄 Worksheet (AI Generator)</span>
-                            <span className="text-[10px] text-slate-400 font-semibold">Bilingual Preview →</span>
-                          </button>
-
-                          <button
-                            onClick={() => setActiveTab('flashcards')}
-                            className="w-full text-left p-3.5 hover:bg-slate-50 transition-colors flex justify-between items-center cursor-pointer bg-white"
-                          >
-                            <span>🎴 Flashcards</span>
-                            <span className="text-[10px] text-slate-400 font-semibold">Visual learning →</span>
-                          </button>
-
-                          <button
-                            onClick={() => setActiveTab('vocabulary')}
-                            className="w-full text-left p-3.5 hover:bg-slate-50 transition-colors flex justify-between items-center cursor-pointer bg-white"
-                          >
-                            <span>🗣 Vocabulary</span>
-                            <span className="text-[10px] text-slate-400 font-semibold">Study word list →</span>
-                          </button>
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                  
+                  {/* List items (Left span 5) */}
+                  <div className="lg:col-span-5 bg-white border border-slate-200 rounded p-5 space-y-4 shadow-3xs">
+                    <h3 className="text-sm font-black text-slate-805">📚 JCERT Outcomes ({curriculumClass} · {curriculumSubject})</h3>
+                    
+                    <div className="space-y-3.5">
+                      {currentSyllabusList.map((ch, idx) => (
+                        <div
+                          key={ch.id}
+                          onClick={() => setSelectedChapterObj(ch)}
+                          className={`p-3.5 border rounded cursor-pointer transition-all ${
+                            activeChapterDetail?.id === ch.id 
+                              ? 'border-[#0F4D2A] bg-indigo-50/50' 
+                              : 'border-slate-200 hover:bg-slate-50 bg-[#FAF9F5]'
+                          }`}
+                        >
+                          <span className="text-[8px] bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded font-black uppercase">
+                            NIPUN Competency: {ch.nipun}
+                          </span>
+                          <p className="text-xs font-extrabold text-slate-850 mt-1">{ch.title}</p>
                         </div>
+                      ))}
+                      {currentSyllabusList.length === 0 && (
+                        <p className="text-xs text-slate-400 font-semibold py-8 text-center">इस कक्षा और विषय के लिए कोई पाठ्यक्रम उपलब्ध नहीं है।</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Inspect outcome details (Right span 7) */}
+                  <div className="lg:col-span-7 bg-white border border-slate-200 p-6 rounded shadow-3xs">
+                    {activeChapterDetail ? (
+                      <div className="space-y-5 animate-fade-in text-xs font-bold text-slate-700">
+                        
+                        <div className="border-b border-slate-100 pb-3">
+                          <span className="text-[8.5px] bg-[#E06D10] text-white px-2 py-0.5 rounded font-black uppercase inline-block">
+                            Competency Code: {activeChapterDetail.nipun}
+                          </span>
+                          <h4 className="text-sm font-black text-slate-850 mt-2">{activeChapterDetail.title}</h4>
+                        </div>
+
+                        <div className="bg-[#FAF9F5] border border-slate-200 p-3 rounded leading-relaxed">
+                          <span className="text-[8px] text-slate-400 uppercase font-black block">Outcome Objective</span>
+                          <p className="text-slate-800 mt-1 font-extrabold">"{activeChapterDetail.outcomeText}"</p>
+                        </div>
+
+                        {/* Aligned child workspace triggers */}
+                        <div className="space-y-3">
+                          <p className="text-[9px] text-[#0F4D2A] font-black uppercase">Available materials:</p>
+                          
+                          <div className="divide-y divide-slate-100 border border-slate-200 rounded overflow-hidden">
+                            <button
+                              onClick={() => setActiveTab('lessons')}
+                              className="w-full text-left p-3.5 hover:bg-slate-50 transition-colors flex justify-between items-center cursor-pointer bg-white"
+                            >
+                              <span>📖 Lesson (Worksheets)</span>
+                              <span className="text-[10px] text-slate-400 font-semibold">Start exercise →</span>
+                            </button>
+
+                            <button
+                              onClick={() => setActiveTab('voice-bridge')}
+                              className="w-full text-left p-3.5 hover:bg-slate-50 transition-colors flex justify-between items-center cursor-pointer bg-white"
+                            >
+                              <span>🎙 Voice Script (Voice Bridge)</span>
+                              <span className="text-[10px] text-slate-400 font-semibold">Practice translation →</span>
+                            </button>
+
+                            <button
+                              onClick={() => {
+                                setSelectedNipunOutcome(activeChapterDetail.nipun);
+                                setActiveTab('worksheet-generator');
+                              }}
+                              className="w-full text-left p-3.5 hover:bg-slate-50 transition-colors flex justify-between items-center cursor-pointer bg-white"
+                            >
+                              <span>📄 Worksheet (AI Generator)</span>
+                              <span className="text-[10px] text-slate-400 font-semibold">Bilingual Preview →</span>
+                            </button>
+
+                            <button
+                              onClick={() => setActiveTab('flashcards')}
+                              className="w-full text-left p-3.5 hover:bg-slate-50 transition-colors flex justify-between items-center cursor-pointer bg-white"
+                            >
+                              <span>🎴 Flashcards</span>
+                              <span className="text-[10px] text-slate-400 font-semibold">Visual learning →</span>
+                            </button>
+
+                            <button
+                              onClick={() => setActiveTab('vocabulary')}
+                              className="w-full text-left p-3.5 hover:bg-slate-50 transition-colors flex justify-between items-center cursor-pointer bg-white"
+                            >
+                              <span>🗣 Vocabulary</span>
+                              <span className="text-[10px] text-slate-400 font-semibold">Study word list →</span>
+                            </button>
+                          </div>
+                        </div>
+
                       </div>
+                    ) : (
+                      <div className="text-center text-slate-400 font-semibold py-24 text-xs">
+                        ← बाईं ओर से कोई भी NIPUN आउटकम चैप्टर चुनें।
+                      </div>
+                    )}
+                  </div>
 
-                    </div>
-                  ) : (
-                    <div className="text-center text-slate-400 font-semibold py-24 text-xs">
-                      ← बाईं ओर से कोई भी NIPUN आउटकम चैप्टर चुनें।
-                    </div>
-                  )}
                 </div>
-
               </div>
-            </div>
-          )}
+            );
+          })()}
 
           {/* Flashcards */}
           {activeTab === 'flashcards' && (
