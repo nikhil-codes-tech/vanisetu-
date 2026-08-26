@@ -230,6 +230,8 @@ function App() {
   const [flashcardLearnedMap, setFlashcardLearnedMap] = useState({});
   const [isFlashcardRecording, setIsFlashcardRecording] = useState(false);
   const [flashcardScore, setFlashcardScore] = useState(null);
+  const [selectedFlashcardOption, setSelectedFlashcardOption] = useState(null);
+  const [flashcardQuizFeedback, setFlashcardQuizFeedback] = useState(null);
 
   // 7. Global Search
   const [searchQuery, setSearchQuery] = useState('');
@@ -1080,16 +1082,63 @@ function App() {
                       </p>
                     )}
 
+                    {/* Inherited Multiple Choice Question (MCQ) for Flashcard testing */}
+                    <div className="pt-4 border-t border-slate-200 text-left space-y-3 font-sans">
+                      <p className="text-[10px] text-slate-400 uppercase font-black tracking-wider">💡 Flashcard Quiz (प्रश्नोत्तरी)</p>
+                      <p className="text-xs font-black text-slate-805 leading-normal">
+                        इस चित्र में दिए गए जीव <strong>"{ANIMALS_FLASHCARDS[activeCardIndex].icon} {ANIMALS_FLASHCARDS[activeCardIndex].animal.split(' ')[0]}"</strong> को {targetLanguage} में क्या कहते हैं?
+                      </p>
+                      
+                      <div className="grid grid-cols-1 gap-2 pt-1">
+                        {ANIMALS_FLASHCARDS.map((item, idx) => {
+                          const translationText = item.translation[activeLangMeta.translationCode || 'ho'] || item.animal;
+                          const isSelected = selectedFlashcardOption === idx;
+                          let btnStyle = "border-slate-205 hover:bg-slate-50 text-slate-700 bg-white";
+                          if (isSelected) {
+                            if (flashcardQuizFeedback === 'correct') {
+                              btnStyle = "bg-emerald-50 border-emerald-350 text-emerald-800";
+                            } else {
+                              btnStyle = "bg-rose-50 border-rose-300 text-rose-800";
+                            }
+                          }
+                          
+                          return (
+                            <button
+                              key={idx}
+                              onClick={() => {
+                                setSelectedFlashcardOption(idx);
+                                const correctTr = ANIMALS_FLASHCARDS[activeCardIndex].translation[activeLangMeta.translationCode || 'ho'];
+                                if (translationText === correctTr) {
+                                  setFlashcardQuizFeedback('correct');
+                                  canvasConfetti({ particleCount: 30, spread: 20, origin: { y: 0.8 } });
+                                } else {
+                                  setFlashcardQuizFeedback('incorrect');
+                                }
+                              }}
+                              className={`border p-2.5 rounded-lg text-left text-xs font-black transition-all cursor-pointer flex justify-between items-center ${btnStyle}`}
+                            >
+                              <span>{translationText}</span>
+                              {isSelected && (
+                                <span className="text-[10px] font-bold">
+                                  {flashcardQuizFeedback === 'correct' ? '✓ Correct' : '❌ Try Again'}
+                                </span>
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
                     <div className="flex justify-center space-x-2 pt-2">
                       <button
-                        onClick={() => { setActiveCardIndex(p => Math.max(0, p - 1)); setFlashcardScore(null); }}
+                        onClick={() => { setActiveCardIndex(p => Math.max(0, p - 1)); setFlashcardScore(null); setSelectedFlashcardOption(null); setFlashcardQuizFeedback(null); }}
                         disabled={activeCardIndex === 0}
                         className="px-3.5 py-1.5 border border-slate-350 hover:bg-slate-100 rounded text-xs font-bold disabled:opacity-40 cursor-pointer bg-white"
                       >
                         ← Prev
                       </button>
                       <button
-                        onClick={() => { setActiveCardIndex(p => Math.min(ANIMALS_FLASHCARDS.length - 1, p + 1)); setFlashcardScore(null); }}
+                        onClick={() => { setActiveCardIndex(p => Math.min(ANIMALS_FLASHCARDS.length - 1, p + 1)); setFlashcardScore(null); setSelectedFlashcardOption(null); setFlashcardQuizFeedback(null); }}
                         disabled={activeCardIndex === ANIMALS_FLASHCARDS.length - 1}
                         className="px-3.5 py-1.5 border border-slate-350 hover:bg-slate-100 rounded text-xs font-bold disabled:opacity-40 cursor-pointer bg-white"
                       >
