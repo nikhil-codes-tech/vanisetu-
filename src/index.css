@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 12px rgba(139, 92, 246, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes wave-pulse {
+  0%, 100% {
+    height: 8px;
+  }
+  50% {
+    height: 48px;
+  }
+}
+
+.wave-bar {
+  display: inline-block;
+  width: 4px;
+  background-color: #8b5cf6;
+  border-radius: 2px;
+  margin: 0 2px;
+}
+
+.wave-bar:nth-child(2) { animation: wave-pulse 1.2s ease-in-out infinite 0.1s; }
+.wave-bar:nth-child(3) { animation: wave-pulse 1.2s ease-in-out infinite 0.2s; }
+.wave-bar:nth-child(4) { animation: wave-pulse 1.2s ease-in-out infinite 0.3s; }
+.wave-bar:nth-child(5) { animation: wave-pulse 1.2s ease-in-out infinite 0.4s; }
+.wave-bar:nth-child(6) { animation: wave-pulse 1.2s ease-in-out infinite 0.5s; }
+.wave-bar:nth-child(7) { animation: wave-pulse 1.2s ease-in-out infinite 0.6s; }
+.wave-bar:nth-child(8) { animation: wave-pulse 1.2s ease-in-out infinite 0.7s; }
+.wave-bar:nth-child(9) { animation: wave-pulse 1.2s ease-in-out infinite 0.8s; }
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #c7d2fe;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #818cf8;
+}
+
+/* Perspective for 3D card flips */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
