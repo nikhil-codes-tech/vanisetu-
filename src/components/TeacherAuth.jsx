@@ -240,7 +240,7 @@ export default function TeacherAuth({ onLoginSuccess }) {
           <div className="relative z-10">
 
 
-            <div className="text-amber-400 text-sm font-black uppercase tracking-wider mb-4">
+            <div className="text-amber-400 text-sm font-black tracking-wider mb-4">
               VaniSetu OS
             </div>
             <h2 className="text-2xl font-bold leading-tight mb-2">मातृभाषा आधारित शिक्षण प्रणाली</h2>
