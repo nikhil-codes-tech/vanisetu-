@@ -246,28 +246,12 @@ export default function TeacherAuth({ onLoginSuccess }) {
               Empowering Hindi-medium primary school teachers to conduct interactive FLN lessons in Santhali, Ho, and Mundari without prior language training.
             </p>
 
-            <div className="space-y-3">
-              <div className="flex items-center gap-3 bg-white/5 border border-white/10 p-2.5 rounded-xl backdrop-blur-sm">
-                <span className="text-2xl">🎙️</span>
-                <div>
-                  <h4 className="text-xs font-semibold text-white">Sub-3s Real-Time Voice Bridge</h4>
-                  <p className="text-[11px] text-emerald-250">Hindi speech → Synthesized tribal audio</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 bg-white/5 border border-white/10 p-2.5 rounded-xl backdrop-blur-sm">
-                <span className="text-2xl">📑</span>
-                <div>
-                  <h4 className="text-xs font-semibold text-white">NIPUN Bharat Bilingual Worksheets</h4>
-                  <p className="text-[11px] text-emerald-255">Auto-generated printable FLN sheets</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 bg-white/5 border border-white/10 p-2.5 rounded-xl backdrop-blur-sm">
-                <span className="text-2xl">📴</span>
-                <div>
-                  <h4 className="text-xs font-semibold text-white">100% Offline Classroom Operation</h4>
-                  <p className="text-[11px] text-emerald-255">Pre-cached on low-cost Android tablets</p>
-                </div>
-              </div>
+            <div className="mt-4 rounded-xl overflow-hidden border border-white/10 shadow-lg bg-[#0F4D2A]/10">
+              <img 
+                src="/login_benefits.png" 
+                alt="VaniSetu Login Benefits" 
+                className="w-full object-contain"
+              />
             </div>
           </div>
 
