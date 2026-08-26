@@ -219,14 +219,14 @@ export default function TeacherAuth({ onLoginSuccess }) {
         <div className="flex items-center gap-3">
           <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center p-0.5 shadow-md overflow-hidden flex-shrink-0">
             <img 
-              src="/palash_flower.jpg" 
-              alt="Palash Flower" 
-              className="w-full h-full object-cover"
+              src="/vanisetu_logo.jpg" 
+              alt="VaniSetu Logo" 
+              className="w-full h-full object-contain"
             />
           </div>
           <div className="text-left font-sans">
-            {/* Removed Red NEW Badge next to PALASH Vani Setu title (Point 1) */}
-            <h1 className="text-xl font-black tracking-wide text-emerald-100 leading-none">PALASH Vani Setu</h1>
+            {/* Removed Red NEW Badge next to PALASH VaniSetu title (Point 1) */}
+            <h1 className="text-xl font-black tracking-wide text-emerald-100 leading-none">PALASH VaniSetu</h1>
             <p className="text-xs text-emerald-350 font-bold mt-1.5">झारखण्ड शिक्षा परियोजना परिषद • JCERT / NIPUN Bharat MTB-MLE Suite</p>
           </div>
         </div>
@@ -474,7 +474,7 @@ export default function TeacherAuth({ onLoginSuccess }) {
       {/* Visual Classroom Grid */}
       <div className="w-full max-w-5xl mt-8 bg-white/10 backdrop-blur-xs border border-white/20 rounded-2xl p-6 space-y-4 text-left z-10 relative">
         <h4 className="text-xs font-black text-white uppercase tracking-wide">
-          📸 झारखण्ड की कक्षाओं में Palash Vani Setu (Classroom Implementation)
+          📸 झारखण्ड की कक्षाओं में Palash VaniSetu (Classroom Implementation)
         </h4>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="rounded-xl overflow-hidden shadow-md h-36 border border-white/10">

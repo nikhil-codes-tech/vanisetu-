@@ -1,4 +1,4 @@
-// Configured Institutional Database for PALASH Vani Setu Offline Classroom Engine
+// Configured Institutional Database for PALASH VaniSetu Offline Classroom Engine
 // Co-branded with Samagra Shiksha Jharkhand & JCERT
 
 export const JHARKHAND_DISTRICTS = {

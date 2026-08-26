@@ -159,7 +159,7 @@ export default function Login({ onLogin }) {
               <span className="text-[9.5px] bg-[#E06D10] text-white px-2 py-0.5 rounded font-black uppercase tracking-wider">
                 Govt. Approved Portal
               </span>
-              <h2 className="text-xl font-black text-white leading-none mt-2">PALASH Vani Setu</h2>
+              <h2 className="text-xl font-black text-white leading-none mt-2">PALASH VaniSetu</h2>
               <p className="text-[10px] text-[#A6C4B9] font-black uppercase tracking-wider mt-1.5 leading-none">
                 Mother-Tongue Classroom OS
               </p>
@@ -356,7 +356,7 @@ export default function Login({ onLogin }) {
       {/* Institutional Footer */}
       <footer className="max-w-[1050px] w-full pt-8 text-center space-y-4 text-[9.5px] text-slate-450 font-semibold border-t border-slate-200">
         <div className="space-y-1">
-          <p className="text-[#0F4D2A] font-black text-xs uppercase tracking-wide">PALASH Vani Setu</p>
+          <p className="text-[#0F4D2A] font-black text-xs uppercase tracking-wide">PALASH VaniSetu</p>
           <p className="text-[8px] text-slate-400 font-bold uppercase tracking-wider">
             Mother-Tongue Classroom for Tribal-Area Schools
           </p>
@@ -380,7 +380,7 @@ export default function Login({ onLogin }) {
         </div>
 
         <div className="text-[8px] text-slate-350">
-          © 2026 PALASH Vani Setu
+          © 2026 PALASH VaniSetu
         </div>
       </footer>
 

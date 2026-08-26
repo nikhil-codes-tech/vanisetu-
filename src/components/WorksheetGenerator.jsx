@@ -221,6 +221,8 @@ export default function WorksheetGenerator({
   const [quizFinished, setQuizFinished] = useState(false);
   const [downloadComplete, setDownloadComplete] = useState(false);
 
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
   // Low-ink B&W mode
   const [isLowInkMode, setIsLowInkMode] = useState(false);
 
@@ -278,7 +280,7 @@ export default function WorksheetGenerator({
       questions: customQuestions
     };
     setActiveWorksheet(sheetObj);
-    alert("✓ AI Bilingual Worksheet Generated!");
+    setShowSuccessModal(true);
   };
 
   const templatesList = AVAILABLE_WORKSHEETS_TEMPLATES[selectedSubject] || [];
@@ -543,6 +545,28 @@ export default function WorksheetGenerator({
             ) : (
               <div className="text-center text-slate-400 font-semibold py-32 text-xs">
                 ← बाईं ओर से कोई वर्कशीट चुनें या नई वर्कशीट जनरेट करें।
+              </div>
+            )}
+            
+            {showSuccessModal && (
+              <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 animate-fade-in">
+                <div className="bg-white rounded-2xl border border-slate-200 p-6 max-w-sm w-full mx-4 shadow-2xl text-center space-y-4 animate-scale-in font-sans">
+                  <div className="w-12 h-12 bg-emerald-50 rounded-full flex items-center justify-center mx-auto text-emerald-600 text-xl font-bold border border-emerald-100">
+                    ✓
+                  </div>
+                  <div className="space-y-1.5">
+                    <h3 className="text-sm font-black text-slate-900">Worksheet Generated!</h3>
+                    <p className="text-xs text-slate-500 font-bold leading-normal">
+                      Bilingual Worksheet has been generated successfully and is ready to print or save offline.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setShowSuccessModal(false)}
+                    className="w-full bg-[#0F4D2A] hover:bg-[#09351C] text-white text-xs font-black py-2.5 rounded-lg transition-colors cursor-pointer shadow-3xs"
+                  >
+                    OK
+                  </button>
+                </div>
               </div>
             )}
           </div>

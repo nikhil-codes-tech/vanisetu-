@@ -235,6 +235,9 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
+  // Logout confirmation modal state
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
   const profileDropdownRef = useRef(null);
   const switcherDropdownRef = useRef(null);
 
@@ -507,13 +510,13 @@ function App() {
             <div className="p-4 border-b border-white/10 flex items-center justify-between bg-[#082a17]">
               <div className="flex items-center space-x-2.5 overflow-hidden">
                 <img 
-                  src="/palash_flower.jpg" 
-                  alt="Palash Logo" 
-                  className="w-7 h-7 rounded-full object-cover border border-white/20 flex-shrink-0"
+                  src="/vanisetu_logo.jpg" 
+                  alt="VaniSetu Logo" 
+                  className="w-8 h-8 rounded-lg object-contain bg-white p-0.5 border border-white/20 flex-shrink-0"
                 />
                 {!isSidebarCollapsed && (
                   <div className="text-left whitespace-nowrap">
-                    <h2 className="text-xs font-black tracking-wide leading-none">PALASH Vani Setu</h2>
+                    <h2 className="text-xs font-black tracking-wide leading-none">PALASH VaniSetu</h2>
                     <p className="text-[7.5px] text-[#A6C4B9] uppercase tracking-widest font-extrabold mt-1">JCERT / SAMAGRA SHIKSHA</p>
                   </div>
                 )}
@@ -608,9 +611,7 @@ function App() {
               targetLanguage={targetLanguage}
               setTargetLanguage={setTargetLanguage}
               onLogout={() => {
-                setIsLoggedIn(false);
-                setTeacherData(null);
-                setActiveTab('dashboard');
+                setShowLogoutConfirm(true);
               }}
               classLevel={classLevel}
               selectedSubject={selectedSubject}
@@ -1311,9 +1312,7 @@ function App() {
               classLevel={classLevel} 
               setClassLevel={setClassLevel} 
               onLogout={() => {
-                setIsLoggedIn(false);
-                setTeacherData(null);
-                setActiveTab('dashboard');
+                setShowLogoutConfirm(true);
               }}
             />
           )}
@@ -1321,6 +1320,39 @@ function App() {
         </main>
 
       </div>
+
+      {showLogoutConfirm && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 animate-fade-in">
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 max-w-sm w-full mx-4 shadow-2xl text-center space-y-4 animate-scale-in font-sans">
+            <div className="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center mx-auto text-[#E06D10] text-xl font-bold border border-amber-100">
+              ⚠️
+            </div>
+            <div className="space-y-1.5 text-left sm:text-center">
+              <h3 className="text-sm font-black text-slate-900">Are you sure you want to log out?</h3>
+              <p className="text-xs text-slate-500 font-bold leading-normal">
+                You will need to re-verify your Shikshak ID to log in again.
+              </p>
+            </div>
+            <div className="flex space-x-3 pt-2">
+              <button
+                onClick={() => setShowLogoutConfirm(false)}
+                className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-black py-2.5 rounded-lg transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setShowLogoutConfirm(false);
+                  handleLogout();
+                }}
+                className="flex-1 bg-[#E06D10] hover:bg-[#c25e0c] text-white text-xs font-black py-2.5 rounded-lg transition-colors cursor-pointer shadow-3xs"
+              >
+                Yes, Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

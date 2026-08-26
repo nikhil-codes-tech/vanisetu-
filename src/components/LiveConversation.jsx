@@ -284,7 +284,7 @@ export default function LiveConversation({
             </button>
 
             <span className="text-[8px] text-slate-405 font-bold uppercase">
-              PALASH Vani Setu • SAMAGRA SHIKSHA JHARKHAND
+              PALASH VaniSetu • SAMAGRA SHIKSHA JHARKHAND
             </span>
           </div>
 
