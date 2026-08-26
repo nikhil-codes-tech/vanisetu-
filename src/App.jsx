@@ -257,7 +257,7 @@ function App() {
       title: 'AI TOOLS',
       items: [
         { id: 'voice-bridge', label: '🎙 Voice Bridge' },
-        { id: 'translate', label: '✨ Translator' },
+        { id: 'translate', label: '✨ AI Translation' },
         { id: 'worksheet-generator', label: '📄 Worksheet Generator' }
       ]
     },
@@ -920,12 +920,12 @@ function App() {
               <div className="text-[10px] font-bold text-slate-400 uppercase flex space-x-1.5">
                 <span className="hover:underline cursor-pointer" onClick={() => setActiveTab('dashboard')}>Dashboard</span>
                 <span>/</span>
-                <span>AI Translator</span>
+                <span>AI Translation</span>
               </div>
 
               <div className="bg-white border border-slate-205 rounded p-6 shadow-3xs space-y-5">
                 <div>
-                  <h3 className="text-sm font-black text-slate-805">✨ AI Language Assistant</h3>
+                  <h3 className="text-sm font-black text-slate-805">✨ AI Translation</h3>
                   <p className="text-[10px] text-slate-455 font-bold">Classroom-aware translation between Hindi and supported regional languages.</p>
                 </div>
 

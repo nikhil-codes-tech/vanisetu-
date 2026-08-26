@@ -190,6 +190,8 @@ export default function WorksheetGenerator({
                     <option value="कक्षा 1">कक्षा 1</option>
                     <option value="कक्षा 2">कक्षा 2</option>
                     <option value="कक्षा 3">कक्षा 3</option>
+                    <option value="कक्षा 4">कक्षा 4</option>
+                    <option value="कक्षा 5">कक्षा 5</option>
                   </select>
                 </div>
 

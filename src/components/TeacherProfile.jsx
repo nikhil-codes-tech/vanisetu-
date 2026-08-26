@@ -83,6 +83,8 @@ export default function TeacherProfile({
                 <option value="कक्षा 1 (Grade 1)">कक्षा 1 (Grade 1)</option>
                 <option value="कक्षा 2 (Grade 2)">कक्षा 2 (Grade 2)</option>
                 <option value="कक्षा 3 (Grade 3)">कक्षा 3 (Grade 3)</option>
+                <option value="कक्षा 4 (Grade 4)">कक्षा 4 (Grade 4)</option>
+                <option value="कक्षा 5 (Grade 5)">कक्षा 5 (Grade 5)</option>
               </select>
             </div>
 

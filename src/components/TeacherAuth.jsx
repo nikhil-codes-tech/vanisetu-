@@ -429,6 +429,8 @@ export default function TeacherAuth({ onLoginSuccess }) {
                     <option>कक्षा 1 (Grade 1)</option>
                     <option>कक्षा 2 (Grade 2)</option>
                     <option>कक्षा 3 (Grade 3)</option>
+                    <option>कक्षा 4 (Grade 4)</option>
+                    <option>कक्षा 5 (Grade 5)</option>
                   </select>
                 </div>
                 <div>
