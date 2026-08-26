@@ -240,8 +240,8 @@ export default function TeacherAuth({ onLoginSuccess }) {
           <div className="relative z-10">
 
 
-            <div className="inline-block bg-amber-500/20 text-amber-300 text-xs px-2.5 py-1 rounded-md font-medium mb-4 border border-amber-500/30">
-              PALASH Mother Tongue Bridge
+            <div className="text-amber-400 text-sm font-black uppercase tracking-wider mb-4">
+              VaniSetu OS
             </div>
             <h2 className="text-2xl font-bold leading-tight mb-2">मातृभाषा आधारित शिक्षण प्रणाली</h2>
             <p className="text-sm text-emerald-200/90 leading-relaxed mb-6">
