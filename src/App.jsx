@@ -616,6 +616,7 @@ function App() {
                 setShowLogoutConfirm(true);
               }}
               classLevel={classLevel}
+              setClassLevel={setClassLevel}
               selectedSubject={selectedSubject}
               setSelectedSubject={setSelectedSubject}
               isOnline={isOnline}

@@ -16,6 +16,7 @@ export default function Dashboard({
   selectedSubject,
   setSelectedSubject,
   classLevel,
+  setClassLevel,
   setSelectedNipunOutcome
 }) {
   const activeLangMeta = LANGUAGES_METADATA[targetLanguage] || LANGUAGES_METADATA["हो"];
@@ -109,6 +110,27 @@ export default function Dashboard({
                   <option value="हो">हो (Ho)</option>
                   <option value="संथाली">संथाली (Santhali)</option>
                   <option value="मुंडारी">मुंडारी (Mundari)</option>
+                </select>
+              </div>
+
+              {/* Class change option */}
+              <div className="space-y-2">
+                <label className="block text-[9.5px] text-[#0F4D2A] font-black uppercase tracking-wider">
+                  कक्षा बदलें (Change Assigned Class)
+                </label>
+                <select
+                  value={classLevel}
+                  onChange={(e) => {
+                    setClassLevel(e.target.value);
+                    setIsProfileDropdownOpen(false);
+                  }}
+                  className="w-full bg-slate-50 border border-slate-205 rounded p-2 text-[11px] font-extrabold text-slate-755 cursor-pointer h-10 focus:outline-none"
+                >
+                  <option value="कक्षा 1 (Grade 1)">कक्षा 1 (Grade 1)</option>
+                  <option value="कक्षा 2 (Grade 2)">कक्षा 2 (Grade 2)</option>
+                  <option value="कक्षा 3 (Grade 3)">कक्षा 3 (Grade 3)</option>
+                  <option value="कक्षा 4 (Grade 4)">कक्षा 4 (Grade 4)</option>
+                  <option value="कक्षा 5 (Grade 5)">कक्षा 5 (Grade 5)</option>
                 </select>
               </div>
 
