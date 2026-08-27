@@ -89,6 +89,7 @@ export default function Dashboard({
                   <p className="text-slate-455">UDISE School: {teacherData?.teacher?.school || 'UPS Murhu Primary School'}</p>
                   <p className="text-slate-455">District: {teacherData?.teacher?.district || 'Khunti'}</p>
                   <p className="text-slate-455">Block: {teacherData?.teacher?.block || 'Murhu'}</p>
+                  <p className="text-slate-455">Assigned Class: {classLevel || 'कक्षा 2'}</p>
                 </div>
               </div>
 
