@@ -130,20 +130,20 @@ export const ANIMALS_FLASHCARDS = [
   { 
     animal: "गाय (Cow)", 
     icon: "🐄", 
-    translation: { ho: "गाई (Gai)", santhali: "गाइ" },
-    nativeScript: { ho: "𑢯𑣁𑣚𑣃", santhali: "ᱜᱟᱭ" }
+    translation: { ho: "गाई (Gai)", santhali: "गाइ (Gai)", mundari: "उरीः (Uri)" },
+    nativeScript: { ho: "𑢯𑣁𑣚𑣃", santhali: "ᱜᱟᱭ", mundari: "ᱩᱨᱤᱜ" }
   },
   { 
     animal: "हाथी (Elephant)", 
     icon: "🐘", 
-    translation: { ho: "हाथी (Hathi)", santhali: "हाथी" },
-    nativeScript: { ho: "𑢶𑣁𑣚𑣃", santhali: "ᱦᱟᱛᱷᱤ" }
+    translation: { ho: "हाथी (Hathi)", santhali: "हाथी (Hathi)", mundari: "हाती (Hati)" },
+    nativeScript: { ho: "𑢶𑣁𑣚𑣃", santhali: "ᱦᱟᱛᱷᱤ", mundari: "ᱦᱟᱛᱤ" }
   },
   { 
     animal: "बकरी (Goat)", 
     icon: "🐐", 
-    translation: { ho: "मेरम (Meram)", santhali: "मेरम" },
-    nativeScript: { ho: "𑢵𑣁𑣜𑣃", santhali: "ᱢᱮᱨᱚᱢ" }
+    translation: { ho: "मेरम (Meram)", santhali: "मेरम (Meram)", mundari: "मेरम (Meram)" },
+    nativeScript: { ho: "𑢵𑣁𑣜𑣃", santhali: "ᱢᱮᱨᱚᱢ", mundari: "ᱢᱮᱨᱚᱢ" }
   }
 ];
 
