@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["es2022", "dom"],
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "types": ["node"]
+  },
+  "include": ["src/**/*"]
+}

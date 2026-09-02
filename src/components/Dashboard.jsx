@@ -199,7 +199,7 @@ export default function Dashboard({
         {/* Right column (Actual photo of the classroom) */}
         <div className="lg:col-span-5 relative z-10 w-full h-48 rounded-xl overflow-hidden shadow-md border-2 border-white/60">
           <img 
-            src="/classroom_real.jpg" 
+            src="classroom_real.jpg" 
             alt="Real Classroom" 
             className="w-full h-full object-cover" 
           />

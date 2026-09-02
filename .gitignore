@@ -31,3 +31,10 @@ dist-ssr/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Build & Archives
+*.zip
+build_desktop/
+build_temp/
+dist_electron/
+

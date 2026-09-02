@@ -512,7 +512,7 @@ function App() {
             <div className="p-4 border-b border-white/10 flex items-center justify-between bg-[#082a17]">
               <div className="flex items-center space-x-2.5 overflow-hidden">
                 <img 
-                  src="/vanisetu_logo.jpg" 
+                  src="vanisetu_logo.jpg" 
                   alt="VaniSetu Logo" 
                   className="w-8 h-8 rounded-lg object-contain bg-white p-0.5 border border-white/20 flex-shrink-0"
                 />
