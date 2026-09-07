@@ -311,73 +311,57 @@ const generateQuestionsForClassSubject = (grade, subject) => {
   }
 };
 
-const AVAILABLE_WORKSHEETS_TEMPLATES = {
-  "गणित": [
-    {
-      id: "ws_math_1",
-      title: "संख्या पहचानना (1–5)",
-      outcome: "M-G1.2",
+export const CLASS_SUBJECT_THEMES = {
+  "कक्षा 1": {
+    "पर्यावरण अध्ययन": { chapterName: "मेरा परिवार, पशु, पौधे, भोजन (Family, Animals, Plants, Food)", outcome: "E-G1.1" },
+    "गणित": { chapterName: "संख्या ज्ञान 1–20, जोड़ व आकृतियाँ (Numbers 1–20, Shapes, Addition)", outcome: "M-G1.1" },
+    "हिंदी": { chapterName: "वर्णमाला, ध्वनि पहचान व सरल शब्द (Alphabet & Phonics)", outcome: "L-G1.1" },
+    "अंग्रेज़ी": { chapterName: "Alphabet, Phonics, Colours, Numbers, Simple Words", outcome: "E-G1.1" },
+    "विज्ञान": { chapterName: "हमारे आसपास की सजीव व निर्जीव वस्तुएं (Living & Non-Living)", outcome: "S-G1.1" }
+  },
+  "कक्षा 2": {
+    "पर्यावरण अध्ययन": { chapterName: "मेरा विद्यालय, शरीर के अंग, ऋतुएँ (My School, Body Parts, Seasons)", outcome: "E-G2.1" },
+    "गणित": { chapterName: "संख्या ज्ञान 1–100, जोड़, घटाव व पैटर्न (Numbers 1–100, Patterns)", outcome: "M-G2.1" },
+    "हिंदी": { chapterName: "शब्द बनाना, छोटे वाक्य व चित्र वर्णन (Words & Short Sentences)", outcome: "L-G2.1" },
+    "अंग्रेज़ी": { chapterName: "Vocabulary, Simple Sentences, Reading, Matching", outcome: "E-G2.1" },
+    "विज्ञान": { chapterName: "ऋतुएँ, जल और इंद्रियाँ (Seasons, Water & Senses)", outcome: "S-G2.1" }
+  },
+  "कक्षा 3": {
+    "पर्यावरण अध्ययन": { chapterName: "जल, पेड़-पौधे, प्राकृतिक पर्यावरण (Water, Plants, Environment)", outcome: "E-G3.1" },
+    "गणित": { chapterName: "गुणा, भाग, भिन्न व मापन (Multiplication, Division, Fractions, Measurement)", outcome: "M-G3.1" },
+    "हिंदी": { chapterName: "कहानी पठन, शब्दावली व वाक्य निर्माण (Reading & Vocabulary)", outcome: "L-G3.1" },
+    "अंग्रेज़ी": { chapterName: "Grammar Basics, Comprehension, Vocabulary", outcome: "E-G3.1" },
+    "विज्ञान": { chapterName: "जल चक्र, पौधों के भाग व पोषण (Water Cycle & Plant Parts)", outcome: "S-G3.1" }
+  },
+  "कक्षा 4": {
+    "पर्यावरण अध्ययन": { chapterName: "मानव शरीर, प्राकृतिक संसाधन, सुरक्षा (Human Body, Resources, Safety)", outcome: "E-G4.1" },
+    "गणित": { chapterName: "दशमलव, ज्यामिति, इबारती सवाल (Decimals, Geometry, Word Problems)", outcome: "M-G4.1" },
+    "हिंदी": { chapterName: "अनुच्छेद पठन, व्याकरण व अनुवाद (Paragraph Reading, Grammar)", outcome: "L-G4.1" },
+    "अंग्रेज़ी": { chapterName: "Tenses, Grammar, Comprehension, Writing", outcome: "E-G4.1" },
+    "विज्ञान": { chapterName: "मानव शरीर क्रिया विज्ञान व प्राकृतिक आवास (Physiology & Matter)", outcome: "S-G4.1" }
+  },
+  "कक्षा 5": {
+    "पर्यावरण अध्ययन": { chapterName: "पारिस्थितिकी, स्वास्थ्य, प्रदूषण (Ecosystem, Health, Pollution)", outcome: "E-G5.1" },
+    "गणित": { chapterName: "प्रतिशत, ज्यामिति, समस्या समाधान (Percentages, Geometry, Area)", outcome: "M-G5.1" },
+    "हिंदी": { chapterName: "अपठित गद्यांश, समझ व अनुवाद (Story Comprehension & Translation)", outcome: "L-G5.1" },
+    "अंग्रेज़ी": { chapterName: "Grammar, Comprehension, Paragraph Writing, Vocabulary", outcome: "E-G5.1" },
+    "विज्ञान": { chapterName: "खाद्य श्रृंखला, ऊर्जा व जैव विविधता (Food Chains & Conservation)", outcome: "S-G5.1" }
+  }
+};
+
+export const getTemplatesForSubject = (subject) => {
+  return ["कक्षा 1", "कक्षा 2", "कक्षा 3", "कक्षा 4", "कक्षा 5"].map((cls, idx) => {
+    const theme = CLASS_SUBJECT_THEMES[cls]?.[subject] || { chapterName: `${subject} कार्यपत्रक`, outcome: `M-G${idx+1}.1` };
+    return {
+      id: `ws_${subject}_${idx+1}`,
+      cls: cls,
+      title: `${theme.chapterName}`,
+      outcome: theme.outcome,
       duration: "20 minutes",
-      learningObjective: "M-G1.2: One-to-one correspondence and recognition up to 5.",
-      questions: generateQuestionsForClassSubject("कक्षा 1", "गणित")
-    },
-    {
-      id: "ws_math_2",
-      title: "जोड़ और घटाव",
-      outcome: "M-G2.2",
-      duration: "25 minutes",
-      learningObjective: "M-G2.2: Count and sequence numbers up to 20.",
-      questions: generateQuestionsForClassSubject("कक्षा 2", "गणित")
-    }
-  ],
-  "हिंदी": [
-    {
-      id: "ws_hin_1",
-      title: "वर्णमाला पहचान",
-      outcome: "L-G2.3",
-      duration: "15 minutes",
-      learningObjective: "L-G2.3: Read alphabet combinations with local sound translation.",
-      questions: generateQuestionsForClassSubject("कक्षा 2", "हिंदी")
-    }
-  ],
-  "पर्यावरण अध्ययन": [
-    {
-      id: "ws_evs_1",
-      title: "हमारे पशु-पक्षी (Animals)",
-      outcome: "E-G1.5",
-      duration: "15 minutes",
-      learningObjective: "जीव-जंतुओं के नाम और स्थानीय परिवेश में उनके आवास की पहचान।",
-      questions: generateQuestionsForClassSubject("कक्षा 1", "पर्यावरण अध्ययन")
-    },
-    {
-      id: "ws_evs_2",
-      title: "जल और पेड़ (Water & Plants)",
-      outcome: "E-G2.4",
-      duration: "20 minutes",
-      learningObjective: "पेड़-पौधों के महत्व और जल संरक्षण की बुनियादी समझ।",
-      questions: generateQuestionsForClassSubject("कक्षा 2", "पर्यावरण अध्ययन")
-    }
-  ],
-  "अंग्रेज़ी": [
-    {
-      id: "ws_eng_1",
-      title: "Alphabets Matching (A–Z)",
-      outcome: "L-G1.4",
-      duration: "15 minutes",
-      learningObjective: "L-G1.4: Recognition of English letters with local script sounds.",
-      questions: generateQuestionsForClassSubject("कक्षा 1", "अंग्रेज़ी")
-    }
-  ],
-  "विज्ञान": [
-    {
-      id: "ws_sci_1",
-      title: "सजीव और निर्जीव (Living & Non-Living)",
-      outcome: "E-G2.3",
-      duration: "20 minutes",
-      learningObjective: "E-G2.3: Classifying living plants and non-living objects.",
-      questions: generateQuestionsForClassSubject("कक्षा 2", "विज्ञान")
-    }
-  ]
+      learningObjective: `${cls} के बच्चों के लिए ${theme.chapterName} पर आधारित JCERT NIPUN Bilingual Worksheet.`,
+      questions: generateQuestionsForClassSubject(cls, subject)
+    };
+  });
 };
 
 export default function WorksheetGenerator({ 
@@ -386,37 +370,41 @@ export default function WorksheetGenerator({
   selectedSubject, 
   setSelectedSubject 
 }) {
+  const [newClass, setNewClass] = useState('कक्षा 1');
+  const [newDifficulty, setNewDifficulty] = useState('Medium');
+  const [newChapterName, setNewChapterName] = useState(() => CLASS_SUBJECT_THEMES['कक्षा 1']?.[selectedSubject]?.chapterName || 'मेरा परिवार, पशु, पौधे, भोजन');
   const [activeWorksheet, setActiveWorksheet] = useState(null);
   const [userAnswers, setUserAnswers] = useState({});
   const [quizFinished, setQuizFinished] = useState(false);
   const [downloadComplete, setDownloadComplete] = useState(false);
-
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-
-  // Low-ink B&W mode
   const [isLowInkMode, setIsLowInkMode] = useState(false);
-
-  // Custom worksheets generator state
-  const [newClass, setNewClass] = useState('कक्षा 2');
-  const [newDifficulty, setNewDifficulty] = useState('Medium');
-  const [newChapterName, setNewChapterName] = useState('संख्या मिलान');
-  const [wsType, setWsType] = useState('MCQ');
 
   const activeLangMeta = LANGUAGES_METADATA[selectedLanguage] || LANGUAGES_METADATA["हो"];
 
-  // Auto-switch templates when subject changes (Point 1)
+  // Automatically update chapter name & active worksheet whenever subject or class changes
   useEffect(() => {
-    const templates = AVAILABLE_WORKSHEETS_TEMPLATES[selectedSubject] || [];
-    if (templates.length > 0) {
-      setActiveWorksheet(templates[0]);
+    const theme = CLASS_SUBJECT_THEMES[newClass]?.[selectedSubject];
+    if (theme) {
+      setNewChapterName(theme.chapterName);
+    }
+    const templates = getTemplatesForSubject(selectedSubject);
+    const matchingTemplate = templates.find(t => t.cls === newClass) || templates[0];
+    if (matchingTemplate) {
+      setActiveWorksheet(matchingTemplate);
       setUserAnswers({});
       setQuizFinished(false);
-    } else {
-      setActiveWorksheet(null);
     }
-  }, [selectedSubject]);
+  }, [selectedSubject, newClass]);
 
   const handleOpenWorksheet = (sheet) => {
+    if (sheet.cls) {
+      setNewClass(sheet.cls);
+      const theme = CLASS_SUBJECT_THEMES[sheet.cls]?.[selectedSubject];
+      if (theme) {
+        setNewChapterName(theme.chapterName);
+      }
+    }
     setActiveWorksheet(sheet);
     setUserAnswers({});
     setQuizFinished(false);
@@ -441,10 +429,12 @@ export default function WorksheetGenerator({
   const handleCustomGenerate = (e) => {
     e.preventDefault();
     const customQuestions = generateQuestionsForClassSubject(newClass, selectedSubject);
+    const theme = CLASS_SUBJECT_THEMES[newClass]?.[selectedSubject];
     const sheetObj = {
       id: `custom_${Date.now()}`,
-      title: `${newChapterName} (${newClass} - ${newDifficulty})`,
-      outcome: newClass === 'कक्षा 5' ? 'M-G5.1' : (newClass === 'कक्षा 4' ? 'M-G4.1' : (newClass === 'कक्षा 3' ? 'M-G3.1' : 'M-G1.2')),
+      cls: newClass,
+      title: `${newChapterName} (${newClass})`,
+      outcome: theme?.outcome || (newClass === 'कक्षा 5' ? 'M-G5.1' : (newClass === 'कक्षा 4' ? 'M-G4.1' : (newClass === 'कक्षा 3' ? 'M-G3.1' : 'M-G1.2'))),
       duration: "20 minutes",
       learningObjective: `${newClass} के बच्चों के लिए ${newChapterName} आधारित bilingual worksheet.`,
       questions: customQuestions
@@ -453,7 +443,7 @@ export default function WorksheetGenerator({
     setShowSuccessModal(true);
   };
 
-  const templatesList = AVAILABLE_WORKSHEETS_TEMPLATES[selectedSubject] || [];
+  const templatesList = getTemplatesForSubject(selectedSubject);
 
   return (
     <div className="p-6 bg-[#FDFBF7] min-h-screen text-slate-805 font-sans text-left">
@@ -626,7 +616,7 @@ export default function WorksheetGenerator({
                     <div className="text-right text-[9.5px] font-sans font-bold space-y-1.5 flex-shrink-0">
                       <p>नाम (Name): _______________________</p>
                       <p>अनुक्रमांक (Roll No): _________________</p>
-                      <p>कक्षा (Class): {newClass} · Section: ______</p>
+                      <p>कक्षा (Class): {activeWorksheet?.cls || newClass} · Section: ______</p>
                     </div>
                   </div>
 

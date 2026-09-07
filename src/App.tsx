@@ -90,7 +90,10 @@ export const App: React.FC = () => {
           <DictionaryScreen currentLanguage={currentLanguage} />
         )}
         {currentScreen === 'flashcards' && (
-          <FlashcardsScreen currentLanguage={currentLanguage} />
+          <FlashcardsScreen
+            currentLanguage={currentLanguage}
+            currentClass={currentClass}
+          />
         )}
         {currentScreen === 'curriculum' && (
           <CurriculumScreen

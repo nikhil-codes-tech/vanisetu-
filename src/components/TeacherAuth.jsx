@@ -59,7 +59,7 @@ export default function TeacherAuth({ onLoginSuccess }) {
   const [activeTab, setActiveTab] = useState('quick-login');
   
   // Rotating backgrounds
-  const backgrounds = ['classroom_1.jpg', 'classroom_2.jpg', 'classroom_3.jpg'];
+  const backgrounds = ['/classroom_1.jpg', '/classroom_2.jpg', '/classroom_3.jpg'];
   const [bgIndex, setBgIndex] = useState(0);
 
   useEffect(() => {
@@ -219,7 +219,7 @@ export default function TeacherAuth({ onLoginSuccess }) {
         <div className="flex items-center gap-3">
           <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center p-0.5 shadow-md overflow-hidden flex-shrink-0">
             <img 
-              src="vanisetu_logo.jpg" 
+              src="/vanisetu_logo.jpg" 
               alt="VaniSetu Logo" 
               className="w-full h-full object-contain"
             />
@@ -250,7 +250,7 @@ export default function TeacherAuth({ onLoginSuccess }) {
 
             <div className="mt-6 rounded-2xl overflow-hidden border border-white/15 shadow-xl bg-white p-4 max-w-[260px] mx-auto">
               <img 
-                src="vanisetu_logo.jpg" 
+                src="/vanisetu_logo.jpg" 
                 alt="VaniSetu Logo Big" 
                 className="w-full object-contain"
               />
@@ -425,16 +425,16 @@ export default function TeacherAuth({ onLoginSuccess }) {
         </h4>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="rounded-xl overflow-hidden shadow-md h-36 border border-white/10">
-            <img src="classroom_4.jpg" alt="Classroom 4" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+            <img src="/classroom_4.jpg" alt="Classroom 4" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
           </div>
           <div className="rounded-xl overflow-hidden shadow-md h-36 border border-white/10">
-            <img src="classroom_5.jpg" alt="Classroom 5" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+            <img src="/classroom_5.jpg" alt="Classroom 5" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
           </div>
           <div className="rounded-xl overflow-hidden shadow-md h-36 border border-white/10">
-            <img src="classroom_6.jpg" alt="Classroom 6" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+            <img src="/classroom_6.jpg" alt="Classroom 6" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
           </div>
           <div className="rounded-xl overflow-hidden shadow-md h-36 border border-white/10">
-            <img src="classroom_7.jpg" alt="Classroom 7" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+            <img src="/classroom_7.jpg" alt="Classroom 7" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
           </div>
         </div>
       </div>

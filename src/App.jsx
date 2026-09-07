@@ -12,6 +12,7 @@ import {
   Languages, Mic, Book, ChevronRight, ChevronLeft, Volume2, User, Bell, Search, Eye, EyeOff, Printer, FileText, CheckCircle2
 } from 'lucide-react';
 import { translateBetweenLanguages, VOCABULARY_DATABASE, LANGUAGES_METADATA, SUBJECTS_DATA, ANIMALS_FLASHCARDS } from './utils/mockData';
+import { FLASHCARD_MATRIX } from './utils/flashcardsData';
 import { MOCK_SCHOOLS } from './data/jharkhandData';
 import canvasConfetti from 'canvas-confetti';
 
@@ -225,13 +226,23 @@ function App() {
     { speaker: 'student', tribalText: 'दाः जोम आ।', hindiText: 'मुझे पानी चाहिए।', latency: '1.20' }
   ]);
 
-  // 6. EVS Animal Flashcards state
+  // 6. Multi-grade Flashcards state
+  const [flashcardClass, setFlashcardClass] = useState('कक्षा 1');
+  const [flashcardSubject, setFlashcardSubject] = useState('पर्यावरण अध्ययन');
   const [activeCardIndex, setActiveCardIndex] = useState(0);
   const [flashcardLearnedMap, setFlashcardLearnedMap] = useState({});
   const [isFlashcardRecording, setIsFlashcardRecording] = useState(false);
   const [flashcardScore, setFlashcardScore] = useState(null);
   const [selectedFlashcardOption, setSelectedFlashcardOption] = useState(null);
   const [flashcardQuizFeedback, setFlashcardQuizFeedback] = useState(null);
+
+  const toggleFlashcardLearned = (cardIdx) => {
+    const key = `${flashcardClass}_${flashcardSubject}_${cardIdx}`;
+    setFlashcardLearnedMap(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
 
   // 7. Global Search
   const [searchQuery, setSearchQuery] = useState('');
@@ -512,7 +523,7 @@ function App() {
             <div className="p-4 border-b border-white/10 flex items-center justify-between bg-[#082a17]">
               <div className="flex items-center space-x-2.5 overflow-hidden">
                 <img 
-                  src="vanisetu_logo.jpg" 
+                  src="/vanisetu_logo.jpg" 
                   alt="VaniSetu Logo" 
                   className="w-8 h-8 rounded-lg object-contain bg-white p-0.5 border border-white/20 flex-shrink-0"
                 />
@@ -991,167 +1002,258 @@ function App() {
           })()}
 
           {/* Flashcards */}
-          {activeTab === 'flashcards' && (
-            <div className="p-6 max-w-2xl mx-auto space-y-6 text-left animate-fade-in font-sans">
-              <div className="text-[10px] font-bold text-slate-400 uppercase flex space-x-1.5">
-                <span className="hover:underline cursor-pointer" onClick={() => setActiveTab('dashboard')}>Dashboard</span>
-                <span>/</span>
-                <span>Visual Learning Cards</span>
-              </div>
+          {activeTab === 'flashcards' && (() => {
+            const getGradeKey = (c) => {
+              if (c.includes('1')) return '1';
+              if (c.includes('2')) return '2';
+              if (c.includes('3')) return '3';
+              if (c.includes('4')) return '4';
+              return '5';
+            };
 
-              <div className="bg-white border border-slate-205 rounded p-6 shadow-3xs space-y-5">
-                <div>
-                  <h3 className="text-sm font-black text-slate-805">🎴 Visual Learning Cards (Flashcards)</h3>
-                  <p className="text-[10px] text-slate-450 font-bold">Visual animal identification cards for Grade 1-3 regional learners.</p>
+            const getSubjectKey = (s) => {
+              if (s === 'हो भाषा') return 'language_ho';
+              if (s === 'संथाली भाषा') return 'language_santhali';
+              if (s === 'मुंडारी भाषा') return 'language_mundari';
+              if (s === 'गणित') return 'math';
+              if (s === 'अंग्रेज़ी') return 'english';
+              return 'evs';
+            };
+
+            const gradeKey = getGradeKey(flashcardClass);
+            const subjectKey = getSubjectKey(flashcardSubject);
+            const currentDeck = (FLASHCARD_MATRIX[gradeKey] && FLASHCARD_MATRIX[gradeKey][subjectKey]) || FLASHCARD_MATRIX['1']['evs'];
+            const safeCardIndex = activeCardIndex >= currentDeck.length ? 0 : activeCardIndex;
+            const currentCard = currentDeck[safeCardIndex];
+
+            // Determine tribal word and script based on selected targetLanguage
+            let tribalWord = currentCard.nameHo;
+            let tribalScript = currentCard.scriptHo;
+            if (targetLanguage === 'संथाली') {
+              tribalWord = currentCard.nameSanthali;
+              tribalScript = currentCard.scriptSanthali;
+            } else if (targetLanguage === 'मुंडारी') {
+              tribalWord = currentCard.nameMundari;
+              tribalScript = currentCard.scriptMundari;
+            }
+
+            return (
+              <div className="p-6 max-w-2xl mx-auto space-y-6 text-left animate-fade-in font-sans">
+                <div className="text-[10px] font-bold text-slate-400 uppercase flex space-x-1.5">
+                  <span className="hover:underline cursor-pointer" onClick={() => setActiveTab('dashboard')}>Dashboard</span>
+                  <span>/</span>
+                  <span>Visual Learning Cards</span>
                 </div>
 
-                <div className="border border-slate-250 rounded-lg p-8 max-w-md mx-auto text-center space-y-5 bg-[#FAF9F5] shadow-sm">
-                  <div className="flex justify-between items-center text-[10px] text-slate-450 font-black uppercase">
-                    <span>Card {activeCardIndex + 1} / {ANIMALS_FLASHCARDS.length}</span>
-                    
-                    <button
-                      onClick={() => toggleFlashcardLearned(activeCardIndex)}
-                      className={`px-2 py-0.5 rounded border text-[8.5px] font-black uppercase cursor-pointer ${
-                        flashcardLearnedMap[activeCardIndex] 
-                          ? 'bg-emerald-50 border-emerald-250 text-emerald-800' 
-                          : 'border-slate-350 text-slate-650 bg-white'
-                      }`}
-                    >
-                      {flashcardLearnedMap[activeCardIndex] ? '✓ सीखा हुआ' : 'मैंने सीख लिया'}
-                    </button>
+                <div className="bg-white border border-slate-205 rounded p-6 shadow-3xs space-y-5">
+                  <div>
+                    <h3 className="text-sm font-black text-slate-805">🎴 Visual Learning Cards (Flashcards)</h3>
+                    <p className="text-[10px] text-slate-450 font-bold">Curriculum-aligned multi-grade visual flashcards with interactive MCQ quizzes.</p>
                   </div>
 
-                  <div className="w-48 h-48 bg-white border border-slate-200 rounded-full mx-auto flex items-center justify-center text-8xl shadow-inner select-none">
-                    {ANIMALS_FLASHCARDS[activeCardIndex].icon}
-                  </div>
-
-                  <div className="py-3.5 border-y border-slate-200 space-y-3.5">
+                  {/* Class and Subject Selectors */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-[#FAF9F5] border border-slate-200 rounded p-4 text-xs font-bold text-slate-700">
                     <div>
-                      <span className="text-[8px] text-slate-455 uppercase block font-bold">Hindi</span>
-                      <p className="text-sm font-black text-slate-800">
-                        {ANIMALS_FLASHCARDS[activeCardIndex].animal.split(' ')[0]}
-                      </p>
-                    </div>
-                    
-                    <div>
-                      <span className="text-[8px] text-indigo-400 uppercase block font-bold">
-                        {targetLanguage} (Native Script: {activeLangMeta.script})
-                      </span>
-                      <p className="text-xl font-black text-indigo-950 font-mono tracking-wider">
-                        {ANIMALS_FLASHCARDS[activeCardIndex].nativeScript?.[activeLangMeta.translationCode || 'ho'] || "अनुवाद उपलब्ध नहीं है"}
-                      </p>
-                      <p className="text-[10px] text-slate-400 mt-1 font-semibold">
-                        Phonetic: "{ANIMALS_FLASHCARDS[activeCardIndex].translation[activeLangMeta.translationCode || 'ho']}"
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4 pt-1">
-                    <div className="flex justify-between items-center">
-                      <button
-                        onClick={() => {
-                          const tr = ANIMALS_FLASHCARDS[activeCardIndex].translation[activeLangMeta.translationCode || 'ho'] || '';
-                          handleGlobalSpeak(tr || ANIMALS_FLASHCARDS[activeCardIndex].animal, targetLanguage);
+                      <label className="block text-[8.5px] font-black text-[#0F4D2A] uppercase mb-1.5">Class Selection (कक्षा चुनें)</label>
+                      <select
+                        value={flashcardClass}
+                        onChange={(e) => {
+                          setFlashcardClass(e.target.value);
+                          setActiveCardIndex(0);
+                          setFlashcardScore(null);
+                          setSelectedFlashcardOption(null);
+                          setFlashcardQuizFeedback(null);
                         }}
-                        className="bg-indigo-50 hover:bg-indigo-100 text-indigo-650 text-xs font-black py-2.5 px-4 rounded-lg cursor-pointer h-11 flex items-center space-x-1.5 shadow-3xs"
+                        className="w-full bg-white border border-slate-200 rounded py-2 px-3 text-slate-755 font-bold cursor-pointer h-11 focus:outline-none"
                       >
-                        <Volume2 className="w-4 h-4" />
-                        <span>🔊 Play</span>
-                      </button>
-
-                      <button
-                        onClick={handleFlashcardRecord}
-                        disabled={isFlashcardRecording}
-                        className="bg-[#0F4D2A] hover:bg-[#09351C] text-white text-xs font-black py-2.5 px-4 rounded-lg cursor-pointer h-11 flex items-center space-x-1.5 disabled:opacity-50"
-                        style={{ backgroundColor: '#0F4D2A' }}
-                      >
-                        <span>{isFlashcardRecording ? 'Listening...' : '🎙 Practice Pronunciation'}</span>
-                      </button>
+                        <option value="कक्षा 1">कक्षा 1 (Grade 1)</option>
+                        <option value="कक्षा 2">कक्षा 2 (Grade 2)</option>
+                        <option value="कक्षा 3">कक्षा 3 (Grade 3)</option>
+                        <option value="कक्षा 4">कक्षा 4 (Grade 4)</option>
+                        <option value="कक्षा 5">कक्षा 5 (Grade 5)</option>
+                      </select>
                     </div>
-
-                    {isFlashcardRecording && (
-                      <div className="flex space-x-1 justify-center items-center h-8 bg-white border border-slate-200 rounded px-4 w-40 mx-auto">
-                        <span className="w-1 bg-[#0F4D2A] h-4 rounded animate-pulse"></span>
-                        <span className="w-1 bg-[#0F4D2A] h-6 rounded animate-pulse delay-75"></span>
-                        <span className="w-1 bg-[#0F4D2A] h-3 rounded animate-pulse delay-150"></span>
-                      </div>
-                    )}
-
-                    {flashcardScore !== null && (
-                      <p className="bg-emerald-50 border border-emerald-250 p-2.5 rounded text-center text-xs font-black text-emerald-800 animate-fade-in">
-                        Pronunciation Score: {flashcardScore}% ✓ (Good matching!)
-                      </p>
-                    )}
-
-                    {/* Inherited Multiple Choice Question (MCQ) for Flashcard testing */}
-                    <div className="pt-4 border-t border-slate-200 text-left space-y-3 font-sans">
-                      <p className="text-[10px] text-slate-400 uppercase font-black tracking-wider">💡 Flashcard Quiz (प्रश्नोत्तरी)</p>
-                      <p className="text-xs font-black text-slate-805 leading-normal">
-                        इस चित्र में दिए गए जीव <strong>"{ANIMALS_FLASHCARDS[activeCardIndex].icon} {ANIMALS_FLASHCARDS[activeCardIndex].animal.split(' ')[0]}"</strong> को {targetLanguage} में क्या कहते हैं?
-                      </p>
-                      
-                      <div className="grid grid-cols-1 gap-2 pt-1">
-                        {ANIMALS_FLASHCARDS.map((item, idx) => {
-                          const translationText = item.translation[activeLangMeta.translationCode || 'ho'] || item.animal;
-                          const isSelected = selectedFlashcardOption === idx;
-                          let btnStyle = "border-slate-205 hover:bg-slate-50 text-slate-700 bg-white";
-                          if (isSelected) {
-                            if (flashcardQuizFeedback === 'correct') {
-                              btnStyle = "bg-emerald-50 border-emerald-350 text-emerald-800";
-                            } else {
-                              btnStyle = "bg-rose-50 border-rose-300 text-rose-800";
-                            }
-                          }
-                          
-                          return (
-                            <button
-                              key={idx}
-                              onClick={() => {
-                                setSelectedFlashcardOption(idx);
-                                const correctTr = ANIMALS_FLASHCARDS[activeCardIndex].translation[activeLangMeta.translationCode || 'ho'];
-                                if (translationText === correctTr) {
-                                  setFlashcardQuizFeedback('correct');
-                                  canvasConfetti({ particleCount: 30, spread: 20, origin: { y: 0.8 } });
-                                } else {
-                                  setFlashcardQuizFeedback('incorrect');
-                                }
-                              }}
-                              className={`border p-2.5 rounded-lg text-left text-xs font-black transition-all cursor-pointer flex justify-between items-center ${btnStyle}`}
-                            >
-                              <span>{translationText}</span>
-                              {isSelected && (
-                                <span className="text-[10px] font-bold">
-                                  {flashcardQuizFeedback === 'correct' ? '✓ Correct' : '❌ Try Again'}
-                                </span>
-                              )}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    <div className="flex justify-center space-x-2 pt-2">
-                      <button
-                        onClick={() => { setActiveCardIndex(p => Math.max(0, p - 1)); setFlashcardScore(null); setSelectedFlashcardOption(null); setFlashcardQuizFeedback(null); }}
-                        disabled={activeCardIndex === 0}
-                        className="px-3.5 py-1.5 border border-slate-350 hover:bg-slate-100 rounded text-xs font-bold disabled:opacity-40 cursor-pointer bg-white"
+                    
+                    <div>
+                      <label className="block text-[8.5px] font-black text-[#0F4D2A] uppercase mb-1.5">Subject Selection (विषय चुनें)</label>
+                      <select
+                        value={flashcardSubject}
+                        onChange={(e) => {
+                          setFlashcardSubject(e.target.value);
+                          setActiveCardIndex(0);
+                          setFlashcardScore(null);
+                          setSelectedFlashcardOption(null);
+                          setFlashcardQuizFeedback(null);
+                        }}
+                        className="w-full bg-white border border-slate-200 rounded py-2 px-3 text-slate-755 font-bold cursor-pointer h-11 focus:outline-none"
                       >
-                        ← Prev
-                      </button>
-                      <button
-                        onClick={() => { setActiveCardIndex(p => Math.min(ANIMALS_FLASHCARDS.length - 1, p + 1)); setFlashcardScore(null); setSelectedFlashcardOption(null); setFlashcardQuizFeedback(null); }}
-                        disabled={activeCardIndex === ANIMALS_FLASHCARDS.length - 1}
-                        className="px-3.5 py-1.5 border border-slate-350 hover:bg-slate-100 rounded text-xs font-bold disabled:opacity-40 cursor-pointer bg-white"
-                      >
-                        Next →
-                      </button>
+                        <option value="पर्यावरण अध्ययन">पर्यावरण अध्ययन (EVS)</option>
+                        <option value="हो भाषा">हो भाषा (Language - Ho)</option>
+                        <option value="संथाली भाषा">संथाली भाषा (Language - Santhali)</option>
+                        <option value="मुंडारी भाषा">मुंडारी भाषा (Language - Mundari)</option>
+                        <option value="गणित">गणित (Mathematics)</option>
+                        <option value="अंग्रेज़ी">अंग्रेज़ी (English)</option>
+                      </select>
                     </div>
                   </div>
 
+                  <div className="border border-slate-250 rounded-lg p-8 max-w-md mx-auto text-center space-y-5 bg-[#FAF9F5] shadow-sm">
+                    <div className="flex justify-between items-center text-[10px] text-slate-450 font-black uppercase">
+                      <span>Card {safeCardIndex + 1} / {currentDeck.length} ({flashcardClass} · {flashcardSubject})</span>
+                      
+                      <button
+                        onClick={() => toggleFlashcardLearned(safeCardIndex)}
+                        className={`px-2 py-0.5 rounded border text-[8.5px] font-black uppercase cursor-pointer ${
+                          flashcardLearnedMap[`${flashcardClass}_${flashcardSubject}_${safeCardIndex}`] 
+                            ? 'bg-emerald-50 border-emerald-250 text-emerald-800' 
+                            : 'border-slate-350 text-slate-650 bg-white'
+                        }`}
+                      >
+                        {flashcardLearnedMap[`${flashcardClass}_${flashcardSubject}_${safeCardIndex}`] ? '✓ सीखा हुआ' : 'मैंने सीख लिया'}
+                      </button>
+                    </div>
+
+                    <div className="w-48 h-48 bg-white border border-slate-200 rounded-full mx-auto flex items-center justify-center text-8xl shadow-inner select-none">
+                      {currentCard.emoji}
+                    </div>
+
+                    <div className="py-3.5 border-y border-slate-200 space-y-3.5">
+                      <div>
+                        <span className="text-[8px] text-slate-455 uppercase block font-bold">Hindi / Concept</span>
+                        <p className="text-sm font-black text-slate-800">
+                          {currentCard.titleHindi}
+                        </p>
+                        <span className="text-[9px] text-slate-400 font-bold">Category: {currentCard.category}</span>
+                      </div>
+                      
+                      <div>
+                        <span className="text-[8px] text-indigo-400 uppercase block font-bold">
+                          {targetLanguage} (Native Script)
+                        </span>
+                        <p className="text-xl font-black text-indigo-950 font-mono tracking-wider">
+                          {tribalScript || tribalWord}
+                        </p>
+                        <p className="text-[10px] text-slate-400 mt-1 font-semibold">
+                          Pronunciation: "{tribalWord}"
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4 pt-1">
+                      <div className="flex justify-between items-center">
+                        <button
+                          onClick={() => {
+                            handleGlobalSpeak(tribalWord || currentCard.titleHindi, targetLanguage);
+                          }}
+                          className="bg-indigo-50 hover:bg-indigo-100 text-indigo-650 text-xs font-black py-2.5 px-4 rounded-lg cursor-pointer h-11 flex items-center space-x-1.5 shadow-3xs"
+                        >
+                          <Volume2 className="w-4 h-4" />
+                          <span>🔊 Play Audio</span>
+                        </button>
+
+                        <button
+                          onClick={handleFlashcardRecord}
+                          disabled={isFlashcardRecording}
+                          className="bg-[#0F4D2A] hover:bg-[#09351C] text-white text-xs font-black py-2.5 px-4 rounded-lg cursor-pointer h-11 flex items-center space-x-1.5 disabled:opacity-50"
+                          style={{ backgroundColor: '#0F4D2A' }}
+                        >
+                          <span>{isFlashcardRecording ? 'Listening...' : '🎙 Practice Pronunciation'}</span>
+                        </button>
+                      </div>
+
+                      {isFlashcardRecording && (
+                        <div className="flex space-x-1 justify-center items-center h-8 bg-white border border-slate-200 rounded px-4 w-40 mx-auto">
+                          <span className="w-1 bg-[#0F4D2A] h-4 rounded animate-pulse"></span>
+                          <span className="w-1 bg-[#0F4D2A] h-6 rounded animate-pulse delay-75"></span>
+                          <span className="w-1 bg-[#0F4D2A] h-3 rounded animate-pulse delay-150"></span>
+                        </div>
+                      )}
+
+                      {flashcardScore !== null && (
+                        <p className="bg-emerald-50 border border-emerald-250 p-2.5 rounded text-center text-xs font-black text-emerald-800 animate-fade-in">
+                          Pronunciation Score: {flashcardScore}% ✓ (Good matching!)
+                        </p>
+                      )}
+
+                      {/* Interactive MCQ Quiz */}
+                      <div className="pt-4 border-t border-slate-200 text-left space-y-3 font-sans">
+                        <p className="text-[10px] text-slate-400 uppercase font-black tracking-wider">💡 Flashcard Quiz (प्रश्नोत्तरी - 5 Questions)</p>
+                        <p className="text-xs font-black text-slate-805 leading-normal">
+                          {currentCard.quizOptions.questionText}
+                        </p>
+                        
+                        <div className="grid grid-cols-1 gap-2 pt-1">
+                          {currentCard.quizOptions.options.map((optionText, idx) => {
+                            const isSelected = selectedFlashcardOption === idx;
+                            let btnStyle = "border-slate-205 hover:bg-slate-50 text-slate-700 bg-white";
+                            if (isSelected) {
+                              if (flashcardQuizFeedback === 'correct') {
+                                btnStyle = "bg-emerald-50 border-emerald-350 text-emerald-800";
+                              } else {
+                                btnStyle = "bg-rose-50 border-rose-300 text-rose-800";
+                              }
+                            }
+                            
+                            return (
+                              <button
+                                key={idx}
+                                onClick={() => {
+                                  setSelectedFlashcardOption(idx);
+                                  if (idx === currentCard.quizOptions.correctIndex) {
+                                    setFlashcardQuizFeedback('correct');
+                                    canvasConfetti({ particleCount: 35, spread: 25, origin: { y: 0.8 } });
+                                    handleGlobalSpeak('सबाशी! सही उत्तर।', 'hi');
+                                  } else {
+                                    setFlashcardQuizFeedback('incorrect');
+                                  }
+                                }}
+                                className={`border p-2.5 rounded-lg text-left text-xs font-black transition-all cursor-pointer flex justify-between items-center ${btnStyle}`}
+                              >
+                                <span>{optionText}</span>
+                                {isSelected && (
+                                  <span className="text-[10px] font-bold">
+                                    {flashcardQuizFeedback === 'correct' ? '✓ Correct' : '❌ Try Again'}
+                                  </span>
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      <div className="flex justify-center space-x-2 pt-2">
+                        <button
+                          onClick={() => { 
+                            setActiveCardIndex(p => Math.max(0, p - 1)); 
+                            setFlashcardScore(null); 
+                            setSelectedFlashcardOption(null); 
+                            setFlashcardQuizFeedback(null); 
+                          }}
+                          disabled={safeCardIndex === 0}
+                          className="px-3.5 py-1.5 border border-slate-350 hover:bg-slate-100 rounded text-xs font-bold disabled:opacity-40 cursor-pointer bg-white"
+                        >
+                          ← Prev
+                        </button>
+                        <button
+                          onClick={() => { 
+                            setActiveCardIndex(p => Math.min(currentDeck.length - 1, p + 1)); 
+                            setFlashcardScore(null); 
+                            setSelectedFlashcardOption(null); 
+                            setFlashcardQuizFeedback(null); 
+                          }}
+                          disabled={safeCardIndex === currentDeck.length - 1}
+                          className="px-3.5 py-1.5 border border-slate-350 hover:bg-slate-100 rounded text-xs font-bold disabled:opacity-40 cursor-pointer bg-white"
+                        >
+                          Next →
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
 
           {activeTab === 'translate' && (
             <div className="p-6 max-w-3xl mx-auto space-y-6 text-left animate-fade-in font-sans">
