@@ -2,7 +2,15 @@ export type SupportedLanguage = 'ho' | 'santhali' | 'mundari';
 
 export type ClassGrade = '1' | '2' | '3' | '4' | '5';
 
-export type SubjectCategory = 'math' | 'science' | 'hindi' | 'english' | 'evs';
+export type SubjectCategory =
+  | 'evs'
+  | 'language_ho'
+  | 'language_santhali'
+  | 'language_mundari'
+  | 'math'
+  | 'english'
+  | 'science'
+  | 'hindi';
 
 export interface TeacherProfile {
   id: string;
@@ -98,19 +106,37 @@ export interface StudentProgressRecord {
   synced: boolean;
 }
 
+export type WorksheetQuestionType =
+  | 'identify'
+  | 'pictureMatching'
+  | 'tracing'
+  | 'listenRepeat'
+  | 'matching'
+  | 'counting'
+  | 'fillBlank'
+  | 'mcq'
+  | 'comprehension'
+  | 'translation'
+  | 'speaking'
+  | 'written';
+
 export interface WorksheetQuestion {
   id: string;
-  type: 'tracing' | 'matching' | 'fillBlank' | 'counting' | 'translation';
+  type: WorksheetQuestionType;
   questionPromptHindi: string;
   questionPromptTribal: {
     ho: string;
     santhali: string;
     mundari: string;
   };
+  options?: string[];
+  correctAnswer: string;
+  audioPromptKey?: string;
+  audioSpokenText?: string;
   leftItems?: string[];
   rightItems?: string[];
   tracingText?: string;
-  correctAnswer: string;
+  comprehensionPassage?: string;
   points: number;
 }
 
@@ -118,7 +144,8 @@ export interface GeneratedWorksheet {
   id: string;
   grade: ClassGrade;
   subject: SubjectCategory;
-  chapterTitle: string;
+  subjectTitle: string;
+  themeTitle: string;
   targetLanguage: SupportedLanguage;
   questions: WorksheetQuestion[];
   generatedAt: string;
