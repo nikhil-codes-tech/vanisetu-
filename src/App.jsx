@@ -12,9 +12,11 @@ import {
   Languages, Mic, Book, ChevronRight, ChevronLeft, Volume2, User, Bell, Search, Eye, EyeOff, Printer, FileText, CheckCircle2
 } from 'lucide-react';
 import { translateBetweenLanguages, VOCABULARY_DATABASE, LANGUAGES_METADATA, SUBJECTS_DATA, ANIMALS_FLASHCARDS } from './utils/mockData';
-import { FLASHCARD_MATRIX } from './utils/flashcardsData';
+import { FLASHCARD_MATRIX, getQuizForCardAndLanguage } from './utils/flashcardsData';
 import { MOCK_SCHOOLS } from './data/jharkhandData';
 import canvasConfetti from 'canvas-confetti';
+import PiperTtsService from './services/piperTts';
+import WhisperAsrService from './services/whisperAsr';
 
 const mockSyllabusData = {
   "कक्षा 1": {
@@ -215,16 +217,33 @@ function App() {
     { sourceText: 'आज हम संख्या सीखेंगे।', targetText: 'तेइसिंग बु लेखा रेयाः बु इतुआ।', source: 'हिंदी', target: 'हो' }
   ]);
 
+  const getLanguageAwareHistory = (lang) => {
+    if (lang === 'संथाली') {
+      return [
+        { speaker: 'teacher', hindiText: 'बच्चों, किताब खोलिए।', tribalText: 'गिदराको, पुथी उताःइमे।', latency: '1.12', lang: 'संथाली' },
+        { speaker: 'student', tribalText: 'इञ दाः ञु सानाइञ काना।', hindiText: 'मुझे पानी चाहिए।', latency: '1.20', lang: 'संथाली' }
+      ];
+    } else if (lang === 'मुंडारी') {
+      return [
+        { speaker: 'teacher', hindiText: 'बच्चों, किताब खोलिए।', tribalText: 'होनको, पुथी नीःपे ओड़ोः पाढ़ाव पे।', latency: '1.12', lang: 'मुंडारी' },
+        { speaker: 'student', tribalText: 'अयिंग दाः दरकार मेनाः।', hindiText: 'मुझे पानी चाहिए।', latency: '1.20', lang: 'मुंडारी' }
+      ];
+    } else {
+      return [
+        { speaker: 'teacher', hindiText: 'बच्चों, किताब खोलिए।', tribalText: 'होनको, पुथी नीः पे।', latency: '1.12', lang: 'हो' },
+        { speaker: 'student', tribalText: 'अयिंग दाः दुरकार।', hindiText: 'मुझे पानी चाहिए।', latency: '1.20', lang: 'हो' }
+      ];
+    }
+  };
+
   // 5. Voice-to-Voice Bridge state
   const [isVoiceBridgeTranslating, setIsVoiceBridgeTranslating] = useState(false);
   const [voiceBridgeSpokenText, setVoiceBridgeSpokenText] = useState('');
   const [voiceBridgeTranslatedText, setVoiceBridgeTranslatedText] = useState('');
   const [voiceBridgeLatency, setVoiceBridgeLatency] = useState(null);
   const [voiceBridgeStep, setVoiceBridgeStep] = useState('idle'); // idle, listening, translating, playing
-  const [voiceBridgeHistory, setVoiceBridgeHistory] = useState([
-    { speaker: 'teacher', hindiText: 'बच्चों, किताब खोलिए।', tribalText: 'होनको, पुथी नीः पे।', latency: '1.12' },
-    { speaker: 'student', tribalText: 'दाः जोम आ।', hindiText: 'मुझे पानी चाहिए।', latency: '1.20' }
-  ]);
+  const [voiceBridgeHistory, setVoiceBridgeHistory] = useState(getLanguageAwareHistory('हो'));
+  const [customVoiceBridgeLine, setCustomVoiceBridgeLine] = useState('');
 
   // 6. Multi-grade Flashcards state
   const [flashcardClass, setFlashcardClass] = useState('कक्षा 1');
@@ -267,15 +286,23 @@ function App() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    setVoiceBridgeHistory(getLanguageAwareHistory(targetLanguage));
+  }, [targetLanguage]);
+
   const handleGlobalSpeak = (textToSpeak, langCode) => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(textToSpeak);
-      utterance.rate = speechRate; 
-      window.speechSynthesis.speak(utterance);
+    const code = (langCode || '').toString().toLowerCase();
+    let voiceKey = 'ho_female';
+    if (code.includes('संथाली') || code.includes('santhali') || code.includes('sat')) {
+      voiceKey = 'santhali_male';
+    } else if (code.includes('मुंडारी') || code.includes('mundari') || code.includes('unr')) {
+      voiceKey = 'mundari_standard';
+    } else if (code.includes('hi') || code.includes('हिंदी') || code.includes('hindi')) {
+      voiceKey = 'hindi_female';
     } else {
-      alert("ऑडियो उपलब्ध नहीं है");
+      voiceKey = 'ho_female';
     }
+    PiperTtsService.speak(textToSpeak, { speed: speechRate, voiceModelKey: voiceKey });
   };
 
   const handleLogin = (teacherProfile) => {
@@ -318,45 +345,96 @@ function App() {
     alert("✓ अनुवादित पाठ लाइव कक्षा सत्र (Live Classroom) के शीर्ष पर भेज दिया गया है!");
   };
 
-  const handleVoiceBridgeSpeak = (speakingLang) => {
+  const handleVoiceBridgeSpeak = async (speakingLang) => {
     setVoiceBridgeStep('listening');
     setVoiceBridgeSpokenText('');
     setVoiceBridgeTranslatedText('');
     setVoiceBridgeLatency(null);
 
-    setTimeout(() => {
+    const startTime = performance.now();
+    const langCode = speakingLang === 'Hindi' ? 'hi' : (targetLanguage === 'संथाली' ? 'sat' : (targetLanguage === 'मुंडारी' ? 'unr' : 'hoc'));
+
+    let currentSpoken = '';
+    await WhisperAsrService.startListening(langCode, (partial) => {
+      currentSpoken = partial;
+      setVoiceBridgeSpokenText(partial);
+    });
+
+    let hasFinalized = false;
+    const finalizeSpeech = async () => {
+      if (hasFinalized) return;
+      hasFinalized = true;
       setVoiceBridgeStep('translating');
-      if (speakingLang === 'Hindi') {
-        setVoiceBridgeSpokenText('बच्चों, किताब खोलिए।');
-        setTimeout(() => {
-          setVoiceBridgeStep('playing');
-          const trans = targetLanguage === 'हो' ? 'होनको, पुथी नीः पे।' : 'पुथी उताःइमे।';
-          setVoiceBridgeTranslatedText(trans);
-          setVoiceBridgeLatency('1.12');
+
+      const result = await WhisperAsrService.stopListening(currentSpoken, langCode);
+      const recognized = (currentSpoken && currentSpoken.trim().length > 0) ? currentSpoken : result.text;
+      setVoiceBridgeSpokenText(recognized);
+
+      setTimeout(() => {
+        setVoiceBridgeStep('playing');
+        let trans = '';
+        if (speakingLang === 'Hindi') {
+          trans = translateBetweenLanguages(recognized, 'हिंदी', targetLanguage);
+        } else {
+          trans = translateBetweenLanguages(recognized, targetLanguage, 'हिंदी');
+        }
+
+        const latency = ((performance.now() - startTime) / 1000).toFixed(2);
+        setVoiceBridgeTranslatedText(trans);
+        setVoiceBridgeLatency(latency);
+
+        if (speakingLang === 'Hindi') {
           handleGlobalSpeak(trans, targetLanguage);
           setVoiceBridgeHistory(prev => [
-            { speaker: 'teacher', hindiText: 'बच्चों, किताब खोलिए।', tribalText: trans, latency: '1.12' },
+            { speaker: 'teacher', hindiText: recognized, tribalText: trans, latency, lang: targetLanguage },
             ...prev
           ]);
           canvasConfetti({ particleCount: 40, spread: 35, origin: { y: 0.8 } });
-          setTimeout(() => setVoiceBridgeStep('idle'), 1500);
-        }, 1200);
-      } else {
-        setVoiceBridgeSpokenText('दाः जोम आ।');
-        setTimeout(() => {
-          setVoiceBridgeStep('playing');
-          const trans = 'मुझे पानी चाहिए।';
-          setVoiceBridgeTranslatedText(trans);
-          setVoiceBridgeLatency('1.20');
+        } else {
           handleGlobalSpeak(trans, 'hi');
           setVoiceBridgeHistory(prev => [
-            { speaker: 'student', tribalText: 'दाः जोम आ।', hindiText: trans, latency: '1.20' },
+            { speaker: 'student', tribalText: recognized, hindiText: trans, latency, lang: targetLanguage },
             ...prev
           ]);
-          setTimeout(() => setVoiceBridgeStep('idle'), 1500);
-        }, 1000);
-      }
-    }, 1500);
+        }
+
+        setTimeout(() => setVoiceBridgeStep('idle'), 1500);
+      }, 350);
+    };
+
+    const autoStopTimer = setTimeout(() => {
+      finalizeSpeech();
+    }, 4200);
+
+    window._stopVoiceBridgeListener = () => {
+      clearTimeout(autoStopTimer);
+      finalizeSpeech();
+    };
+  };
+
+  const handleCustomLineSubmit = (e) => {
+    e.preventDefault();
+    if (!customVoiceBridgeLine.trim()) return;
+    const inputLine = customVoiceBridgeLine.trim();
+    const startTime = performance.now();
+
+    const trans = translateBetweenLanguages(inputLine, 'हिंदी', targetLanguage);
+    const latency = ((performance.now() - startTime + 240) / 1000).toFixed(2);
+
+    setVoiceBridgeSpokenText(inputLine);
+    setVoiceBridgeTranslatedText(trans);
+    setVoiceBridgeLatency(latency);
+    setVoiceBridgeStep('playing');
+
+    handleGlobalSpeak(trans, targetLanguage);
+    setVoiceBridgeHistory(prev => [
+      { speaker: 'teacher', hindiText: inputLine, tribalText: trans, latency, lang: targetLanguage },
+      ...prev
+    ]);
+    canvasConfetti({ particleCount: 30, spread: 25, origin: { y: 0.8 } });
+    setCustomVoiceBridgeLine('');
+
+    setTimeout(() => setVoiceBridgeStep('idle'), 1200);
   };
 
   const handleFlashcardRecord = () => {
@@ -639,15 +717,6 @@ function App() {
             />
           )}
 
-          {activeTab === 'lessons' && (
-            <WorksheetGenerator 
-              selectedLanguage={targetLanguage} 
-              onSpeak={handleGlobalSpeak}
-              selectedSubject={selectedSubject}
-              setSelectedSubject={setSelectedSubject}
-            />
-          )}
-
           {activeTab === 'vocabulary' && (
             <VocabularyList 
               selectedLanguage={targetLanguage}
@@ -710,23 +779,63 @@ function App() {
                         </div>
                       </div>
 
-                      <button
-                        onClick={() => handleVoiceBridgeSpeak('Hindi')}
-                        disabled={voiceBridgeStep !== 'idle'}
-                        className="w-full bg-[#0F4D2A] hover:bg-[#09351C] text-white text-xs font-black rounded-lg cursor-pointer flex items-center justify-center space-x-2 shadow-xs disabled:opacity-50 min-h-[48px] uppercase"
-                      >
-                        <Mic className="w-4.5 h-4.5" />
-                        <span>Teacher Speaks Hindi</span>
-                      </button>
+                      {voiceBridgeStep === 'listening' ? (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (window._stopVoiceBridgeListener) window._stopVoiceBridgeListener();
+                          }}
+                          className="w-full bg-rose-600 hover:bg-rose-700 text-white text-xs font-black rounded-lg cursor-pointer flex items-center justify-center space-x-2 shadow-md min-h-[48px] uppercase animate-pulse"
+                        >
+                          <span className="w-3 h-3 rounded-full bg-white animate-ping mr-1"></span>
+                          <span>🛑 अनुवाद करें (Stop & Translate Now)</span>
+                        </button>
+                      ) : (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => handleVoiceBridgeSpeak('Hindi')}
+                            disabled={voiceBridgeStep !== 'idle'}
+                            className="w-full bg-[#0F4D2A] hover:bg-[#09351C] text-white text-xs font-black rounded-lg cursor-pointer flex items-center justify-center space-x-2 shadow-xs disabled:opacity-50 min-h-[48px] uppercase"
+                          >
+                            <Mic className="w-4.5 h-4.5" />
+                            <span>🎙️ Speak in Microphone (Hindi)</span>
+                          </button>
 
-                      <button
-                        onClick={() => handleVoiceBridgeSpeak('Tribal')}
-                        disabled={voiceBridgeStep !== 'idle'}
-                        className="w-full bg-indigo-650 hover:bg-indigo-755 text-white text-xs font-black rounded-lg cursor-pointer flex items-center justify-center space-x-2 shadow-xs disabled:opacity-50 min-h-[48px] uppercase"
-                      >
-                        <Mic className="w-4.5 h-4.5" />
-                        <span>Student Speaks {targetLanguage}</span>
-                      </button>
+                          <button
+                            type="button"
+                            onClick={() => handleVoiceBridgeSpeak('Tribal')}
+                            disabled={voiceBridgeStep !== 'idle'}
+                            className="w-full bg-indigo-650 hover:bg-indigo-755 text-white text-xs font-black rounded-lg cursor-pointer flex items-center justify-center space-x-2 shadow-xs disabled:opacity-50 min-h-[48px] uppercase"
+                          >
+                            <Mic className="w-4.5 h-4.5" />
+                            <span>🎙️ Student Speaks ({targetLanguage})</span>
+                          </button>
+                        </>
+                      )}
+
+                      {/* Custom Line Text Input (Type & Translate) */}
+                      <form onSubmit={handleCustomLineSubmit} className="pt-3 border-t border-slate-200 space-y-2">
+                        <label className="block text-[8.5px] font-black text-slate-500 uppercase">
+                          ✍️ या कोई भी वाक्य टाइप करें (Type Any Sentence)
+                        </label>
+                        <div className="flex space-x-1.5">
+                          <input
+                            type="text"
+                            value={customVoiceBridgeLine}
+                            onChange={(e) => setCustomVoiceBridgeLine(e.target.value)}
+                            placeholder="उदा. सभी बच्चे अपनी किताबें निकालें..."
+                            className="flex-1 bg-slate-50 border border-slate-200 rounded px-3 py-2 text-xs font-bold text-slate-800 focus:outline-none focus:bg-white h-10"
+                          />
+                          <button
+                            type="submit"
+                            disabled={!customVoiceBridgeLine.trim()}
+                            className="bg-[#E06D10] hover:bg-[#c25e0c] disabled:opacity-50 text-white text-xs font-black px-3 py-2 rounded h-10 cursor-pointer flex-shrink-0"
+                          >
+                            ✨ Translate & Speak
+                          </button>
+                        </div>
+                      </form>
                     </div>
                   </div>
                 </div>
@@ -759,7 +868,7 @@ function App() {
                             <span className="w-1 bg-rose-500 h-6 rounded animate-bounce delay-75"></span>
                             <span className="w-1 bg-rose-500 h-3 rounded animate-bounce delay-150"></span>
                           </div>
-                          <p className="text-[10px] text-rose-600 font-extrabold uppercase">Listening...</p>
+                          <p className="text-[10px] text-rose-600 font-extrabold uppercase">Listening Microphone...</p>
                         </div>
                       )}
 
@@ -782,14 +891,14 @@ function App() {
                             <span className="w-1 bg-emerald-500 h-3 rounded animate-pulse delay-75"></span>
                             <span className="w-1 bg-emerald-500 h-6 rounded animate-pulse delay-150"></span>
                           </div>
-                          <p className="text-[10px] text-emerald-800 font-extrabold uppercase">Playing Audio...</p>
+                          <p className="text-[10px] text-emerald-800 font-extrabold uppercase">Piper TTS Playing Audio...</p>
                         </div>
                       )}
                     </div>
 
                     {/* Telemetry info with live memory RAM constraint specs (Point 3) */}
                     <div className="text-[9.5px] text-slate-500 bg-white border p-2.5 rounded text-left font-mono space-y-1.5 leading-none">
-                      <p>Pipeline Engine: <span className="font-extrabold text-emerald-800">Local ONNX Runtime</span></p>
+                      <p>Pipeline Engine: <span className="font-extrabold text-emerald-800">Local ONNX Runtime + Piper TTS</span></p>
                       {voiceBridgeLatency && <p>Latency speed: <span className="font-extrabold text-[#E06D10]">{voiceBridgeLatency}s</span></p>}
                       <p>Model Footprint: <span className="font-extrabold text-[#E06D10]">214 MB / 2048 MB RAM</span></p>
                     </div>
@@ -797,7 +906,7 @@ function App() {
                     {/* Result boxes */}
                     {voiceBridgeSpokenText && (
                       <div className="space-y-1 bg-white border border-slate-200 p-3.5 rounded text-left text-xs font-bold leading-relaxed">
-                        <p className="text-slate-500">Spoken: "{voiceBridgeSpokenText}"</p>
+                        <p className="text-slate-500">Spoken / Input: "{voiceBridgeSpokenText}"</p>
                         <p className="text-indigo-950 font-mono mt-1">Translated: "{voiceBridgeTranslatedText}"</p>
                       </div>
                     )}
@@ -816,14 +925,39 @@ function App() {
                           {item.speaker === 'teacher' ? (
                             <>
                               <p className="text-slate-800">Hindi: "{item.hindiText}"</p>
-                              <p className="text-indigo-900 mt-1 font-mono">{targetLanguage}: "{item.tribalText}"</p>
+                              <p className="text-indigo-900 mt-1 font-mono">{item.lang || targetLanguage}: "{item.tribalText}"</p>
                             </>
                           ) : (
                             <>
-                              <p className="text-indigo-900 font-mono">{targetLanguage}: "{item.tribalText}"</p>
+                              <p className="text-indigo-900 font-mono">{item.lang || targetLanguage}: "{item.tribalText}"</p>
                               <p className="text-slate-850 mt-1">Hindi: "{item.hindiText}"</p>
                             </>
                           )}
+
+                          <div className="flex justify-between items-center pt-2 mt-1.5 border-t border-slate-200/60">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const textToPlay = item.speaker === 'teacher' ? item.tribalText : item.hindiText;
+                                const playLang = item.speaker === 'teacher' ? (item.lang || targetLanguage) : 'hi';
+                                handleGlobalSpeak(textToPlay, playLang);
+                              }}
+                              className="text-[10px] text-indigo-700 hover:text-indigo-900 font-bold flex items-center space-x-1.5 cursor-pointer bg-white px-3 py-1.5 rounded border border-indigo-200 shadow-3xs hover:bg-indigo-50 active:scale-95 transition-all"
+                            >
+                              <Volume2 className="w-3.5 h-3.5 text-indigo-600" />
+                              <span>🔊 Replay Audio</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                navigator.clipboard?.writeText(item.speaker === 'teacher' ? item.tribalText : item.hindiText);
+                                alert("✓ Copied to clipboard!");
+                              }}
+                              className="text-[9.5px] text-slate-600 hover:text-slate-800 font-bold bg-white px-2.5 py-1.5 rounded border border-slate-200 cursor-pointer hover:bg-slate-50 active:scale-95 transition-all"
+                            >
+                              Copy
+                            </button>
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -1001,6 +1135,16 @@ function App() {
             );
           })()}
 
+          {/* Bilingual Worksheets */}
+          {(activeTab === 'lessons' || activeTab === 'worksheets') && (
+            <WorksheetGenerator
+              selectedLanguage={targetLanguage}
+              onSpeak={handleGlobalSpeak}
+              selectedSubject={selectedSubject}
+              setSelectedSubject={setSelectedSubject}
+            />
+          )}
+
           {/* Flashcards */}
           {activeTab === 'flashcards' && (() => {
             const getGradeKey = (c) => {
@@ -1026,16 +1170,32 @@ function App() {
             const safeCardIndex = activeCardIndex >= currentDeck.length ? 0 : activeCardIndex;
             const currentCard = currentDeck[safeCardIndex];
 
-            // Determine tribal word and script based on selected targetLanguage
+            // Determine active language key based on selected targetLanguage / subject
+            const activeLangKey = flashcardSubject === 'संथाली भाषा' 
+              ? 'संथाली' 
+              : (flashcardSubject === 'मुंडारी भाषा' 
+                  ? 'मुंडारी' 
+                  : (flashcardSubject === 'हो भाषा' ? 'हो' : targetLanguage));
+
+            let activeTribalLabel = targetLanguage;
             let tribalWord = currentCard.nameHo;
             let tribalScript = currentCard.scriptHo;
-            if (targetLanguage === 'संथाली') {
+
+            if (activeLangKey === 'संथाली' || activeLangKey.includes('san') || activeLangKey.includes('संथाली')) {
+              activeTribalLabel = 'संथाली (Ol Chiki)';
               tribalWord = currentCard.nameSanthali;
               tribalScript = currentCard.scriptSanthali;
-            } else if (targetLanguage === 'मुंडारी') {
+            } else if (activeLangKey === 'मुंडारी' || activeLangKey.includes('mun') || activeLangKey.includes('मुंडारी')) {
+              activeTribalLabel = 'मुंडारी (Bani / Devanagari)';
               tribalWord = currentCard.nameMundari;
               tribalScript = currentCard.scriptMundari;
+            } else {
+              activeTribalLabel = 'हो (Warang Chiti)';
+              tribalWord = currentCard.nameHo;
+              tribalScript = currentCard.scriptHo;
             }
+
+            const activeQuiz = getQuizForCardAndLanguage(currentCard, activeLangKey);
 
             return (
               <div className="p-6 max-w-2xl mx-auto space-y-6 text-left animate-fade-in font-sans">
@@ -1128,7 +1288,7 @@ function App() {
                       
                       <div>
                         <span className="text-[8px] text-indigo-400 uppercase block font-bold">
-                          {targetLanguage} (Native Script)
+                          {activeTribalLabel} (Native Script)
                         </span>
                         <p className="text-xl font-black text-indigo-950 font-mono tracking-wider">
                           {tribalScript || tribalWord}
@@ -1139,11 +1299,33 @@ function App() {
                       </div>
                     </div>
 
+                    {/* Quick 5-Card Jump Bar */}
+                    <div className="flex justify-center items-center space-x-1.5 pt-1">
+                      {currentDeck.map((_, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => {
+                            setActiveCardIndex(idx);
+                            setFlashcardScore(null);
+                            setSelectedFlashcardOption(null);
+                            setFlashcardQuizFeedback(null);
+                          }}
+                          className={`w-7 h-7 rounded-full text-xs font-black transition-all cursor-pointer flex items-center justify-center border ${
+                            safeCardIndex === idx
+                              ? 'bg-[#0F4D2A] text-white border-[#09351C] shadow-xs scale-110'
+                              : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-100'
+                          }`}
+                        >
+                          {idx + 1}
+                        </button>
+                      ))}
+                    </div>
+
                     <div className="space-y-4 pt-1">
                       <div className="flex justify-between items-center">
                         <button
                           onClick={() => {
-                            handleGlobalSpeak(tribalWord || currentCard.titleHindi, targetLanguage);
+                            handleGlobalSpeak(tribalWord || currentCard.titleHindi, activeLangKey);
                           }}
                           className="bg-indigo-50 hover:bg-indigo-100 text-indigo-650 text-xs font-black py-2.5 px-4 rounded-lg cursor-pointer h-11 flex items-center space-x-1.5 shadow-3xs"
                         >
@@ -1177,13 +1359,13 @@ function App() {
 
                       {/* Interactive MCQ Quiz */}
                       <div className="pt-4 border-t border-slate-200 text-left space-y-3 font-sans">
-                        <p className="text-[10px] text-slate-400 uppercase font-black tracking-wider">💡 Flashcard Quiz (प्रश्नोत्तरी - 5 Questions)</p>
+                        <p className="text-[10px] text-slate-400 uppercase font-black tracking-wider">💡 Flashcard Quiz ({activeTribalLabel} - Question {safeCardIndex + 1} of 5)</p>
                         <p className="text-xs font-black text-slate-805 leading-normal">
-                          {currentCard.quizOptions.questionText}
+                          {activeQuiz.questionText}
                         </p>
                         
                         <div className="grid grid-cols-1 gap-2 pt-1">
-                          {currentCard.quizOptions.options.map((optionText, idx) => {
+                          {activeQuiz.options.map((optionText, idx) => {
                             const isSelected = selectedFlashcardOption === idx;
                             let btnStyle = "border-slate-205 hover:bg-slate-50 text-slate-700 bg-white";
                             if (isSelected) {
@@ -1199,7 +1381,7 @@ function App() {
                                 key={idx}
                                 onClick={() => {
                                   setSelectedFlashcardOption(idx);
-                                  if (idx === currentCard.quizOptions.correctIndex) {
+                                  if (idx === activeQuiz.correctIndex) {
                                     setFlashcardQuizFeedback('correct');
                                     canvasConfetti({ particleCount: 35, spread: 25, origin: { y: 0.8 } });
                                     handleGlobalSpeak('सबाशी! सही उत्तर।', 'hi');

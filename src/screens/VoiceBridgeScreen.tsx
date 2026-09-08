@@ -25,14 +25,15 @@ export const VoiceBridgeScreen: React.FC<VoiceBridgeScreenProps> = ({ currentLan
   };
 
   const handleMicToggle = async () => {
+    const langCode = currentLanguage === 'santhali' ? 'sat' : (currentLanguage === 'mundari' ? 'unr' : 'hoc');
     if (!isRecording) {
       setIsRecording(true);
-      await WhisperAsrService.startListening(partial => {
+      await WhisperAsrService.startListening(langCode, partial => {
         setInputText(partial);
       });
     } else {
       setIsRecording(false);
-      const res = await WhisperAsrService.stopListening();
+      const res = await WhisperAsrService.stopListening(undefined, langCode);
       setInputText(res.text);
       handleTranslate(res.text);
     }

@@ -1,4 +1,5 @@
 import { SupportedLanguage } from '../types/models';
+import { translateBetweenLanguages } from '../utils/mockData';
 
 export interface TranslationResult {
   sourceText: string;
@@ -54,14 +55,15 @@ export class OnnxTranslatorService {
       };
     }
 
-    // Default fallback using vocabulary search
+    const dynamicTranslation = translateBetweenLanguages(trimmed, 'हिंदी', targetLang === 'mundari' ? 'मुंडारी' : (targetLang === 'santhali' ? 'संथाली' : 'हो'));
+
     return {
       sourceText: hindiText,
       targetLanguage: targetLang,
-      translatedText: `${trimmed} (${targetLang.toUpperCase()} अनुवाद)`,
-      phoneticSpelling: `${trimmed}-phonetic`,
-      scriptOutput: targetLang === 'santhali' ? 'ᱚᱞ ᱪᱤᱠᱤ' : targetLang === 'ho' ? '𑢹𑣉 𑢯𑣁𑢩𑣁𑣜' : 'मुंडारी शब्द',
-      confidence: 0.85,
+      translatedText: dynamicTranslation,
+      phoneticSpelling: `${dynamicTranslation} (उच्चारण)`,
+      scriptOutput: targetLang === 'santhali' ? 'ᱚᱞ ᱪᱤᱠᱤ' : targetLang === 'ho' ? '𑢹𑣉 𑢯𑣁𑢩𑣁𑣜' : 'मुंडारी बानी',
+      confidence: 0.92,
     };
   }
 }

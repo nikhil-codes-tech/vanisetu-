@@ -38,5 +38,10 @@ export default defineConfig({
       }
     })
   ],
+  server: {
+    watch: {
+      ignored: ['**/PALASH/**', '**/SIH/**', '**/android/**', '**/build_desktop/**', '**/dist_electron/**', '**/lib/**', '**/*.tmp']
+    }
+  },
   base: './'
 })

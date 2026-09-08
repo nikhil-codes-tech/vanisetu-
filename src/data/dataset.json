@@ -1,0 +1,387 @@
+[
+    {
+        "hindi": "नमस्ते",
+        "ho_devanagari": "जोहार",
+        "sat_devanagari": "जोहार",
+        "unr_devanagari": "जोहार",
+        "pos": "greeting"
+    },
+    {
+        "hindi": "हेलो",
+        "ho_devanagari": "जोहार",
+        "sat_devanagari": "जोहार",
+        "unr_devanagari": "जोहार",
+        "pos": "greeting"
+    },
+    {
+        "hindi": "सुप्रभात",
+        "ho_devanagari": "बुगि सेताः",
+        "sat_devanagari": "नापाय सेताः",
+        "unr_devanagari": "बुगि सेताः",
+        "pos": "greeting"
+    },
+    {
+        "hindi": "धन्यवाद",
+        "ho_devanagari": "सराहना",
+        "sat_devanagari": "सराहना",
+        "unr_devanagari": "सराहना",
+        "pos": "greeting"
+    },
+    {
+        "hindi": "बच्चों अपनी किताबें निकालो",
+        "ho_devanagari": "होनको आपन पुथी ओलोंग पे",
+        "sat_devanagari": "गिदराको आपनाः पुथी ओडोक पे",
+        "unr_devanagari": "होनको आपनाः पुथी ओलोंग पे",
+        "pos": "sentence"
+    },
+    {
+        "hindi": "आज हम गणित पढ़ेंगे",
+        "ho_devanagari": "तेइसिंग बु गणित बु इतुआ",
+        "sat_devanagari": "तेहेंज आबो लेका बु पाढ़ावा",
+        "unr_devanagari": "तिसिंग अबू लेखा बु इतुना",
+        "pos": "sentence"
+    },
+    {
+        "hindi": "पानी पीने के लिए बाहर जाओ",
+        "ho_devanagari": "दाः नुइ लागी सेनोः मे",
+        "sat_devanagari": "दाः ञु लागिद बाहर सेन मे",
+        "unr_devanagari": "दाः नु लागी बाहेर सेन मे",
+        "pos": "sentence"
+    },
+    {
+        "hindi": "कक्षा में शांत बैठिए",
+        "ho_devanagari": "क्लास रे थिर दुब पे",
+        "sat_devanagari": "क्लास रे थिर दुब पे",
+        "unr_devanagari": "क्लास रे थिर दुब पे",
+        "pos": "sentence"
+    },
+    {
+        "hindi": "एक से दस तक गिनती गिनो",
+        "ho_devanagari": "मिद एते गेल धरि लेखा पे",
+        "sat_devanagari": "मिद खोन गेल धरि लेखा पे",
+        "unr_devanagari": "मिद एते गेल धरि लेखा पे",
+        "pos": "sentence"
+    },
+    {
+        "hindi": "हेलो क्या कर रहे हो",
+        "ho_devanagari": "जोहार, चेनाः चिकेय तना?",
+        "sat_devanagari": "जोहार, चेत एम चेकायेत-आ?",
+        "unr_devanagari": "जोहार, चिनाः चिके तन?",
+        "pos": "sentence"
+    },
+    {
+        "hindi": "बच्चे कक्षा में आ रहे हैं",
+        "ho_devanagari": "होनको क्लास रे हिजुः तनाको",
+        "sat_devanagari": "गिदराको क्लास रे हिजुः कानाको",
+        "unr_devanagari": "होनको क्लास रे हिजुः तनाको",
+        "pos": "sentence"
+    },
+    {
+        "hindi": "यहाँ आओ",
+        "ho_devanagari": "नेपाः हिजुः मे",
+        "sat_devanagari": "नोंडे हिजुः मे",
+        "unr_devanagari": "नेते हिजुः मे",
+        "pos": "phrase"
+    },
+    {
+        "hindi": "वहाँ जाओ",
+        "ho_devanagari": "एंटे सेनोः पे",
+        "sat_devanagari": "हाँडे सेन मे",
+        "unr_devanagari": "हंते सेन मे",
+        "pos": "phrase"
+    },
+    {
+        "hindi": "किताब खोलो",
+        "ho_devanagari": "पुथी नीः पे",
+        "sat_devanagari": "पुथी झिज मे",
+        "unr_devanagari": "पुथी नीः पे",
+        "pos": "phrase"
+    },
+    {
+        "hindi": "किताब बंद करो",
+        "ho_devanagari": "पुथी हंद पे",
+        "sat_devanagari": "पुथी बोंदो मे",
+        "unr_devanagari": "पुथी तोंद पे",
+        "pos": "phrase"
+    },
+    {
+        "hindi": "पानी पियो",
+        "ho_devanagari": "दाः नुइ पे",
+        "sat_devanagari": "दाः ञु मे",
+        "unr_devanagari": "दाः नु पे",
+        "pos": "phrase"
+    },
+    {
+        "hindi": "खाना खाओ",
+        "ho_devanagari": "मंडी जोम पे",
+        "sat_devanagari": "दाका जोम मे",
+        "unr_devanagari": "मंडी जोम पे",
+        "pos": "phrase"
+    },
+    {
+        "hindi": "चुप रहो",
+        "ho_devanagari": "थिर ताएन पे",
+        "sat_devanagari": "थिर ताहेन मे",
+        "unr_devanagari": "थिर ताइन पे",
+        "pos": "phrase"
+    },
+    {
+        "hindi": "खड़े हो जाओ",
+        "ho_devanagari": "तिंगु पे",
+        "sat_devanagari": "तिंगुन मे",
+        "unr_devanagari": "तिंगु पे",
+        "pos": "phrase"
+    },
+    {
+        "hindi": "बैठ जाओ",
+        "ho_devanagari": "दुब पे",
+        "sat_devanagari": "दुब मे",
+        "unr_devanagari": "दुब पे",
+        "pos": "phrase"
+    },
+    {
+        "hindi": "साफ लिखो",
+        "ho_devanagari": "सपा ओलोंग पे",
+        "sat_devanagari": "सफा ओल मे",
+        "unr_devanagari": "सपा ओल पे",
+        "pos": "phrase"
+    },
+    {
+        "hindi": "हाथ धो लो",
+        "ho_devanagari": "ती अबुंग पे",
+        "sat_devanagari": "ती अरुब मे",
+        "unr_devanagari": "ती अबुंग पे",
+        "pos": "phrase"
+    },
+    {
+        "hindi": "प्रार्थना करो",
+        "ho_devanagari": "बिनती पे",
+        "sat_devanagari": "बिनती मे",
+        "unr_devanagari": "बिनती पे",
+        "pos": "phrase"
+    },
+    {
+        "hindi": "पंक्ति बनाओ",
+        "ho_devanagari": "थार बाई पे",
+        "sat_devanagari": "थार बेनाव मे",
+        "unr_devanagari": "थार बाई पे",
+        "pos": "phrase"
+    },
+    {
+        "hindi": "ताली बजाओ",
+        "ho_devanagari": "ती चापो पे",
+        "sat_devanagari": "ती चापो मे",
+        "unr_devanagari": "चापो पे",
+        "pos": "phrase"
+    },
+    {
+        "hindi": "एक",
+        "ho_devanagari": "मिद",
+        "sat_devanagari": "मिद",
+        "unr_devanagari": "मिद",
+        "pos": "number"
+    },
+    {
+        "hindi": "दो",
+        "ho_devanagari": "बारिया",
+        "sat_devanagari": "बार",
+        "unr_devanagari": "बारिया",
+        "pos": "number"
+    },
+    {
+        "hindi": "तीन",
+        "ho_devanagari": "आपिया",
+        "sat_devanagari": "पे",
+        "unr_devanagari": "आपिया",
+        "pos": "number"
+    },
+    {
+        "hindi": "चार",
+        "ho_devanagari": "उपोनिया",
+        "sat_devanagari": "पोन",
+        "unr_devanagari": "उपोनिया",
+        "pos": "number"
+    },
+    {
+        "hindi": "पाँच",
+        "ho_devanagari": "मोनेया",
+        "sat_devanagari": "मोड़े",
+        "unr_devanagari": "मोनेया",
+        "pos": "number"
+    },
+    {
+        "hindi": "छह",
+        "ho_devanagari": "तुरिया",
+        "sat_devanagari": "तुरुय",
+        "unr_devanagari": "तुरिया",
+        "pos": "number"
+    },
+    {
+        "hindi": "सात",
+        "ho_devanagari": "एया",
+        "sat_devanagari": "एयाय",
+        "unr_devanagari": "एया",
+        "pos": "number"
+    },
+    {
+        "hindi": "आठ",
+        "ho_devanagari": "इरिलिया",
+        "sat_devanagari": "इरिल",
+        "unr_devanagari": "इरिलिया",
+        "pos": "number"
+    },
+    {
+        "hindi": "नौ",
+        "ho_devanagari": "आरेया",
+        "sat_devanagari": "आरे",
+        "unr_devanagari": "आरेया",
+        "pos": "number"
+    },
+    {
+        "hindi": "दस",
+        "ho_devanagari": "गेलया",
+        "sat_devanagari": "गेल",
+        "unr_devanagari": "गेलया",
+        "pos": "number"
+    },
+    {
+        "hindi": "शिक्षक",
+        "ho_devanagari": "माहाशय",
+        "sat_devanagari": "माचेत",
+        "unr_devanagari": "माहाशय",
+        "pos": "noun"
+    },
+    {
+        "hindi": "कलम",
+        "ho_devanagari": "कलम",
+        "sat_devanagari": "कलम",
+        "unr_devanagari": "कलम",
+        "pos": "noun"
+    },
+    {
+        "hindi": "कापी",
+        "ho_devanagari": "खाता",
+        "sat_devanagari": "खाता",
+        "unr_devanagari": "खाता",
+        "pos": "noun"
+    },
+    {
+        "hindi": "किताब",
+        "ho_devanagari": "पुथी",
+        "sat_devanagari": "पुथी",
+        "unr_devanagari": "पुथी",
+        "pos": "noun"
+    },
+    {
+        "hindi": "लड़का",
+        "ho_devanagari": "कोड़ा होन",
+        "sat_devanagari": "कोड़ा गिदरा",
+        "unr_devanagari": "कोड़ा होन",
+        "pos": "noun"
+    },
+    {
+        "hindi": "लड़की",
+        "ho_devanagari": "कुई होन",
+        "sat_devanagari": "कुड़ी गिदरा",
+        "unr_devanagari": "कुड़ी होन",
+        "pos": "noun"
+    },
+    {
+        "hindi": "पानी",
+        "ho_devanagari": "दाः",
+        "sat_devanagari": "दाः",
+        "unr_devanagari": "दाः",
+        "pos": "noun"
+    },
+    {
+        "hindi": "स्कूल",
+        "ho_devanagari": "इतुकुल",
+        "sat_devanagari": "आसड़ा",
+        "unr_devanagari": "इतुकुल",
+        "pos": "noun"
+    },
+    {
+        "hindi": "घर",
+        "ho_devanagari": "ओड़ाः",
+        "sat_devanagari": "ओड़ाः",
+        "unr_devanagari": "ओड़ाः",
+        "pos": "noun"
+    },
+    {
+        "hindi": "खाना",
+        "ho_devanagari": "मंडी",
+        "sat_devanagari": "दाका",
+        "unr_devanagari": "मंडी",
+        "pos": "noun"
+    },
+    {
+        "hindi": "पेड़",
+        "ho_devanagari": "दारु",
+        "sat_devanagari": "दारे",
+        "unr_devanagari": "दारु",
+        "pos": "noun"
+    },
+    {
+        "hindi": "फल",
+        "ho_devanagari": "जो",
+        "sat_devanagari": "जो",
+        "unr_devanagari": "जो",
+        "pos": "noun"
+    },
+    {
+        "hindi": "फूल",
+        "ho_devanagari": "बा",
+        "sat_devanagari": "बाहा",
+        "unr_devanagari": "बा",
+        "pos": "noun"
+    },
+    {
+        "hindi": "गाय",
+        "ho_devanagari": "गाई",
+        "sat_devanagari": "गाई",
+        "unr_devanagari": "गाई",
+        "pos": "noun"
+    },
+    {
+        "hindi": "बकरी",
+        "ho_devanagari": "मेरोम",
+        "sat_devanagari": "मेरोम",
+        "unr_devanagari": "मेरोम",
+        "pos": "noun"
+    },
+    {
+        "hindi": "कुत्ता",
+        "ho_devanagari": "सेता",
+        "sat_devanagari": "सेता",
+        "unr_devanagari": "सेता",
+        "pos": "noun"
+    },
+    {
+        "hindi": "बिल्ली",
+        "ho_devanagari": "पुसी",
+        "sat_devanagari": "पुसी",
+        "unr_devanagari": "पुसी",
+        "pos": "noun"
+    },
+    {
+        "hindi": "हाथी",
+        "ho_devanagari": "हाती",
+        "sat_devanagari": "हाती",
+        "unr_devanagari": "हाती",
+        "pos": "noun"
+    },
+    {
+        "hindi": "सूर्य",
+        "ho_devanagari": "सिंगी",
+        "sat_devanagari": "सिंदी",
+        "unr_devanagari": "सिंगी",
+        "pos": "noun"
+    },
+    {
+        "hindi": "चंद्रमा",
+        "ho_devanagari": "चंडूः",
+        "sat_devanagari": "चांदो",
+        "unr_devanagari": "चांडूः",
+        "pos": "noun"
+    }
+]

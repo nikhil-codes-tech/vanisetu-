@@ -23,8 +23,28 @@ export default function VocabularyList({
   // Example sentences generated map
   const [generatedExamplesMap, setGeneratedExamplesMap] = useState({});
 
+  // Active playing audio key state for visual feedback
+  const [playingKey, setPlayingKey] = useState(null);
+
+  const handleSpeakWord = (text, lang, key) => {
+    setPlayingKey(key);
+    if (onSpeak) {
+      onSpeak(text, lang);
+    }
+    setTimeout(() => {
+      setPlayingKey(prev => (prev === key ? null : prev));
+    }, 1400);
+  };
+
   const activeLangMeta = LANGUAGES_METADATA[selectedLanguage] || LANGUAGES_METADATA["हो"];
-  const targetKey = activeLangMeta.translationCode || 'ho';
+  let targetKey = activeLangMeta.translationCode || 'ho';
+  if (selectedLanguage === 'मुंडारी' || selectedLanguage === 'Mundari' || targetKey === 'mun' || targetKey === 'unr') {
+    targetKey = 'mundari';
+  } else if (selectedLanguage === 'संथाली' || selectedLanguage === 'Santhali' || targetKey === 'sat') {
+    targetKey = 'santhali';
+  } else {
+    targetKey = 'ho';
+  }
 
   const subjectVocabList = VOCABULARY_DATABASE[selectedSubject] || [];
 
@@ -141,7 +161,7 @@ export default function VocabularyList({
             </div>
           ) : (
             filteredVocab.map((item, idx) => {
-              const phoneticVal = item.translations[targetKey] || "अनुवाद उपलब्ध नहीं है";
+              const phoneticVal = item.translations?.[targetKey] || item.translations?.ho || "अनुवाद उपलब्ध नहीं है";
               const nativeVal = item.nativeScripts?.[targetKey] || phoneticVal;
               
               // Select active text display based on toggle script state (Point 6)
@@ -187,24 +207,63 @@ export default function VocabularyList({
 
                     {/* Classroom examples */}
                     <div className="pt-2.5 border-t border-slate-100/60 space-y-2">
-                      <p className="text-[9.5px] text-[#0F4D2A] font-black uppercase">Classroom Usage Examples:</p>
+                      <div className="flex items-center justify-between">
+                        <p className="text-[9.5px] text-[#0F4D2A] font-black uppercase">Classroom Usage Examples:</p>
+                        <span className="text-[8px] bg-emerald-50 text-emerald-800 font-bold px-1.5 py-0.5 rounded">
+                          NIPUN ALIGNED
+                        </span>
+                      </div>
                       
                       {hasExamplesGenerated ? (
-                        <div className="bg-slate-50 border border-slate-200 p-2.5 rounded text-xs space-y-2 font-semibold">
-                          {item.examples && item.examples.map((ex, eIdx) => (
-                            <div key={eIdx} className="space-y-0.5 leading-relaxed">
-                              <p className="text-slate-800">Hindi: "{ex.hindi}"</p>
-                              <p className="text-indigo-900 font-mono font-black">{activeLangMeta.name}: "{ex.translated}"</p>
-                            </div>
-                          ))}
+                        <div className="bg-slate-50 border border-slate-200 p-2.5 rounded text-xs space-y-2.5 font-semibold">
+                          {item.examples && item.examples.map((ex, eIdx) => {
+                            const translatedExampleText = (ex.translations && (ex.translations[targetKey] || ex.translations.ho))
+                              || (typeof ex.translated === 'object' && (ex.translated[targetKey] || ex.translated.ho))
+                              || (typeof ex.translated === 'string' ? ex.translated : (item.translations?.[targetKey] || item.translations?.ho || ''));
+
+                            return (
+                              <div key={eIdx} className="space-y-1 leading-relaxed bg-white p-2 rounded border border-slate-150">
+                                <div className="flex justify-between items-center">
+                                  <p className="text-slate-800 text-xs">🇮🇳 Hindi: "{ex.hindi}"</p>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleSpeakWord(ex.hindi, 'hi', `ex_hi_${idx}_${eIdx}`)}
+                                    title="Listen in Hindi"
+                                    className={`p-1 rounded cursor-pointer transition-all ${
+                                      playingKey === `ex_hi_${idx}_${eIdx}`
+                                        ? 'bg-amber-100 text-amber-900 scale-110'
+                                        : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
+                                    }`}
+                                  >
+                                    <Volume2 className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
+                                <div className="flex justify-between items-center pt-0.5 border-t border-slate-100">
+                                  <p className="text-indigo-900 font-mono font-black text-xs">🌿 {activeLangMeta.name}: "{translatedExampleText}"</p>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleSpeakWord(translatedExampleText, targetKey, `ex_tr_${idx}_${eIdx}`)}
+                                    title={`Listen in ${activeLangMeta.name}`}
+                                    className={`p-1 rounded cursor-pointer transition-all ${
+                                      playingKey === `ex_tr_${idx}_${eIdx}`
+                                        ? 'bg-emerald-100 text-emerald-900 scale-110'
+                                        : 'text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50'
+                                    }`}
+                                  >
+                                    <Volume2 className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
                       ) : (
                         <button
                           onClick={() => handleGenerateExamples(item.word)}
-                          className="bg-[#EBF7F2] hover:bg-emerald-100 border border-[#C3ECD8] text-[#0F4D2A] text-[10.5px] font-black py-1.5 px-3 rounded flex items-center space-x-1 cursor-pointer h-10"
+                          className="bg-[#EBF7F2] hover:bg-emerald-100 border border-[#C3ECD8] text-[#0F4D2A] text-[10.5px] font-black py-1.5 px-3 rounded flex items-center space-x-1 cursor-pointer h-10 transition-colors"
                         >
                           <Sparkles className="w-3.5 h-3.5" />
-                          <span>✨ Generate examples</span>
+                          <span>✨ Generate classroom examples & audio</span>
                         </button>
                       )}
                     </div>
@@ -213,13 +272,36 @@ export default function VocabularyList({
                   {/* Footer Speech and Study Toggle triggers */}
                   <div className="flex justify-between items-center text-xs flex-wrap gap-2 pt-1 font-sans">
                     
-                    <button
-                      onClick={() => onSpeak(phoneticVal !== 'अनुवाद उपलब्ध नहीं है' ? phoneticVal.split(' ')[0] : item.word, targetKey)}
-                      className="bg-indigo-50 hover:bg-indigo-100 text-indigo-650 px-3.5 py-2 rounded-lg text-xs font-black flex items-center space-x-1.5 transition-colors cursor-pointer h-11"
-                    >
-                      <Volume2 className="w-4 h-4" />
-                      <span>सुनें</span>
-                    </button>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => {
+                          const toSpeak = phoneticVal || item.word;
+                          handleSpeakWord(toSpeak, targetKey, `vocab_tr_${idx}`);
+                        }}
+                        title={`Listen pronunciation in ${selectedLanguage}`}
+                        className={`px-3.5 py-2 rounded-lg text-xs font-black flex items-center space-x-1.5 transition-all cursor-pointer h-11 shadow-3xs ${
+                          playingKey === `vocab_tr_${idx}`
+                            ? 'bg-emerald-700 text-white scale-105 shadow-md'
+                            : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                        }`}
+                      >
+                        <Volume2 className={`w-4 h-4 ${playingKey === `vocab_tr_${idx}` ? 'animate-bounce' : ''}`} />
+                        <span>{playingKey === `vocab_tr_${idx}` ? '🔊 बोल रहा है...' : `🔊 सुनें (${selectedLanguage})`}</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleSpeakWord(item.word, 'hi', `vocab_hi_${idx}`)}
+                        title="Listen pronunciation in Hindi"
+                        className={`px-3 py-2 rounded-lg text-xs font-bold flex items-center space-x-1 transition-all cursor-pointer h-11 ${
+                          playingKey === `vocab_hi_${idx}`
+                            ? 'bg-amber-100 text-amber-900 border border-amber-300 scale-105'
+                            : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                        }`}
+                      >
+                        <Volume2 className={`w-3.5 h-3.5 ${playingKey === `vocab_hi_${idx}` ? 'animate-bounce' : ''}`} />
+                        <span>{playingKey === `vocab_hi_${idx}` ? 'बोल रहा है...' : 'हिंदी'}</span>
+                      </button>
+                    </div>
 
                     <button
                       onClick={() => toggleLearned(item.word)}

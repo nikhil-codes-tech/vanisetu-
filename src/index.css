@@ -77,3 +77,74 @@
 .transform-style-3d {
   transform-style: preserve-3d;
 }
+
+/* ==========================================================================
+   A4 Worksheet Print & Offline PDF Export Styles
+   Ensures ONLY the A4 worksheet document is printed/saved, hiding UI chrome.
+   ========================================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* Hide everything on the page by default */
+  body * {
+    visibility: hidden !important;
+  }
+
+  /* Completely hide all non-printable UI chrome */
+  aside,
+  nav,
+  header,
+  footer,
+  .no-print,
+  .no-print-area {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Make ONLY the printable worksheet and all its children visible */
+  #palash-printable-worksheet,
+  #palash-printable-worksheet * {
+    visibility: visible !important;
+  }
+
+  #palash-printable-worksheet {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    min-height: 100% !important;
+    margin: 0 !important;
+    padding: 10mm 12mm !important;
+    border: 2px solid #111827 !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    z-index: 999999 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  #palash-printable-worksheet button {
+    display: block !important;
+    visibility: visible !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #94a3b8 !important;
+    box-shadow: none !important;
+  }
+}
+

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { LANGUAGES_METADATA, SUBJECTS_DATA } from '../utils/mockData';
-import { Mic, Wifi, WifiOff, Volume2, Clock } from 'lucide-react';
+import { LANGUAGES_METADATA, SUBJECTS_DATA, translateBetweenLanguages } from '../utils/mockData';
+import WhisperAsrService from '../services/whisperAsr';
+import { PiperTtsService } from '../services/piperTts';
+import { Mic, Wifi, WifiOff, Volume2, Clock, RotateCcw } from 'lucide-react';
 
 export default function Dashboard({ 
   teacherData, 
@@ -30,24 +32,46 @@ export default function Dashboard({
   const [demoTranslated, setDemoTranslated] = useState('');
   const [demoLatency, setDemoLatency] = useState(null);
 
-  const triggerDemoSpeak = () => {
+  const getVoiceModelKey = (lang) => {
+    const code = (lang || '').toString().toLowerCase();
+    if (code.includes('संथाली') || code.includes('santhali') || code.includes('sat')) {
+      return 'santhali_male';
+    } else if (code.includes('मुंडारी') || code.includes('mundari') || code.includes('unr')) {
+      return 'mundari_standard';
+    } else {
+      return 'ho_female';
+    }
+  };
+
+  const triggerDemoSpeak = async () => {
     setIsDemoTranslating(true);
     setDemoSpoken('');
     setDemoTranslated('');
     setDemoLatency(null);
 
-    setTimeout(() => {
-      setIsDemoTranslating(false);
-      setDemoSpoken('बच्चों, किताब खोलिए।');
-      const tr = targetLanguage === 'हो' ? 'होनको, पुथी नीः पे।' : 'पुथी उताःइमे।';
-      setDemoTranslated(tr);
-      setDemoLatency('1.12');
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(tr);
-        u.rate = 0.85;
-        window.speechSynthesis.speak(u);
+    const startTime = performance.now();
+    const defaultPhrase = 'बच्चों, किताब खोलिए।';
+    let currentSpeech = defaultPhrase;
+
+    await WhisperAsrService.startListening('hi', (partial) => {
+      if (partial && partial.trim()) {
+        currentSpeech = partial;
       }
+    });
+
+    setTimeout(async () => {
+      const res = await WhisperAsrService.stopListening(currentSpeech, 'hi');
+      const spokenText = res.text || defaultPhrase;
+      setDemoSpoken(spokenText);
+
+      const tr = translateBetweenLanguages(spokenText, 'हिंदी', targetLanguage);
+      const latency = ((performance.now() - startTime) / 1000).toFixed(2);
+
+      setIsDemoTranslating(false);
+      setDemoTranslated(tr);
+      setDemoLatency(latency);
+
+      PiperTtsService.speak(tr, { speed: 0.85, voiceModelKey: getVoiceModelKey(targetLanguage) });
     }, 1200);
   };
 
@@ -256,7 +280,9 @@ export default function Dashboard({
             <div className="space-y-1">
               <span className="text-[8.5px] bg-[#0F4D2A] border border-white/20 text-white px-2 py-0.5 rounded font-black uppercase">Students</span>
               <p className="text-white">{targetLanguage} (Regional) 🟢</p>
-              <p className="text-[10px] text-emerald-300 font-mono mt-0.5">"होनको, तेइसिंग बु लेखा..."</p>
+              <p className="text-[10px] text-emerald-300 font-mono mt-0.5">
+                "{targetLanguage === 'मुंडारी' ? 'होनको, तिसिंग अबू लेखा...' : (targetLanguage === 'संथाली' ? 'गिदराको, तेहेंज आबो लेका...' : 'होनको, तेइसिंग बु लेखा...')}"
+              </p>
             </div>
           </div>
         </div>
@@ -284,7 +310,9 @@ export default function Dashboard({
         <div className="bg-[#FAF9F5] border border-slate-200 rounded p-5 text-center space-y-4">
           <div className="space-y-1">
             <p className="text-xs font-bold text-slate-500 uppercase">शिक्षक बोलें (Hindi)</p>
-            <p className="text-sm font-black text-slate-800">"बच्चों, किताब खोलिए।"</p>
+            <p className="text-sm font-black text-slate-800">
+              "{demoSpoken || 'बच्चों, किताब खोलिए।'}"
+            </p>
           </div>
 
           <div className="flex justify-center items-center py-2.5">
@@ -296,37 +324,47 @@ export default function Dashboard({
                   <span className="w-1 bg-[#0F4D2A] h-5 rounded animate-pulse delay-100"></span>
                   <span className="w-1 bg-[#0F4D2A] h-3 rounded animate-pulse delay-200"></span>
                 </div>
-                <p className="text-[10px] text-indigo-700 font-extrabold animate-pulse">✨ Translating speech...</p>
+                <p className="text-[10px] text-indigo-700 font-extrabold animate-pulse">✨ Translating speech to {targetLanguage}...</p>
               </div>
             ) : demoTranslated ? (
-              <div className="space-y-2.5 text-center">
+              <div className="space-y-3 text-center">
                 <div className="flex justify-center items-center space-x-2">
                   <span className="bg-emerald-50 text-emerald-808 border border-emerald-250 text-[9.5px] font-black px-2 py-0.5 rounded">
                     ⚡ {demoLatency}s Latency
                   </span>
                   <span className="text-[9.5px] text-slate-400 font-bold">Target: &lt; 3.0s</span>
                 </div>
-                <p className="text-sm font-black text-indigo-950 font-mono">"{demoTranslated}"</p>
-                <button
-                  onClick={() => {
-                    if ('speechSynthesis' in window) {
-                      window.speechSynthesis.cancel();
-                      const u = new SpeechSynthesisUtterance(demoTranslated);
-                      u.rate = 0.85;
-                      window.speechSynthesis.speak(u);
-                    }
-                  }}
-                  className="bg-indigo-50 hover:bg-indigo-100 text-indigo-650 text-xs font-black px-3.5 py-2 rounded-lg flex items-center space-x-1.5 mx-auto cursor-pointer"
-                >
-                  <Volume2 className="w-4 h-4" />
-                  <span>सुनें (Play Ho Audio)</span>
-                </button>
+                <div className="bg-white border border-indigo-100 p-3 rounded-xl max-w-md mx-auto shadow-3xs space-y-1">
+                  <span className="text-[9px] bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded font-black uppercase">
+                    {targetLanguage} Translation
+                  </span>
+                  <p className="text-sm font-black text-indigo-950 font-mono">"{demoTranslated}"</p>
+                </div>
+                <div className="flex justify-center items-center space-x-2">
+                  <button
+                    onClick={() => {
+                      PiperTtsService.speak(demoTranslated, { speed: 0.85, voiceModelKey: getVoiceModelKey(targetLanguage) });
+                    }}
+                    className="bg-[#0F4D2A] hover:bg-[#09351C] text-white text-xs font-black px-4 py-2 rounded-lg flex items-center space-x-1.5 cursor-pointer shadow-3xs"
+                  >
+                    <Volume2 className="w-4 h-4" />
+                    <span>सुनें (Play {targetLanguage} Audio)</span>
+                  </button>
+                  <button
+                    onClick={triggerDemoSpeak}
+                    className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-3 py-2 rounded-lg flex items-center space-x-1 cursor-pointer"
+                    title="Speak again"
+                  >
+                    <Mic className="w-3.5 h-3.5" />
+                    <span>फिर से बोलें</span>
+                  </button>
+                </div>
               </div>
             ) : (
               <button
                 onClick={triggerDemoSpeak}
                 className="w-16 h-16 bg-[#0F4D2A] hover:bg-[#09351C] text-white rounded-full flex items-center justify-center shadow-xs cursor-pointer hover:scale-105 active:scale-95 transition-all"
-                title="Tap to speak"
+                title="Tap to speak in Hindi"
               >
                 <Mic className="w-6 h-6 animate-pulse" />
               </button>
@@ -334,7 +372,7 @@ export default function Dashboard({
           </div>
 
           <p className="text-[10px] text-slate-450 font-bold uppercase">
-            ⚡ Telemetry: Local ONNX Pipeline • Latency: 1.12s • Offline Cache Ready
+            ⚡ Telemetry: Local ONNX Pipeline • Latency: {demoLatency ? `${demoLatency}s` : '1.12s'} • Offline Cache Ready
           </p>
         </div>
       </div>

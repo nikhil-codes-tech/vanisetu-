@@ -38,3 +38,26 @@ build_desktop/
 build_temp/
 dist_electron/
 
+# Binaries & Compiled Files
+*.exe
+*.dll
+*.lib
+*.pdb
+*.obj
+*.o
+lib/
+SIH/
+
+# Android & Native Build Artifacts
+.cxx/
+.gradle/
+build/
+local.properties
+*.keystore
+
+# Python & Virtual Environments
+__pycache__/
+*.pyc
+venv/
+.venv/
+env/

@@ -379,6 +379,17 @@ export default function WorksheetGenerator({
   const [downloadComplete, setDownloadComplete] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isLowInkMode, setIsLowInkMode] = useState(false);
+  const [offlineSaveNotice, setOfflineSaveNotice] = useState(null);
+
+  // Persistent Offline Worksheets (Offline Database)
+  const [offlineWorksheets, setOfflineWorksheets] = useState(() => {
+    try {
+      const stored = localStorage.getItem('palash_offline_worksheets');
+      return stored ? JSON.parse(stored) : [];
+    } catch (e) {
+      return [];
+    }
+  });
 
   const activeLangMeta = LANGUAGES_METADATA[selectedLanguage] || LANGUAGES_METADATA["हो"];
 
@@ -410,9 +421,40 @@ export default function WorksheetGenerator({
     setQuizFinished(false);
   };
 
-  const handleDownload = () => {
+  const handleSaveOffline = () => {
+    if (!activeWorksheet) return;
+    const now = new Date();
+    const formattedDate = `${now.toLocaleDateString('hi-IN')} • ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    const sheetObj = {
+      ...activeWorksheet,
+      id: activeWorksheet.id.startsWith('ws_offline_') ? activeWorksheet.id : `ws_offline_${Date.now()}`,
+      savedAt: formattedDate,
+      offline: true
+    };
+    const updated = [sheetObj, ...offlineWorksheets.filter(w => w.id !== sheetObj.id && w.title !== sheetObj.title)];
+    setOfflineWorksheets(updated);
+    try {
+      localStorage.setItem('palash_offline_worksheets', JSON.stringify(updated));
+    } catch (err) {
+      console.warn('Could not save to localStorage:', err);
+    }
     setDownloadComplete(true);
-    setTimeout(() => setDownloadComplete(false), 2000);
+    setOfflineSaveNotice(`✓ कार्यपत्रक "${sheetObj.title}" ऑफ़लाइन डेटाबेस (Local Offline Store) में सुरक्षित हो गया!`);
+    setTimeout(() => {
+      setDownloadComplete(false);
+      setOfflineSaveNotice(null);
+    }, 3200);
+  };
+
+  const handleDeleteOfflineWorksheet = (sheetId, e) => {
+    e.stopPropagation();
+    const updated = offlineWorksheets.filter(w => w.id !== sheetId);
+    setOfflineWorksheets(updated);
+    try {
+      localStorage.setItem('palash_offline_worksheets', JSON.stringify(updated));
+    } catch (err) {
+      console.warn('Could not update localStorage:', err);
+    }
   };
 
   const handlePrint = () => {
@@ -430,17 +472,36 @@ export default function WorksheetGenerator({
     e.preventDefault();
     const customQuestions = generateQuestionsForClassSubject(newClass, selectedSubject);
     const theme = CLASS_SUBJECT_THEMES[newClass]?.[selectedSubject];
+    const now = new Date();
+    const formattedDate = `${now.toLocaleDateString('hi-IN')} • ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    
     const sheetObj = {
-      id: `custom_${Date.now()}`,
+      id: `ws_offline_${Date.now()}`,
       cls: newClass,
+      subject: selectedSubject,
       title: `${newChapterName} (${newClass})`,
       outcome: theme?.outcome || (newClass === 'कक्षा 5' ? 'M-G5.1' : (newClass === 'कक्षा 4' ? 'M-G4.1' : (newClass === 'कक्षा 3' ? 'M-G3.1' : 'M-G1.2'))),
       duration: "20 minutes",
-      learningObjective: `${newClass} के बच्चों के लिए ${newChapterName} आधारित bilingual worksheet.`,
-      questions: customQuestions
+      learningObjective: `${newClass} के बच्चों के लिए ${newChapterName} आधारित JCERT NIPUN Bilingual Worksheet.`,
+      questions: customQuestions,
+      savedAt: formattedDate,
+      offline: true
     };
+    
     setActiveWorksheet(sheetObj);
     setShowSuccessModal(true);
+
+    // Auto-save generated worksheet offline
+    const updated = [sheetObj, ...offlineWorksheets.filter(w => w.title !== sheetObj.title)];
+    setOfflineWorksheets(updated);
+    try {
+      localStorage.setItem('palash_offline_worksheets', JSON.stringify(updated));
+    } catch (err) {
+      console.warn('Could not save to localStorage:', err);
+    }
+
+    setOfflineSaveNotice(`✓ कार्यपत्रक स्वतः ऑफ़लाइन डेटाबेस (Local Offline Store) में सुरक्षित हो गया!`);
+    setTimeout(() => setOfflineSaveNotice(null), 3500);
   };
 
   const templatesList = getTemplatesForSubject(selectedSubject);
@@ -450,7 +511,7 @@ export default function WorksheetGenerator({
       <div className="max-w-[1200px] mx-auto space-y-6">
         
         {/* Title breadcrumb */}
-        <div className="text-[10px] font-bold text-slate-400 uppercase flex space-x-1.5 font-sans">
+        <div className="text-[10px] font-bold text-slate-400 uppercase flex space-x-1.5 font-sans no-print">
           <span>Teach</span>
           <span>/</span>
           <span>Worksheets</span>
@@ -460,7 +521,7 @@ export default function WorksheetGenerator({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           
           {/* LEFT: Controls (Span 5) */}
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-5 space-y-6 no-print">
             
             {/* Custom Generator Form */}
             <div className="bg-white border border-slate-200 rounded p-5 space-y-4 shadow-3xs">
@@ -530,11 +591,68 @@ export default function WorksheetGenerator({
               </form>
             </div>
 
-            {/* Available list */}
-            <div className="bg-white border border-slate-200 rounded p-5 space-y-4 shadow-3xs text-left">
-              <h3 className="text-sm font-black text-slate-805">Available Worksheets</h3>
+            {/* Offline Saved Worksheets Section */}
+            <div className="bg-white border border-slate-200 rounded p-5 space-y-3.5 shadow-3xs text-left">
+              <div className="flex justify-between items-center">
+                <h3 className="text-sm font-black text-slate-805 flex items-center space-x-1.5">
+                  <span>📥 सुरक्षित ऑफ़लाइन कार्यपत्रक</span>
+                  <span className="text-[9px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold">
+                    {offlineWorksheets.length} Saved
+                  </span>
+                </h3>
+                <span className="text-[8px] text-slate-450 font-bold uppercase">0% Cloud / Offline</span>
+              </div>
               
-              <div className="space-y-3.5">
+              <div className="space-y-2.5 max-h-[220px] overflow-y-auto pr-1">
+                {offlineWorksheets.length === 0 ? (
+                  <p className="text-xs text-slate-400 font-semibold text-center py-3 bg-slate-50 rounded border border-dashed border-slate-200">
+                    अभी कोई ऑफ़लाइन वर्कशीट सेव नहीं है। वर्कशीट बनाकर 'Save Offline' दबाएँ।
+                  </p>
+                ) : (
+                  offlineWorksheets.map(sheet => (
+                    <div 
+                      key={sheet.id} 
+                      className={`p-3 border rounded cursor-pointer transition-all flex justify-between items-start ${
+                        activeWorksheet?.id === sheet.id 
+                          ? 'border-[#0F4D2A] bg-emerald-50/40 ring-1 ring-emerald-300' 
+                          : 'border-slate-200 hover:bg-slate-50 bg-[#FAF9F5]'
+                      }`}
+                      onClick={() => handleOpenWorksheet(sheet)}
+                    >
+                      <div className="space-y-1 flex-1 pr-2">
+                        <div className="flex items-center space-x-1.5 flex-wrap gap-1">
+                          <span className="text-[8px] bg-emerald-700 text-white px-1.5 py-0.5 rounded font-black uppercase">
+                            💾 OFFLINE
+                          </span>
+                          <span className="text-[8.5px] bg-[#E06D10] text-white px-1.5 py-0.5 rounded font-black uppercase">
+                            {sheet.cls || 'कक्षा 1'}
+                          </span>
+                        </div>
+                        <p className="text-xs font-black text-slate-850 line-clamp-1">{sheet.title}</p>
+                        {sheet.savedAt && (
+                          <p className="text-[8.5px] text-slate-400 font-semibold">सेव किया: {sheet.savedAt}</p>
+                        )}
+                      </div>
+                      
+                      <button
+                        type="button"
+                        onClick={(e) => handleDeleteOfflineWorksheet(sheet.id, e)}
+                        title="हटाएँ (Delete from Offline Store)"
+                        className="text-slate-400 hover:text-rose-600 p-1 hover:bg-rose-50 rounded transition-colors cursor-pointer"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            {/* Available JCERT Templates list */}
+            <div className="bg-white border border-slate-200 rounded p-5 space-y-4 shadow-3xs text-left">
+              <h3 className="text-sm font-black text-slate-805">📋 JCERT Standard Templates</h3>
+              
+              <div className="space-y-3">
                 {templatesList.length === 0 ? (
                   <p className="text-xs text-slate-400 font-semibold text-center py-4">इस विषय के लिए कोई वर्कशीट उपलब्ध नहीं है।</p>
                 ) : (
@@ -563,34 +681,48 @@ export default function WorksheetGenerator({
 
           {/* RIGHT: A4 Printable Canvas */}
           <div className="lg:col-span-7 bg-white border border-slate-200 p-6 rounded shadow-3xs text-left">
+            {offlineSaveNotice && (
+              <div className="mb-4 p-3 bg-emerald-50 border border-emerald-300 rounded text-xs font-black text-emerald-900 animate-fade-in flex items-center space-x-2 no-print">
+                <span>💾</span>
+                <span>{offlineSaveNotice}</span>
+              </div>
+            )}
+
             {activeWorksheet ? (
               <div className="space-y-5 animate-fade-in">
                 
-                <div className="flex justify-between items-center pb-3 border-b border-slate-100 flex-wrap gap-2">
-                  <span className="text-xs font-extrabold text-[#0F4D2A] bg-emerald-50 px-2 py-1 rounded border border-emerald-100">
-                    Bilingual A4 Canvas Preview
-                  </span>
+                <div className="flex justify-between items-center pb-3 border-b border-slate-100 flex-wrap gap-2 no-print">
+                  <div className="flex items-center space-x-2">
+                    {activeWorksheet.offline && (
+                      <span className="text-[9px] font-black text-emerald-800 bg-emerald-100/70 px-2 py-0.5 rounded-full border border-emerald-200">
+                        💾 Saved Offline
+                      </span>
+                    )}
+                  </div>
                   
                   <div className="flex space-x-2 font-sans">
                     <button
                       onClick={handlePrint}
-                      className="px-3.5 py-1.5 border border-slate-350 hover:bg-slate-50 text-slate-705 text-xs font-bold rounded h-10 flex items-center space-x-1 cursor-pointer"
+                      className="px-3.5 py-1.5 border border-slate-350 hover:bg-slate-50 text-slate-705 text-xs font-bold rounded h-10 flex items-center space-x-1 cursor-pointer shadow-3xs"
                     >
                       <Printer className="w-3.5 h-3.5" />
                       <span>Print / Save PDF (Bilingual)</span>
                     </button>
                     <button
-                      onClick={handleDownload}
-                      className="px-3.5 py-1.5 bg-[#0F4D2A] hover:bg-[#09351C] text-white text-xs font-bold rounded h-10 flex items-center cursor-pointer"
+                      onClick={handleSaveOffline}
+                      className="px-3.5 py-1.5 bg-[#0F4D2A] hover:bg-[#09351C] text-white text-xs font-bold rounded h-10 flex items-center space-x-1 cursor-pointer shadow-3xs"
                     >
-                      <span>{downloadComplete ? '✓ Saved' : 'Save Offline'}</span>
+                      <span>💾 {downloadComplete ? '✓ Saved in Offline DB' : 'Save Offline'}</span>
                     </button>
                   </div>
                 </div>
 
-                <div className={`p-8 font-serif text-slate-900 min-h-[600px] relative border-2 border-slate-900 ${
-                  isLowInkMode ? 'bg-white' : 'bg-white shadow-md'
-                }`}>
+                <div 
+                  id="palash-printable-worksheet"
+                  className={`p-8 font-serif text-slate-900 min-h-[600px] relative border-2 border-slate-900 ${
+                    isLowInkMode ? 'bg-white' : 'bg-white shadow-md'
+                  }`}
+                >
                   
                   {/* Corner Cut Marks */}
                   <div className="absolute top-2 left-2 text-[10px] text-slate-400 font-sans pointer-events-none select-none">┌</div>
@@ -709,7 +841,7 @@ export default function WorksheetGenerator({
             )}
             
             {showSuccessModal && (
-              <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 animate-fade-in">
+              <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 animate-fade-in no-print">
                 <div className="bg-white rounded-2xl border border-slate-200 p-6 max-w-sm w-full mx-4 shadow-2xl text-center space-y-4 animate-scale-in font-sans">
                   <div className="w-12 h-12 bg-emerald-50 rounded-full flex items-center justify-center mx-auto text-emerald-600 text-xl font-bold border border-emerald-100">
                     ✓
